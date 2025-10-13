@@ -6,6 +6,7 @@ import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Signup";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import ResetPassword from "./pages/Auth/ResetPassword";
+import Checkout from "./pages/Shop/Checkout";
 
 import Dashboard from "./pages/Admin/Dashboard";
 import AddProduct from "./components/Admin/AddProduct";
@@ -62,6 +63,14 @@ function App() {
             <ProtectedRoute>
               <Profile />
             </ProtectedRoute>
+          }
+        />
+        <Route
+        path="/checkout"
+        element={
+          <ProtectedRoute>
+            <Checkout />
+          </ProtectedRoute>
           }
         />
 

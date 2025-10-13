@@ -19,7 +19,8 @@ export default function AddProduct({ onSuccess }) {
         imageUrl = await uploadProductImage(product.imageFile, idToken, docId);
       }
 
-      await createDocument("products", { 
+      await createDocument("products", {
+        category: product.category, 
         name: product.name, 
         price: Number(product.price), 
         quantity: Number(product.quantity),
@@ -40,6 +41,14 @@ export default function AddProduct({ onSuccess }) {
     <form onSubmit={handleSubmit} className="bg-white shadow rounded p-4 mb-6">
       <h2 className="font-bold mb-4 text-xl">Add New Product</h2>
 
+      <input
+        type="text"
+        placeholder="Category"
+        className="border p-2 w-full mb-2"
+        value={product.name}
+        onChange={(e) => setProduct({ ...product, name: e.target.value })}
+        required
+      />
       <input
         type="text"
         placeholder="Product Name"

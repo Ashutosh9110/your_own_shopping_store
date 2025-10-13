@@ -25,7 +25,7 @@ export default function Login() {
     setMessage(""); 
 
     try {
-      const res = await axios.get("http://localhost:5000/api/auth/login", {
+      const res = await axios.post("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, loginRole }),

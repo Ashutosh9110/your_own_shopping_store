@@ -1,52 +1,58 @@
 // src/contexts/AuthContext.jsx
-import React, { createContext, useState, useEffect } from 'react';
-import { signInWithEmail, signUpWithEmail, refreshIdToken } from '../services/firebaseRest';
-import { getDocument } from '../services/firestoreRest';
+import React, { createContext, useState, useEffect } from "react";
+import axios from "axios";
 
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null); // { uid, email, displayName, role }
-  const [idToken, setIdToken] = useState(null);
-  const [refreshToken, setRefreshToken] = useState(null);
+  const [user, setUser] = useState(null); // { email, role }
+  const [token, setToken] = useState(localStorage.getItem("token") || null);
+  const [loading, setLoading] = useState(false);
 
-  // login
-  async function login(email, password) {
-    const data = await signInWithEmail(email, password);
-    setIdToken(data.idToken);
-    setRefreshToken(data.refreshToken);
-    // fetch profile from firestore
-    const profile = await getDocument('users', data.localId, data.idToken);
-    // convert profile fields -> plain object (you need a helper)
-    setUser({ uid: data.localId, email: data.email, ...profileConverted });
-    localStorage.setItem('refreshToken', data.refreshToken);
+  // 🌐 Axios setup
+  const api = axios.create({
+    baseURL: "http://localhost:5000/api",
+    headers: { Authorization: token ? `Bearer ${token}` : "" },
+  });
+
+  // 🧍 Login
+  async function login(email, password, loginRole = "user") {
+    setLoading(true);
+    try {
+      const res = await api.post("/auth/login", { email, password, loginRole });
+      setToken(res.data.token);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", res.data.role);
+      setUser({ email, role: res.data.role });
+      return res.data.role;
+    } finally {
+      setLoading(false);
+    }
   }
 
-  async function logout() {
-    setUser(null); setIdToken(null); setRefreshToken(null);
-    localStorage.removeItem('refreshToken');
+  // 🚪 Logout
+  function logout() {
+    setUser(null);
+    setToken(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
   }
 
-  // on mount: try to restore session
+  // 🔁 Auto-login (if token present)
   useEffect(() => {
-    const rt = localStorage.getItem('refreshToken');
-    if (rt) {
-      (async () => {
-        try {
-          const r = await refreshIdToken(rt);
-          setIdToken(r.id_token);
-          setRefreshToken(r.refresh_token);
-          // fetch user profile
-          const profile = await getDocument('users', r.user_id, r.id_token);
-          setUser({ uid: r.user_id, ...profileConverted });
-          localStorage.setItem('refreshToken', r.refresh_token);
-        } catch(err) {
-          console.warn('session restore failed', err);
-          localStorage.removeItem('refreshToken');
-        }
-      })();
+    const savedRole = localStorage.getItem("role");
+    const savedToken = localStorage.getItem("token");
+    if (savedToken && savedRole) {
+      setToken(savedToken);
+      setUser({ role: savedRole });
     }
   }, []);
 
-  return <AuthContext.Provider value={{ user, idToken, refreshToken, login, logout, setUser }}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider
+      value={{ user, token, loading, login, logout }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }

@@ -1,10 +1,11 @@
-// src/pages/Auth/ForgotPassword.jsx
+// src/pages/Auth/ResetPassword.jsx
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
-export default function ForgotPassword() {
-  const [email, setEmail] = useState("");
+export default function ResetPassword() {
+  const { token } = useParams();
+  const [newPassword, setNewPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -13,11 +14,16 @@ export default function ForgotPassword() {
     e.preventDefault();
     setLoading(true);
     setMessage("");
+
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/forgot-password", { email });
+      const res = await axios.post(
+        `http://localhost:5000/api/auth/reset-password/${token}`,
+        { newPassword }
+      );
       setMessage(res.data.message);
+      setTimeout(() => navigate("/login"), 2000);
     } catch (err) {
-      setMessage(err.response?.data?.message || "Error sending reset link");
+      setMessage(err.response?.data?.message || "Error resetting password");
     } finally {
       setLoading(false);
     }
@@ -25,28 +31,25 @@ export default function ForgotPassword() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <form onSubmit={handleReset} className="bg-white p-8 rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-4 text-center">Forgot Password</h2>
+      <form
+        onSubmit={handleReset}
+        className="bg-white p-8 rounded-lg shadow-md w-96"
+      >
+        <h2 className="text-2xl font-bold mb-4 text-center">Reset Password</h2>
         <input
-          type="email"
-          placeholder="Enter your email"
+          type="password"
+          placeholder="Enter new password"
           className="border p-2 w-full mb-3 rounded"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
           required
         />
         <button
           disabled={loading}
           className="w-full bg-teal-600 text-white py-2 rounded hover:bg-green-800"
         >
-          {loading ? "Sending..." : "Send Reset Link"}
+          {loading ? "Resetting..." : "Reset Password"}
         </button>
-        <p
-          className="text-teal-600 text-sm mt-3 text-center cursor-pointer hover:text-black"
-          onClick={() => navigate("/login")}
-        >
-          Back to Login
-        </p>
         {message && (
           <p className="text-center mt-4 text-sm text-gray-700">{message}</p>
         )}

@@ -1,8 +1,8 @@
 import { Order, OrderItem } from "../models/Order.js";
+import { Cart, CartItem } from "../models/Cart.js";
 import Product from "../models/Product.js";
-import User from "../models/User.js";
 
-// 📦 Place an Order
+// 📦 Place an Order (from user's cart or direct checkout)
 export const placeOrder = async (req, res) => {
   const { cartItems, address } = req.body;
   const userId = req.user.id;
@@ -10,27 +10,31 @@ export const placeOrder = async (req, res) => {
   try {
     if (!cartItems || cartItems.length === 0)
       return res.status(400).json({ message: "Cart is empty" });
+
     if (!address)
       return res.status(400).json({ message: "Shipping address is required" });
 
-    // Calculate total
+    // Calculate total + check stock
     let totalAmount = 0;
     for (const item of cartItems) {
       const product = await Product.findByPk(item.productId);
-      if (!product) throw new Error(`Product not found: ${item.productId}`);
+      if (!product)
+        throw new Error(`Product not found: ${item.productId}`);
       if (product.quantity < item.quantity)
         throw new Error(`Insufficient stock for ${product.name}`);
+
       totalAmount += product.price * item.quantity;
     }
 
-    // Create Order
+    // Create order
     const order = await Order.create({
       userId,
       totalAmount,
       address,
+      status: "pending",
     });
 
-    // Create OrderItems + update product stock
+    // Create order items + update stock
     for (const item of cartItems) {
       const product = await Product.findByPk(item.productId);
       await OrderItem.create({
@@ -39,11 +43,19 @@ export const placeOrder = async (req, res) => {
         quantity: item.quantity,
         price: product.price,
       });
+
       product.quantity -= item.quantity;
       await product.save();
     }
 
-    res.status(201).json({ message: "Order placed successfully", orderId: order.id });
+    // Clear cart after successful order
+    const userCart = await Cart.findOne({ where: { userId } });
+    if (userCart) await CartItem.destroy({ where: { cartId: userCart.id } });
+
+    res.status(201).json({
+      message: "Order placed successfully",
+      orderId: order.id,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message });
@@ -55,7 +67,6 @@ export const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.findAll({
       include: [
-        { model: User, attributes: ["id", "email", "name"] },
         {
           model: OrderItem,
           include: [{ model: Product, attributes: ["name", "price"] }],
@@ -78,7 +89,7 @@ export const getUserOrders = async (req, res) => {
       include: [
         {
           model: OrderItem,
-          include: [{ model: Product, attributes: ["name", "price"] }],
+          include: [{ model: Product, attributes: ["name", "price", "image"] }],
         },
       ],
       order: [["createdAt", "DESC"]],
@@ -89,7 +100,7 @@ export const getUserOrders = async (req, res) => {
   }
 };
 
-// 🔍 Get Single Order
+// 🔍 Get Single Order (for viewing details)
 export const getOrderById = async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id, {
@@ -103,7 +114,6 @@ export const getOrderById = async (req, res) => {
 
     if (!order) return res.status(404).json({ message: "Order not found" });
 
-    // Allow only owner or admin
     if (order.userId !== req.user.id && req.user.role !== "admin")
       return res.status(403).json({ message: "Access denied" });
 

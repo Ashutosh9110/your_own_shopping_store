@@ -58,6 +58,12 @@ export default function Dashboard() {
         >
           + Add Product
         </button>
+        <button
+                onClick={() => navigate("/admin/orders")}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl shadow-md transition-all"
+              >
+                Manage Orders
+        </button>
       </div>
 
       {/* Product Grid */}
@@ -90,6 +96,8 @@ export default function Dashboard() {
               >
                 Delete
               </button>
+
+
             </div>
           </motion.div>
         ))}

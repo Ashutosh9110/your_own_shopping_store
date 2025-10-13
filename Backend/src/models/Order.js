@@ -3,11 +3,16 @@ import { sequelize } from "../config/db.js";
 import User from "./User.js"; 
 import Product from "./Product.js";
 
+
 const Order = sequelize.define("Order", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
+  },
+  userId: {
+    type: DataTypes.UUID,
+    allowNull: false,
   },
   status: {
     type: DataTypes.ENUM("Pending", "Processing", "Shipped", "Delivered", "Cancelled"),
@@ -21,10 +26,21 @@ const Order = sequelize.define("Order", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  paymentMethod: {
+    type: DataTypes.ENUM("COD", "ONLINE"),
+    allowNull: false,
+  },
+  paymentStatus: {
+    type: DataTypes.ENUM("PENDING", "PAID"),
+    defaultValue: "PENDING",
+  },
+  status: {
+    type: DataTypes.ENUM("PLACED", "SHIPPED", "DELIVERED", "CANCELLED"),
+    defaultValue: "PLACED",
+  },
 });
 
-// Each Order belongs to a User
-Order.belongsTo(User, { foreignKey: "userId" });
+
 
 // OrderItem model for products in an order
 const OrderItem = sequelize.define("OrderItem", {
@@ -43,9 +59,15 @@ const OrderItem = sequelize.define("OrderItem", {
   },
 });
 
+
 // Relationships
+User.hasMany(Order, { foreignKey: "userId" });
+Order.belongsTo(User, { foreignKey: "userId" });
+
 Order.hasMany(OrderItem, { foreignKey: "orderId", onDelete: "CASCADE" });
 OrderItem.belongsTo(Order, { foreignKey: "orderId" });
+
+Product.hasMany(OrderItem, { foreignKey: "productId" });
 OrderItem.belongsTo(Product, { foreignKey: "productId" });
 
-export { Order, OrderItem };
+export default Order;

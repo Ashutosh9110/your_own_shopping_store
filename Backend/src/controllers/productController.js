@@ -1,9 +1,10 @@
+// src/controllers/productController.js
 import Product from "../models/Product.js";
 import Category from "../models/Category.js";
 import multer from "multer";
 import path from "path";
 
-// Local file upload config
+// File upload config (same)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "src/uploads/"),
   filename: (req, file, cb) => {
@@ -13,20 +14,25 @@ const storage = multer.diskStorage({
 });
 export const upload = multer({ storage });
 
-// Create new product
+// Create Product (Admin)
 export const createProduct = async (req, res) => {
   try {
     const { name, price, quantity, categoryId } = req.body;
     const image = req.file ? `/uploads/${req.file.filename}` : null;
 
-    if (!name || !price || !categoryId) {
+    if (!name || !price || !categoryId)
       return res.status(400).json({ message: "Missing required fields" });
-    }
 
     const category = await Category.findByPk(categoryId);
     if (!category) return res.status(404).json({ message: "Category not found" });
 
-    const product = await Product.create({ name, price, quantity, image, categoryId });
+    const product = await Product.create({
+      name,
+      price,
+      quantity,
+      image,
+      categoryId,
+    });
     res.status(201).json({ message: "Product created", product });
   } catch (err) {
     console.error(err);
@@ -34,20 +40,39 @@ export const createProduct = async (req, res) => {
   }
 };
 
-// Get all products
+// 🧭 Get All Products (with Filter + Search)
 export const getProducts = async (req, res) => {
   try {
+    const { category, search } = req.query; // e.g. /api/products?category=abc&search=shirt
+
+    const whereClause = {};
+
+    // Filter by category
+    if (category) {
+      const foundCategory = await Category.findOne({ where: { name: category } });
+      if (foundCategory) whereClause.categoryId = foundCategory.id;
+      else return res.json([]); // no products if category doesn’t exist
+    }
+
+    // Search by name
+    if (search) {
+      whereClause.name = { [Product.sequelize.Op.iLike]: `%${search}%` };
+    }
+
     const products = await Product.findAll({
+      where: whereClause,
       include: [{ model: Category, attributes: ["id", "name"] }],
       order: [["createdAt", "DESC"]],
     });
+
     res.json(products);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error(err);
+    res.status(500).json({ message: "Error fetching products", error: err.message });
   }
 };
 
-// Get single product
+// Get Single Product
 export const getProduct = async (req, res) => {
   try {
     const product = await Product.findByPk(req.params.id, {
@@ -60,7 +85,7 @@ export const getProduct = async (req, res) => {
   }
 };
 
-// Update product
+// Update Product (Admin)
 export const updateProduct = async (req, res) => {
   try {
     const { name, price, quantity, categoryId } = req.body;
@@ -82,7 +107,7 @@ export const updateProduct = async (req, res) => {
   }
 };
 
-// Delete product
+// Delete Product (Admin)
 export const deleteProduct = async (req, res) => {
   try {
     const deleted = await Product.destroy({ where: { id: req.params.id } });

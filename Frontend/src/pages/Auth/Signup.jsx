@@ -1,6 +1,5 @@
 // src/pages/Auth/Signup.jsx
 import React, { useState } from "react";
-import { signUpWithEmail } from "../../services/firebaseRest";
 import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
@@ -17,33 +16,19 @@ export default function Signup() {
     setMessage("");
 
     try {
-      const data = await signUpWithEmail(email, password);
+      const res = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, role }),
+      });
 
-      // Store user in Firestore with selected role
-      await fetch(
-        `https://firestore.googleapis.com/v1/projects/${
-          import.meta.env.VITE_FIREBASE_PROJECT_ID
-        }/databases/(default)/documents/users?documentId=${data.localId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${data.idToken}`,
-          },
-          body: JSON.stringify({
-            fields: {
-              email: { stringValue: email },
-              role: { stringValue: role },
-            },
-          }),
-        }
-      );
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Signup failed");
 
-      setMessage("Signup successful! Redirecting to login...");
-      setTimeout(() => navigate("/login?role=admin"), 1500);
+      setMessage("Signup successful!! Redirecting to login...");
+      setTimeout(() => navigate(`/login?role=${role}`), 1500);
     } catch (err) {
-      console.error(err);
-      setMessage("❌ " + (err.message || "Signup failed"));
+      setMessage(err.message);
     } finally {
       setLoading(false);
     }

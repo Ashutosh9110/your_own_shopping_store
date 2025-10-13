@@ -17,13 +17,18 @@ const STORAGE_UPLOAD = `https://firebasestorage.googleapis.com/v0/b/${STORAGE_BU
 // Sign up (email/password)
 export async function signUpWithEmail(email, password, displayName = '') {
   const url = `${ID_TOOLKIT_BASE}/accounts:signUp?key=${API_KEY}`;
+  console.log("🔥 API_KEY:", API_KEY);  
   const res = await fetch(url, {
     method: 'POST',
     headers:{'Content-Type':'application/json'},
     body: JSON.stringify({email, password, returnSecureToken: true})
   });
   const data = await res.json();
-  if (!res.ok) throw data;
+
+  if (!res.ok) {
+    console.error("Signup failed:", data);
+    throw new Error(data.error?.message || "Signup failed");
+  }
   // Optionally update profile displayName via accounts:update
   if (displayName) {
     await fetch(`${ID_TOOLKIT_BASE}/accounts:update?key=${API_KEY}`, {

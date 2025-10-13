@@ -1,19 +1,28 @@
 // src/pages/Auth/Login.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { signInWithEmail } from "../../services/firebaseRest";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loginRole, setLoginRole] = useState("user");
   const navigate = useNavigate();
+  const location = useLocation();
+
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const role = params.get("role");
+    if (role) setLoginRole(role);
+  }, [location]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
+    setMessage(""); 
 
     try {
       // Step 1: Auth 
@@ -30,34 +39,43 @@ export default function Login() {
       );
 
       const userData = await res.json();
-      const role = userData?.fields?.role?.stringValue || "user";
+      const roleFromDB = userData?.fields?.role?.stringValue || "user";
 
-      // Step 3: Save in localStorage
-      localStorage.setItem("idToken", data.idToken);
+      // Step 3: Check if admin is logging into admin panel
+      if (loginRole === "admin" && roleFromDB !== "admin") {
+        throw new Error("Unauthorized: You are not an admin.");
+      }
+
+      // Step 4: Save session
       localStorage.setItem("refreshToken", data.refreshToken);
+      localStorage.setItem("idToken", data.idToken);
       localStorage.setItem("uid", data.localId);
-      localStorage.setItem("role", role);
+      localStorage.setItem("role", roleFromDB);
 
-      // Step 4: Redirect based on role
-      if (role === "admin") {
+     // Step 5: Redirect
+      if (roleFromDB === "admin") {
         navigate("/admin");
       } else {
-        navigate("/shop");
+        navigate("/products");
       }
     } catch (err) {
-      setMessage("Login failed: " + err.message);
+      const msg = err?.error?.message || err.message || "Login failed.";
+      setMessage(msg);
     } finally {
       setLoading(false);
     }
   };
 
+
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-teal-100 to-green-200">
       <form
         onSubmit={handleLogin}
-        className="bg-white p-8 rounded-lg shadow-md w-96"
+        className="p-8 rounded-lg w-96"
       >
-        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
+        <h2 className="text-2xl font-bold mb-4 text-center">
+          {loginRole === "admin" ? "Admin Login" : "User Login"}
+        </h2>
         <input
           type="email"
           placeholder="Email"
@@ -78,13 +96,11 @@ export default function Login() {
           disabled={loading}
           className="w-full bg-teal-600 text-white py-2 mb-2 rounded hover:bg-green-700 cursor-pointer"
         >
-          {loading ? "Logging in..." : "Login as User"}
-        </button>
-        <button
-          disabled={loading}
-          className="w-full bg-teal-600 text-white py-2 mt-2 rounded hover:bg-green-800 cursor-pointer"
-        >
-          {loading ? "Logging in..." : "Login as Admin"}
+        {loading
+            ? "Logging in..."
+            : loginRole === "admin"
+            ? "Login"
+            : "Login"}
         </button>
         <p
           className="text-black text-sm mt-3 text-center cursor-pointer"
@@ -92,6 +108,12 @@ export default function Login() {
         >
           Forgot Password?
         </p>
+        <button
+          disabled={loading}
+          className="w-full bg-teal-600 text-white py-2 mt-2 rounded hover:bg-green-800 cursor-pointer"
+          onClick={() => navigate("/signup")}
+        >New User? Want to Sign-Up
+        </button>
         {message && (
           <p className="text-center mt-4 text-sm text-red-600">{message}</p>
         )}

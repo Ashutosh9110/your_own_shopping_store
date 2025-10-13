@@ -1,12 +1,14 @@
 // src/pages/Auth/Signup.jsx
 import React, { useState } from "react";
 import { signUpWithEmail } from "../../services/firebaseRest";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -36,11 +38,10 @@ export default function Signup() {
         }
       );
 
-      setMessage("Signup successful! You can now log in.");
-      setEmail("");
-      setPassword("");
+      setMessage("Signup successful! Redirecting to login...");
+      setTimeout(() => navigate("/login"), 1500)
     } catch (err) {
-      setMessage("Error: " + err.message);
+      setMessage(err.message);
     } finally {
       setLoading(false);
     }
@@ -71,12 +72,18 @@ export default function Signup() {
         />
         <button
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          className="w-full bg-teal-600 text-white py-2 rounded hover:bg-green-800 cursor-pointer"
         >
           {loading ? "Creating account..." : "Sign Up"}
         </button>
-        {message && (
-          <p className="text-center mt-4 text-sm text-gray-700">{message}</p>
+        <button
+          disabled={loading}
+          className="w-full bg-teal-600 text-white py-2 mt-2 rounded hover:bg-green-800 cursor-pointer"
+          onClick={() => navigate("/login")}
+          >Already a user? Want to Sign-In
+        </button>
+          {message && (
+            <p className="text-center mt-4 text-sm text-gray-700">{message}</p>
         )}
       </form>
     </div>

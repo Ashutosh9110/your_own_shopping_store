@@ -1,48 +1,81 @@
-// src/components/Admin/AddProduct.jsx
-import React, { useState, useContext } from 'react';
-import { uploadImage } from '../../services/storageRest';
-import { createDocument } from '../../services/firestoreRest';
-import { AuthContext } from '../../contexts/AuthContext';
+import React, { useState } from "react";
+import { createDocument } from "../../services/firestoreRest";
+import { uploadProductImage } from "../../services/storageRest";
 
-export default function AddProduct() {
-  const { idToken } = useContext(AuthContext);
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [category, setCategory] = useState('');
-  const [images, setImages] = useState([]);
+export default function AddProduct({ onSuccess }) {
+  const [product, setProduct] = useState({ name: "", price: "", quantity: "", imageFile: null });
+  const [loading, setLoading] = useState(false);
+  const idToken = localStorage.getItem("idToken");
 
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     try {
-      const uploadedUrls = [];
-      for (let i=0;i<images.length;i++) {
-        const file = images[i];
-        const dest = `products/${Date.now()}_${file.name}`;
-        const { publicUrl } = await uploadImage(file, idToken, dest);
-        uploadedUrls.push(publicUrl);
+      const docId = crypto.randomUUID();
+      let imageUrl = "";
+
+      if (product.imageFile) {
+        imageUrl = await uploadProductImage(product.imageFile, idToken, docId);
       }
-      const product = {
-        name,
-        price: Number(price),
-        category,
-        images: uploadedUrls,
-        createdAt: new Date().toISOString()
-      };
-      const resp = await createDocument('products', product, idToken);
-      alert('Product added');
-    } catch(err) {
-      console.error(err);
-      alert('Error: ' + (err.message || JSON.stringify(err)));
+
+      await createDocument("products", { 
+        name: product.name, 
+        price: Number(product.price), 
+        quantity: Number(product.quantity),
+        image: imageUrl 
+      }, idToken, docId);
+
+      alert("Product added successfully!");
+      setProduct({ name: "", price: "", quantity: "", imageFile: null });
+      onSuccess?.();
+    } catch (err) {
+      console.error("Add product error:", err);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 max-w-lg">
-      <input value={name} onChange={e=>setName(e.target.value)} placeholder="Name" className="border p-2 mb-2"/>
-      <input value={price} onChange={e=>setPrice(e.target.value)} placeholder="Price" className="border p-2 mb-2"/>
-      <input value={category} onChange={e=>setCategory(e.target.value)} placeholder="Category" className="border p-2 mb-2"/>
-      <input type="file" multiple onChange={e=>setImages(e.target.files)} />
-      <button className="bg-blue-600 text-white px-4 py-2 mt-3">Add Product</button>
+    <form onSubmit={handleSubmit} className="bg-white shadow rounded p-4 mb-6">
+      <h2 className="font-bold mb-4 text-xl">Add New Product</h2>
+
+      <input
+        type="text"
+        placeholder="Product Name"
+        className="border p-2 w-full mb-2"
+        value={product.name}
+        onChange={(e) => setProduct({ ...product, name: e.target.value })}
+        required
+      />
+      <input
+        type="number"
+        placeholder="Price"
+        className="border p-2 w-full mb-2"
+        value={product.price}
+        onChange={(e) => setProduct({ ...product, price: e.target.value })}
+        required
+      />
+      <input
+        type="number"
+        placeholder="Quantity"
+        className="border p-2 w-full mb-2"
+        value={product.quantity}
+        onChange={(e) => setProduct({ ...product, quantity: e.target.value })}
+        required
+      />
+      <input
+        type="file"
+        className="border p-2 w-full mb-2"
+        onChange={(e) => setProduct({ ...product, imageFile: e.target.files[0] })}
+      />
+
+      <button
+        disabled={loading}
+        className="bg-teal-600 text-white px-4 py-2 rounded"
+      >
+        {loading ? "Adding..." : "Add Product"}
+      </button>
     </form>
   );
 }

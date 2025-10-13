@@ -8,7 +8,7 @@ const ID_TOOLKIT_BASE = 'https://identitytoolkit.googleapis.com/v1';
 const SECURE_TOKEN = 'https://securetoken.googleapis.com/v1/token';
 
 // Firestore base
-const FIRESTORE_BASE = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents`;
+export const FIRESTORE_BASE = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents`;
 
 // Storage base
 const STORAGE_UPLOAD = `https://firebasestorage.googleapis.com/v0/b/${STORAGE_BUCKET}/o`;

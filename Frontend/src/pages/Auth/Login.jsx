@@ -16,7 +16,7 @@ export default function Login() {
     setMessage("");
 
     try {
-      // Step 1: Auth
+      // Step 1: Auth 
       const data = await signInWithEmail(email, password);
 
       // Step 2: Fetch role from Firestore
@@ -76,12 +76,18 @@ export default function Login() {
         />
         <button
           disabled={loading}
-          className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+          className="w-full bg-teal-600 text-white py-2 mb-2 rounded hover:bg-green-700 cursor-pointer"
         >
-          {loading ? "Logging in..." : "Login"}
+          {loading ? "Logging in..." : "Login as User"}
+        </button>
+        <button
+          disabled={loading}
+          className="w-full bg-teal-600 text-white py-2 mt-2 rounded hover:bg-green-800 cursor-pointer"
+        >
+          {loading ? "Logging in..." : "Login as Admin"}
         </button>
         <p
-          className="text-blue-600 text-sm mt-3 text-center cursor-pointer"
+          className="text-black text-sm mt-3 text-center cursor-pointer"
           onClick={() => navigate("/forgot-password")}
         >
           Forgot Password?

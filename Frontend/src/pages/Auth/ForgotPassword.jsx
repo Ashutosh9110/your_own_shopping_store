@@ -1,11 +1,13 @@
 // src/pages/Auth/ForgotPassword.jsx
 import React, { useState } from "react";
 import { sendPasswordReset } from "../../services/firebaseRest";
+import { useNavigate } from "react-router-dom";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
 
   const handleReset = async (e) => {
     e.preventDefault();
@@ -41,11 +43,14 @@ export default function ForgotPassword() {
         />
         <button
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          className="w-full bg-teal-600 text-white py-2 rounded hover:bg-green-800 cursor-pointer"
         >
           {loading ? "Sending..." : "Send Reset Link"}
         </button>
-        {message && (
+        <p 
+          className="text-teal-600 text-sm mt-3 text-center cursor-pointer hover:text-black" 
+          onClick={() => navigate("/login")}>Back to login</p>
+          {message && (
           <p className="text-center mt-4 text-sm text-gray-700">{message}</p>
         )}
       </form>

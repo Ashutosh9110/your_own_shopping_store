@@ -1,38 +1,26 @@
-// src/components/Admin/CategoryManager.jsx
 import React, { useState, useEffect } from "react";
-import { createDocument, listDocuments, deleteDocument } from "../../services/firestoreRest";
+import axios from "axios";
 
 export default function CategoryManager() {
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState("");
-  const idToken = localStorage.getItem("idToken");
 
   const loadCategories = async () => {
-    const res = await listDocuments("categories", idToken);
-    const docs = res.documents || [];
-    const parsed = docs.map((d) => ({
-      id: d.name.split("/").pop(),
-      name: d.fields.name.stringValue,
-    }));
-    setCategories(parsed);
+    const res = await axios.get("http://localhost:5000/api/categories");
+    setCategories(res.data);
   };
 
   const handleAddCategory = async (e) => {
     e.preventDefault();
     if (!newCategory.trim()) return;
 
-    await createDocument(
-      "categories",
-      { name: newCategory.trim() },
-      idToken,
-      crypto.randomUUID()
-    );
+    await axios.post("http://localhost:5000/api/categories", { name: newCategory });
     setNewCategory("");
     loadCategories();
   };
 
   const handleDelete = async (id) => {
-    await deleteDocument("categories", id, idToken);
+    await axios.delete(`http://localhost:5000/api/categories/${id}`);
     loadCategories();
   };
 
@@ -59,10 +47,7 @@ export default function CategoryManager() {
 
       <ul>
         {categories.map((cat) => (
-          <li
-            key={cat.id}
-            className="flex justify-between items-center border-b py-2"
-          >
+          <li key={cat.id} className="flex justify-between items-center border-b py-2">
             <span>{cat.name}</span>
             <button
               onClick={() => handleDelete(cat.id)}

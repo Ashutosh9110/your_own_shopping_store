@@ -14,8 +14,8 @@ import ManageOrders from "./pages/Admin/ManageOrders";
 
 import ProductList from "./pages/Shop/ProductList";
 import Cart from "./pages/Shop/Cart";
-import Orders from "./pages/Orders";
-import Profile from "./pages/Profile";
+import Orders from "./pages/Shop/Orders";
+// import Profile from "./pages/Profile";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
@@ -33,72 +33,17 @@ function App() {
         <Route path="/reset-password/:token" element={<ResetPassword />} />
 
         {/* User routes (protected) */}
-        <Route
-          path="/products"
-          element={
-            <ProtectedRoute>
-              <ProductList />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/cart"
-          element={
-            <ProtectedRoute>
-              <Cart />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/orders"
-          element={
-            <ProtectedRoute>
-              <Orders />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-        path="/checkout"
-        element={
-          <ProtectedRoute>
-            <Checkout />
-          </ProtectedRoute>
-          }
-        />
+        <Route path="/products"
+          element={ <ProtectedRoute> <ProductList /> </ProtectedRoute> } />
+        <Route path="/cart"  element={ <ProtectedRoute> <Cart /> </ProtectedRoute> } />
+        <Route path="/orders" element={ <ProtectedRoute> <Orders /> </ProtectedRoute> } />
+        {/* <Route path="/profile" element={ <ProtectedRoute> <Profile /> </ProtectedRoute> } /> */}
+        <Route path="/checkout" element={ <ProtectedRoute> <Checkout /> </ProtectedRoute> } />
 
         {/* Admin routes (admin-only) */}
-        <Route
-          path="/admin"
-          element={
-            <AdminRoute>
-              <Dashboard />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/admin/add-product"
-          element={
-            <AdminRoute>
-              <AddProduct />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/admin/orders"
-          element={
-            <AdminRoute>
-              <ManageOrders />
-            </AdminRoute>
-          }
-        />
+        <Route path="/admin" element={ <AdminRoute> <Dashboard /> </AdminRoute> } />
+        <Route path="/admin/add-product" element={ <AdminRoute> <AddProduct /> </AdminRoute> } />
+        <Route path="/admin/orders" element={ <AdminRoute> <ManageOrders /> </AdminRoute> } />
       </Routes>
     </Router>
   );

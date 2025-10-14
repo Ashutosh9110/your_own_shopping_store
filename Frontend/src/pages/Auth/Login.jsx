@@ -22,27 +22,26 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage(""); 
+    setMessage("");
 
     try {
       const res = await axios.post("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, loginRole }),
+        email,
+        password,
+        role: loginRole,
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Login failed");
+      const data = res.data;
 
-      // Save token and role
       localStorage.setItem("token", data.token);
       localStorage.setItem("role", data.role);
 
-      // Redirect
+      // Redirect based on role
       if (data.role === "admin") navigate("/admin");
       else navigate("/products");
     } catch (err) {
-      setMessage(err.message);
+      console.error("Login error:", err);
+      setMessage(err.response?.data?.message || "Invalid email or password");
     } finally {
       setLoading(false);
     }

@@ -1,15 +1,16 @@
 // app.js
 
+// const express = require("express")
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { sequelize } from "./config/db.js";
-import authRoutes from "./routes/authRoutes.js";
-import categoryRoutes from "./routes/categoryRoutes.js";
-import productRoutes from "./routes/productRoutes.js";
-import orderRoutes from "./routes/orderRoutes.js";
-import cartRoutes from "./routes/cartRoutes.js";
-import paymentRoutes from "./routes/paymentRoutes.js";
+import { sequelize, connectDB } from "./src/config/db.js";
+import authRoutes from "./src/routes/authRoutes.js";
+import categoryRoutes from "./src/routes/categoryRoutes.js";
+import productRoutes from "./src/routes/productRoutes.js";
+import orderRoutes from "./src/routes/orderRoutes.js";
+import cartRoutes from "./src/routes/cartRoutes.js";
+import paymentRoutes from "./src/routes/paymentRoutes.js";
 
 
 dotenv.config();
@@ -29,7 +30,7 @@ app.use("/api/payments", paymentRoutes);
 sequelize
   .sync()
   .then(() => {
-    console.log("✅ Database connected & synced");
+    console.log("Database connected & synced");
     app.listen(process.env.PORT || 5000, () =>
       console.log(`Server running on port ${process.env.PORT || 5000}`)
     );

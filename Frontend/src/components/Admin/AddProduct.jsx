@@ -1,37 +1,37 @@
 import React, { useState } from "react";
-import { createDocument } from "../../services/firestoreRest";
-import { uploadProductImage } from "../../services/storageRest";
+import axios from "axios";
 
 export default function AddProduct({ onSuccess }) {
-  const [product, setProduct] = useState({ name: "", price: "", quantity: "", imageFile: null });
+  const [product, setProduct] = useState({
+    category: "",
+    name: "",
+    price: "",
+    quantity: "",
+    imageFile: null,
+  });
   const [loading, setLoading] = useState(false);
-  const idToken = localStorage.getItem("idToken");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
-      const docId = crypto.randomUUID();
-      let imageUrl = "";
+      const formData = new FormData();
+      formData.append("category", product.category);
+      formData.append("name", product.name);
+      formData.append("price", product.price);
+      formData.append("quantity", product.quantity);
+      if (product.imageFile) formData.append("image", product.imageFile);
 
-      if (product.imageFile) {
-        imageUrl = await uploadProductImage(product.imageFile, idToken, docId);
-      }
-
-      await createDocument("products", {
-        category: product.category, 
-        name: product.name, 
-        price: Number(product.price), 
-        quantity: Number(product.quantity),
-        image: imageUrl 
-      }, idToken, docId);
+      await axios.post("http://localhost:5000/api/products", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       alert("Product added successfully!");
-      setProduct({ name: "", price: "", quantity: "", imageFile: null });
+      setProduct({ category: "", name: "", price: "", quantity: "", imageFile: null });
       onSuccess?.();
     } catch (err) {
       console.error("Add product error:", err);
+      alert("Failed to add product.");
     } finally {
       setLoading(false);
     }
@@ -45,8 +45,8 @@ export default function AddProduct({ onSuccess }) {
         type="text"
         placeholder="Category"
         className="border p-2 w-full mb-2"
-        value={product.name}
-        onChange={(e) => setProduct({ ...product, name: e.target.value })}
+        value={product.category}
+        onChange={(e) => setProduct({ ...product, category: e.target.value })}
         required
       />
       <input
@@ -79,10 +79,7 @@ export default function AddProduct({ onSuccess }) {
         onChange={(e) => setProduct({ ...product, imageFile: e.target.files[0] })}
       />
 
-      <button
-        disabled={loading}
-        className="bg-teal-600 text-white px-4 py-2 rounded"
-      >
+      <button disabled={loading} className="bg-teal-600 text-white px-4 py-2 rounded">
         {loading ? "Adding..." : "Add Product"}
       </button>
     </form>

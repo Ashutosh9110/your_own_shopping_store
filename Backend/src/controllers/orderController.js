@@ -1,8 +1,8 @@
-import { Order, OrderItem } from "../models/Order.js";
+import { Order, OrderItem } from "../models/Order.js"
 import { Cart, CartItem } from "../models/Cart.js";
 import Product from "../models/Product.js";
 
-// 📦 Place an Order (from user's cart or direct checkout)
+
 export const placeOrder = async (req, res) => {
   const { cartItems, address } = req.body;
   const userId = req.user.id;
@@ -62,7 +62,6 @@ export const placeOrder = async (req, res) => {
   }
 };
 
-// 👀 Get All Orders (Admin)
 export const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.findAll({
@@ -80,7 +79,6 @@ export const getAllOrders = async (req, res) => {
   }
 };
 
-// 🧾 Get User's Orders
 export const getUserOrders = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -100,7 +98,6 @@ export const getUserOrders = async (req, res) => {
   }
 };
 
-// 🔍 Get Single Order (for viewing details)
 export const getOrderById = async (req, res) => {
   try {
     const order = await Order.findByPk(req.params.id, {
@@ -123,7 +120,6 @@ export const getOrderById = async (req, res) => {
   }
 };
 
-// 🚚 Update Order Status (Admin)
 export const updateOrderStatus = async (req, res) => {
   try {
     const { status } = req.body;

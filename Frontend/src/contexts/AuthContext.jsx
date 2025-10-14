@@ -1,6 +1,7 @@
 // src/contexts/AuthContext.jsx
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import { useContext } from "react";
 
 export const AuthContext = createContext();
 
@@ -9,7 +10,6 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [loading, setLoading] = useState(false);
 
-  // 🌐 Axios setup
   const api = axios.create({
     baseURL: "http://localhost:5000/api",
     headers: { Authorization: token ? `Bearer ${token}` : "" },
@@ -30,7 +30,7 @@ export function AuthProvider({ children }) {
     }
   }
 
-  // 🚪 Logout
+  //  Logout
   function logout() {
     setUser(null);
     setToken(null);
@@ -38,7 +38,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("role");
   }
 
-  // 🔁 Auto-login (if token present)
+  // Auto-login (if token present)
   useEffect(() => {
     const savedRole = localStorage.getItem("role");
     const savedToken = localStorage.getItem("token");
@@ -56,3 +56,6 @@ export function AuthProvider({ children }) {
     </AuthContext.Provider>
   );
 }
+
+
+export const useAuth = () => useContext(AuthContext);

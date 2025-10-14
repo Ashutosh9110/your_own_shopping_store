@@ -1,6 +1,6 @@
 // src/components/Admin/EditProduct.jsx
 import React, { useState } from "react";
-import { updateDocument } from "../../services/firestoreRest";
+import axios from "axios";
 
 export default function EditProduct({ product, onClose }) {
   const [updated, setUpdated] = useState(product);
@@ -8,15 +8,27 @@ export default function EditProduct({ product, onClose }) {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    await updateDocument("products", product.id, {
-      category: updated.category,
-      name: updated.name,
-      price: Number(updated.price),
-      quantity: Number(updated.quantity),
-    }, idToken);
-    alert("✅ Product updated successfully!");
-    onClose();
+    try {
+      await axios.put(
+        `http://localhost:5000/api/products/${product.id}`,
+        {
+          category: updated.category,
+          name: updated.name,
+          price: Number(updated.price),
+          quantity: Number(updated.quantity),
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      alert("Product updated successfully!");
+      onClose();
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update product.");
+    }
   };
+
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center">

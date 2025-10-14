@@ -4,7 +4,7 @@ import User from "./User.js";
 import Product from "./Product.js";
 
 
-const Order = sequelize.define("Order", {
+export const Order = sequelize.define("Order", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -43,7 +43,7 @@ const Order = sequelize.define("Order", {
 
 
 // OrderItem model for products in an order
-const OrderItem = sequelize.define("OrderItem", {
+export const OrderItem = sequelize.define("OrderItem", {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -70,4 +70,4 @@ OrderItem.belongsTo(Order, { foreignKey: "orderId" });
 Product.hasMany(OrderItem, { foreignKey: "productId" });
 OrderItem.belongsTo(Product, { foreignKey: "productId" });
 
-export default Order;
+// export default Order;

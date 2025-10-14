@@ -8,7 +8,7 @@ import nodemailer from "nodemailer";
 
 dotenv.config();
 
-// 🧍 Register User or Admin
+
 export const register = async (req, res) => {
   try {
     const { email, password, role } = req.body;

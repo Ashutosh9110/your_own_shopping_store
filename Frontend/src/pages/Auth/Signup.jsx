@@ -7,7 +7,7 @@ import axios from "axios"
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("user"); // 👈 role selector
+  const [role, setRole] = useState("user"); 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -18,14 +18,7 @@ export default function Signup() {
     setMessage("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, role }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Signup failed");
+      await axios.post("http://localhost:5000/api/auth/register", { email, password, role })
 
       setMessage("Signup successful!! Redirecting to login...");
       setTimeout(() => navigate(`/login?role=${role}`), 1500);

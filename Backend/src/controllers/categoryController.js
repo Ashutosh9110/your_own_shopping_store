@@ -38,3 +38,25 @@ export const deleteCategory = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+
+// src/controllers/categoryController.js
+export const seedDefaultCategories = async (req, res) => {
+  try {
+    const defaultCategories = ["Fruits", "Electronics", "Grocery", "Clothing", "Stationery"];
+    const added = [];
+
+    for (const name of defaultCategories) {
+      const existing = await Category.findOne({ where: { name } });
+      if (!existing) {
+        await Category.create({ name });
+        added.push(name);
+      }
+    }
+
+    res.json({ message: "Default categories seeded", added });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+

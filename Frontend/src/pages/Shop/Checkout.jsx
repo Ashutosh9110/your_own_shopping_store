@@ -25,7 +25,7 @@ function Checkout() {
       description: "Order Payment",
       order_id: order.id,
       handler: function (response) {
-        alert("Payment Successful! ✅");
+        alert("Payment Successful!");
         console.log(response);
         // Then call your backend to mark paymentStatus = "PAID"
       },

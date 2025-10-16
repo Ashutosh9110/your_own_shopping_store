@@ -16,11 +16,7 @@ export default function AddProduct({ onSuccess }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/categories", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const res = await axios.get("http://localhost:5000/api/categories");
         setCategories(res.data);
       } catch (err) {
         console.error("Error fetching categories:", err);

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"
+import { useAuth } from "../../contexts/AuthContext";
 
 
 export default function Signup() {
@@ -10,6 +11,7 @@ export default function Signup() {
   const [role, setRole] = useState("user"); 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const { signup } = useAuth();
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
@@ -18,12 +20,13 @@ export default function Signup() {
     setMessage("");
 
     try {
-      await axios.post("http://localhost:5000/api/auth/register", { email, password, role })
+      await signup(email, password, role);
 
       setMessage("Signup successful!! Redirecting to login...");
       setTimeout(() => navigate(`/login?role=${role}`), 1500);
     } catch (err) {
-      setMessage(err.message);
+      console.error("Signup error:", err);
+      setMessage(err.response?.data?.message || "Signup failed. Try again.");
     } finally {
       setLoading(false);
     }
@@ -68,7 +71,7 @@ export default function Signup() {
 
         <button
           disabled={loading}
-          className="w-full bg-teal-600 text-white py-3 rounded-lg hover:bg-teal-700 transition-all"
+          className="w-full bg-teal-600 text-white py-3 rounded-lg hover:bg-teal-800 transition-all cursor-pointer"
         >
           {loading ? "Creating..." : "Sign Up"}
         </button>
@@ -76,7 +79,7 @@ export default function Signup() {
         <button
           type="button"
           onClick={() => navigate("/login")}
-          className="w-full bg-gray-200 text-gray-700 py-3 rounded-lg mt-3 hover:bg-gray-300"
+          className="w-full bg-teal-600 text-white py-2 mt-2 rounded hover:bg-teal-800 cursor-pointer"
         >
           Already have an account? Log In
         </button>

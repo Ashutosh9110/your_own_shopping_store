@@ -22,19 +22,19 @@ export function CartProvider({ children }) {
 
   async function addToCart(productId, quantity = 1) {
     if (!token) throw new Error("Not authenticated");
-    const res = await api.post("/cart", { productId, quantity });
+    const res = await api.post("/cart/add", { productId, quantity });
     await fetchCart(); // refresh cart
     return res.data;
   }
 
   async function updateCartItem(id, quantity) {
-    const res = await api.put(`/cart/${id}`, { quantity });
+    const res = await api.put(`/cart/update/${id}`, { quantity });
     await fetchCart();
     return res.data;
   }
 
   async function removeFromCart(id) {
-    await api.delete(`/cart/${id}`);
+    await api.delete(`/cart/remove/${id}`);
     await fetchCart();
   }
 

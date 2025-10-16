@@ -16,7 +16,6 @@ export default function Products() {
   const { addToCart } = useContext(CartContext);
   const navigate = useNavigate();
 
-  // Fetch products
   const fetchProducts = async () => {
     try {
       const params = {};
@@ -30,7 +29,6 @@ export default function Products() {
     }
   };
 
-  // Fetch categories
   const fetchCategories = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/categories");
@@ -50,7 +48,7 @@ export default function Products() {
     return () => clearTimeout(timeout);
   }, [selectedCategory, search]);
 
-  // 🛒 Add to Cart Logic
+  
   const handleAddToCart = async (productId) => {
     if (!token) {
       alert("Please log in to add items to your cart.");

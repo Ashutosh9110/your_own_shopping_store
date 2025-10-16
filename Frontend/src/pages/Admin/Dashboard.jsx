@@ -31,7 +31,7 @@ export default function Dashboard() {
       await axios.delete(`http://localhost:5000/api/products/${productId}`);
       loadProducts();
     } catch (err) {
-      alert("❌ Error deleting product");
+      alert("Error deleting product");
       console.error(err);
     }
   };

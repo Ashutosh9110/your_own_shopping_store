@@ -1,27 +1,65 @@
+// src/components/Admin/CategoryManager.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function CategoryManager() {
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState("");
+  const token = localStorage.getItem("token");
 
   const loadCategories = async () => {
-    const res = await axios.get("http://localhost:5000/api/categories");
-    setCategories(res.data);
+    try {
+      const res = await axios.get("http://localhost:5000/api/categories");
+      setCategories(res.data);
+    } catch (err) {
+      console.error("Error loading categories:", err);
+      alert("Failed to load categories.");
+    }
   };
 
   const handleAddCategory = async (e) => {
     e.preventDefault();
     if (!newCategory.trim()) return;
 
-    await axios.post("http://localhost:5000/api/categories", { name: newCategory });
-    setNewCategory("");
-    loadCategories();
+    try {
+      await axios.post(
+        "http://localhost:5000/api/categories",
+        { name: newCategory },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setNewCategory("");
+      loadCategories();
+    } catch (err) {
+      console.error("Error adding category:", err);
+      alert(err.response?.data?.message || "Failed to add category. Are you logged in as admin?");
+    }
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:5000/api/categories/${id}`);
-    loadCategories();
+    try {
+      await axios.delete(`http://localhost:5000/api/categories/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      loadCategories();
+    } catch (err) {
+      console.error("Error deleting category:", err);
+      alert("Failed to delete category. Only admin can delete.");
+    }
+  };
+
+  const handleSeedCategories = async () => {
+    try {
+      await axios.post(
+        "http://localhost:5000/api/categories/seed",
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      alert("Default categories seeded!");
+      loadCategories();
+    } catch (err) {
+      console.error("Error seeding categories:", err);
+      alert("Failed to seed categories. Make sure you are logged in as admin.");
+    }
   };
 
   useEffect(() => {
@@ -30,7 +68,15 @@ export default function CategoryManager() {
 
   return (
     <div className="bg-white p-4 rounded-xl shadow-lg mt-6">
-      <h2 className="text-xl font-bold mb-3 text-teal-700">Manage Categories</h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-bold text-teal-700">Manage Categories</h2>
+        <button
+          onClick={handleSeedCategories}
+          className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
+        >
+          Seed Default Categories
+        </button>
+      </div>
 
       <form onSubmit={handleAddCategory} className="flex gap-2 mb-4">
         <input
@@ -46,17 +92,21 @@ export default function CategoryManager() {
       </form>
 
       <ul>
-        {categories.map((cat) => (
-          <li key={cat.id} className="flex justify-between items-center border-b py-2">
-            <span>{cat.name}</span>
-            <button
-              onClick={() => handleDelete(cat.id)}
-              className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-            >
-              Delete
-            </button>
-          </li>
-        ))}
+        {categories.length > 0 ? (
+          categories.map((cat) => (
+            <li key={cat.id} className="flex justify-between items-center border-b py-2">
+              <span>{cat.name}</span>
+              <button
+                onClick={() => handleDelete(cat.id)}
+                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+              >
+                Delete
+              </button>
+            </li>
+          ))
+        ) : (
+          <p className="text-gray-500 italic">No categories yet. Try seeding some!</p>
+        )}
       </ul>
     </div>
   );

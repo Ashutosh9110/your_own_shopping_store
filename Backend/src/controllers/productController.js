@@ -3,6 +3,7 @@ import Product from "../models/Product.js";
 import Category from "../models/Category.js";
 import multer from "multer";
 import path from "path";
+import { Op } from "sequelize";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "src/uploads/"),
@@ -41,33 +42,45 @@ export const createProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
   try {
-    const { category, search } = req.query; // e.g. /api/products?category=abc&search=shirt
+    const { category, search } = req.query;
 
+    // Base filter object
     const whereClause = {};
 
-    // Filter by category
-    if (category) {
-      const foundCategory = await Category.findOne({ where: { name: category } });
-      if (foundCategory) whereClause.categoryId = foundCategory.id;
-      else return res.json([]); // no products if category doesn’t exist
-    }
-
+    // 🔹 Search filter
     if (search) {
-      whereClause.name = { [Product.sequelize.Op.iLike]: `%${search}%` };
+      whereClause.name = { [Op.iLike]: `%${search}%` };
     }
 
-    const products = await Product.findAll({
+    // 🔹 Base query config
+    const queryOptions = {
       where: whereClause,
-      include: [{ model: Category, attributes: ["id", "name"] }],
+      include: [
+        {
+          model: Category,
+          attributes: ["id", "name"],
+        },
+      ],
       order: [["createdAt", "DESC"]],
-    });
+    };
 
+    // 🔹 Category filter (via name)
+    if (category) {
+      queryOptions.include[0].where = {
+        name: { [Op.iLike]: category },
+      };
+    }
+
+    const products = await Product.findAll(queryOptions);
     res.json(products);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Error fetching products", error: err.message });
+    console.error("Error fetching products:", err);
+    res.status(500).json({ message: "Failed to fetch products" });
   }
 };
+
+
+
 
 export const getProduct = async (req, res) => {
   try {

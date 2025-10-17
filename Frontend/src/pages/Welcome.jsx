@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ShoppingBag, Shirt, Apple, Cpu, ShoppingBasket } from "lucide-react";
+import Slider from "react-slick";
+import axios from "axios";
+import { Shirt, Apple, Cpu, ShoppingBasket } from "lucide-react";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function Welcome() {
   const navigate = useNavigate();
+  const [featured, setFeatured] = useState([]);
 
   const categories = [
     {
@@ -31,6 +38,30 @@ export default function Welcome() {
 
   const handleCategoryClick = (cat) => {
     navigate(`/products?category=${cat.toLowerCase()}`);
+  };
+
+  // Fetch featured products (or first few)
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/products?limit=6")
+      .then((res) => setFeatured(res.data))
+      .catch((err) => console.error("Failed to load featured products:", err));
+  }, []);
+
+  // Carousel settings
+  const settings = {
+    dots: true,
+    infinite: true,
+    autoplay: true,
+    autoplaySpeed: 2500,
+    speed: 800,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    pauseOnHover: true,
+    responsive: [
+      { breakpoint: 1024, settings: { slidesToShow: 2 } },
+      { breakpoint: 640, settings: { slidesToShow: 1 } },
+    ],
   };
 
   return (
@@ -64,12 +95,44 @@ export default function Welcome() {
         </motion.button>
       </section>
 
+      {/* Featured Products Carousel */}
+      {featured.length > 0 && (
+        <section className="py-16 px-8 bg-white">
+          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+            Featured Products
+          </h2>
+
+          <Slider {...settings}>
+            {featured.map((p) => (
+              <motion.div
+                key={p.id}
+                whileHover={{ scale: 1.05 }}
+                className="p-4 cursor-pointer"
+                onClick={() => navigate("/products")}
+              >
+                <div className="p-4 flex justify-center">
+                  <div className="bg-gray-50 shadow-md rounded-2xl overflow-hidden hover:shadow-xl transition-all flex flex-col items-center p-4">
+                    <img
+                      src={`${BASE_URL}${p.image}`}
+                      alt={p.name}
+                      className="w-56 h-56 object-cover rounded-lg mb-3"
+                    />
+                    <h3 className="text-lg font-semibold text-gray-800 text-center">{p.name}</h3>
+                    <p className="text-teal-700 font-bold text-center">₹{p.price?.toFixed(2)}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </Slider>
+        </section>
+      )}
+
       {/* Category Shortcuts */}
       <section className="py-16 px-8 flex flex-col items-center">
         <h2 className="text-3xl font-bold text-gray-800 mb-8">Shop by Category</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 w-full max-w-6xl">
-          {categories.map((cat, idx) => (
+          {categories.map((cat) => (
             <motion.div
               key={cat.name}
               whileHover={{ scale: 1.05 }}

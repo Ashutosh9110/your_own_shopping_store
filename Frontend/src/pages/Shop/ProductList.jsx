@@ -44,7 +44,6 @@ export default function Products() {
 
   useEffect(() => {
     fetchCategories();
-    fetchProducts();
   }, []);
 
   useEffect(() => {
@@ -54,8 +53,8 @@ export default function Products() {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const category = params.get("category");
-    if (category) setSelectedCategory(category);
+    const category = params.get("category") || "";
+    setSelectedCategory(category);
   }, [location]);
 
   
@@ -87,7 +86,7 @@ export default function Products() {
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="border rounded-lg p-2"
+          className="border rounded-lg p-2 cursor-pointer"
         >
           <option value="">All Categories</option>
           {categories.map((c) => (
@@ -111,11 +110,13 @@ export default function Products() {
             key={p.id}
             className="bg-white shadow rounded-lg p-4 hover:shadow-lg transition flex flex-col"
           >
+          <div className="flex justify-center">
             <img
               src={`${BASE_URL}${p.image}`}
               alt={p.name}
-              className="w-full h-48 object-cover rounded-md mb-3"
+              className="w-48 h-36 object-cover rounded-md mb-3"
             />
+          </div>
             <h3 className="text-lg font-semibold">{p.name}</h3>
             <p className="text-gray-500">{p.Category?.name}</p>
             <p className="text-teal-700 font-bold mb-2">₹{p.price.toFixed(2)}</p>

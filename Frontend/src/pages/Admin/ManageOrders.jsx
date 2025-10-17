@@ -101,7 +101,7 @@ export default function ManageOrders() {
                 {order.OrderItems.map((item) => (
                   <div
                     key={item.id}
-                    className="flex justify-between items-center py-3 hover:bg-gray-100 rounded-lg transition"
+                    className="flex justify-between items-center py-3 hover:bg-gray-100 rounded-lg transition cursor-pointer"
                   >
                     <div className="flex items-center gap-3">
                       <img

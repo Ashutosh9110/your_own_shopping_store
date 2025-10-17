@@ -31,7 +31,7 @@ export default function Login() {
       if (role === "admin") {
         navigate("/admin");
       } else {
-        navigate("/products");
+        navigate("/");
       }
     } catch (err) {     
       console.error("Login error:", err);

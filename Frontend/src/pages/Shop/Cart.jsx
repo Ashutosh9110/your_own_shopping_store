@@ -81,19 +81,23 @@ export default function Cart() {
           </div>
 
           <div className="flex items-center gap-3">
-            <input
-              type="number"
-              value={item.quantity}
-              min="1"
-              onChange={(e) => updateCartItem(item.id, e.target.value)}
-              className="border p-1 w-16 text-center rounded"
-            />
-            <button
-              onClick={() => removeFromCart(item.id)}
-              className="text-red-500 hover:text-red-700 cursor-pointer"
-            >
-              ✕
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => updateCartItem(item.id, Math.max(1, item.quantity - 1))}
+                className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer"
+              >
+                -
+              </button>
+
+              <span>{item.quantity}</span>
+
+              <button
+                onClick={() => updateCartItem(item.id, item.quantity + 1)}
+                className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer"
+              >
+                +
+              </button>
+            </div>
           </div>
         </div>
       ))}

@@ -55,7 +55,7 @@ export default function Welcome() {
     autoplay: true,
     autoplaySpeed: 2500,
     speed: 800,
-    slidesToShow: 3,
+    slidesToShow: 5,
     slidesToScroll: 1,
     pauseOnHover: true,
     responsive: [
@@ -111,19 +111,22 @@ export default function Welcome() {
                 onClick={() => navigate("/products")}
               >
                 <div className="p-4 flex justify-center">
-                  <div className="bg-gray-50 shadow-md rounded-2xl overflow-hidden hover:shadow-xl transition-all flex flex-col items-center p-4">
+                  <div className="bg-gray-50 shadow-md rounded-2xl overflow-hidden hover:shadow-xl transition-all flex flex-col items-center p-4 w-64 h-[360px] justify-between">
                     <img
                       src={`${BASE_URL}${p.image}`}
                       alt={p.name}
-                      className="w-56 h-56 object-cover rounded-lg mb-3"
+                      className="w-48 h-48 object-cover rounded-lg mb-3"
                     />
-                    <h3 className="text-lg font-semibold text-gray-800 text-center">{p.name}</h3>
-                    <p className="text-teal-700 font-bold text-center">₹{p.price?.toFixed(2)}</p>
+                    <div className="flex flex-col items-center flex-grow justify-center text-center">
+                      <h3 className="text-lg font-semibold text-gray-800">{p.name}</h3>
+                      <p className="text-teal-700 font-bold mt-1">₹{p.price?.toFixed(2)}</p>
+                    </div>
                   </div>
                 </div>
               </motion.div>
             ))}
           </Slider>
+
         </section>
       )}
 

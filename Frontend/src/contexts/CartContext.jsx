@@ -17,7 +17,10 @@ export function CartProvider({ children }) {
   async function fetchCart() {
     if (!token) return;
     const res = await api.get("/cart");
-    setCart(res.data?.CartItems || []);
+    const items = res.data?.CartItems || [];
+
+    const sorted = [...items].sort((a, b) => a.id - b.id);
+    setCart(sorted);
   }
 
   async function addToCart(productId, quantity = 1) {

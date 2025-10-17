@@ -1,35 +1,56 @@
-// src/pages/Admin/Dashboard.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AddProduct from "../../components/Admin/AddProduct";
 import EditProduct from "../../components/Admin/EditProduct";
 import { motion } from "framer-motion";
-const BASE_URL = import.meta.env.VITE_API_BASE_URL
+
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function Dashboard() {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [editingProduct, setEditingProduct] = useState(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const navigate = useNavigate();
 
+  // Load products (with optional filter)
   const loadProducts = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/products");
+      const params = {};
+      if (selectedCategory) params.category = selectedCategory;
+
+      const res = await axios.get("http://localhost:5000/api/products", { params });
       setProducts(res.data);
     } catch (err) {
       console.error("Error loading products:", err);
     }
   };
+
+  // Load categories
+  const loadCategories = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/categories");
+      setCategories(res.data);
+    } catch (err) {
+      console.error("Error loading categories:", err);
+    }
+  };
+
   useEffect(() => {
-    loadProducts(); 
+    loadCategories();
   }, []);
 
+  useEffect(() => {
+    loadProducts();
+  }, [selectedCategory]);
 
+  // Delete a product
   const handleDelete = async (productId) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
     try {
-      const token = localStorage.getItem("token")
+      const token = localStorage.getItem("token");
       await axios.delete(`http://localhost:5000/api/products/${productId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -45,10 +66,10 @@ export default function Dashboard() {
     }
   };
 
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-200 via-teal-100 to-green-100 p-6">
-      <div className="flex justify-between items-center mb-8">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
         <h1 className="text-4xl font-extrabold text-teal-800 drop-shadow">
           🌿 Admin Dashboard
         </h1>
@@ -70,24 +91,40 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* Filter Section */}
+      <div className="flex flex-wrap justify-center mb-8 gap-4">
+        <select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          className="border border-gray-300 rounded-lg p-2 shadow-sm cursor-pointer bg-white"
+        >
+          <option value="">All Categories</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.name}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
       {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {products.map((p) => (
           <motion.div
             key={p.id}
             whileHover={{ scale: 1.03 }}
-            className="bg-white/80 backdrop-blur-md shadow-xl rounded-2xl p-4 transition-all border border-teal-100"
+            className="bg-white/80 backdrop-blur-md shadow-xl rounded-2xl p-4 transition-all border border-teal-100 flex flex-col items-center text-center"
           >
             <img
               src={`${BASE_URL}${p.image}`}
               alt={p.name}
-              className="h-48 w-full object-cover rounded-xl mb-4"
+              className="h-36 w-56 object-cover rounded-xl mb-4 mx-auto"
             />
             <h3 className="font-bold text-lg text-teal-800">{p.name}</h3>
             <p className="text-gray-600 mb-1">₹{p.price}</p>
             <p className="text-sm text-gray-500 mb-3">Stock: {p.quantity}</p>
 
-            <div className="flex gap-3">
+            <div className="flex justify-center gap-3 mt-auto">
               <button
                 onClick={() => setEditingProduct(p)}
                 className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition cursor-pointer"

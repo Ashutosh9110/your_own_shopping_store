@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import AddProduct from "../../components/Admin/AddProduct";
 import EditProduct from "../../components/Admin/EditProduct";
 import { motion } from "framer-motion";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 export default function Dashboard() {
   const [products, setProducts] = useState([]);
@@ -20,21 +21,30 @@ export default function Dashboard() {
       console.error("Error loading products:", err);
     }
   };
-
   useEffect(() => {
-    loadProducts();
+    loadProducts(); 
   }, []);
+
 
   const handleDelete = async (productId) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/products/${productId}`);
+      const token = localStorage.getItem("token")
+      await axios.delete(`http://localhost:5000/api/products/${productId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       loadProducts();
+      alert("Product deleted successfully!");
     } catch (err) {
-      alert("Error deleting product");
+      if (err.response?.status === 401) {
+        alert("Unauthorized. Please log in as admin.");
+      } else {
+        alert("Error deleting product");
+      }
       console.error(err);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-200 via-teal-100 to-green-100 p-6">
@@ -69,7 +79,7 @@ export default function Dashboard() {
             className="bg-white/80 backdrop-blur-md shadow-xl rounded-2xl p-4 transition-all border border-teal-100"
           >
             <img
-              src={p.image}
+              src={`${BASE_URL}${p.image}`}
               alt={p.name}
               className="h-48 w-full object-cover rounded-xl mb-4"
             />
@@ -80,13 +90,13 @@ export default function Dashboard() {
             <div className="flex gap-3">
               <button
                 onClick={() => setEditingProduct(p)}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition cursor-pointer"
               >
                 Edit
               </button>
               <button
                 onClick={() => handleDelete(p.id)}
-                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition cursor-pointer"
               >
                 Delete
               </button>

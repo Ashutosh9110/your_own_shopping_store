@@ -1,30 +1,12 @@
+// src/routes/paymentRoutes.js
 import express from "express";
-import Razorpay from "razorpay";
-import dotenv from "dotenv";
+import { createOrder, verifyPayment } from "../controllers/paymentController.js";
+import { verifyToken } from "../middleware/authMiddleware.js";
 
-dotenv.config();
 const router = express.Router();
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
-
-// ✅ Create order for Razorpay payment
-router.post("/create-order", async (req, res) => {
-  try {
-    const { amount } = req.body;
-    const options = {
-      amount: amount * 100, // convert to paise
-      currency: "INR",
-      receipt: `receipt_${Date.now()}`,
-    };
-    const order = await razorpay.orders.create(options);
-    res.json(order);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Payment order creation failed" });
-  }
-});
+// User must be logged in to initiate payment
+router.post("/create-order", verifyToken, createOrder);
+router.post("/verify", verifyToken, verifyPayment);
 
 export default router;

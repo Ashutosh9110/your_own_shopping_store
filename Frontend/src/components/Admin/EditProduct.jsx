@@ -4,7 +4,7 @@ import axios from "axios";
 
 export default function EditProduct({ product, onClose }) {
   const [updated, setUpdated] = useState(product);
-  const idToken = localStorage.getItem("idToken");
+  const token = localStorage.getItem("token");
 
   const handleSave = async (e) => {
     e.preventDefault();

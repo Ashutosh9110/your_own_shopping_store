@@ -4,6 +4,8 @@ import axios from "axios";
 import { AuthContext } from "../../contexts/AuthContext";
 import { CartContext } from "../../contexts/CartContext";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -15,6 +17,8 @@ export default function Products() {
   const { user, token } = useContext(AuthContext);
   const { addToCart } = useContext(CartContext);
   const navigate = useNavigate();
+  const location = useLocation();
+
 
   const fetchProducts = async () => {
     try {
@@ -47,6 +51,12 @@ export default function Products() {
     const timeout = setTimeout(() => fetchProducts(), 400);
     return () => clearTimeout(timeout);
   }, [selectedCategory, search]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const category = params.get("category");
+    if (category) setSelectedCategory(category);
+  }, [location]);
 
   
   const handleAddToCart = async (productId) => {
@@ -102,18 +112,18 @@ export default function Products() {
             className="bg-white shadow rounded-lg p-4 hover:shadow-lg transition flex flex-col"
           >
             <img
-              src={`http://localhost:5000${p.image}`}
+              src={`${BASE_URL}${p.image}`}
               alt={p.name}
               className="w-full h-48 object-cover rounded-md mb-3"
             />
             <h3 className="text-lg font-semibold">{p.name}</h3>
             <p className="text-gray-500">{p.Category?.name}</p>
-            <p className="text-teal-700 font-bold mb-2">${p.price.toFixed(2)}</p>
+            <p className="text-teal-700 font-bold mb-2">₹{p.price.toFixed(2)}</p>
 
             <button
               onClick={() => handleAddToCart(p.id)}
               disabled={addingProductId === p.id}
-              className="mt-auto bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 transition disabled:opacity-50"
+              className="mt-auto bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 transition disabled:opacity-50 cursor-pointer"
             >
               {addingProductId === p.id ? "Adding..." : "Add to Cart"}
             </button>

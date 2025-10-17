@@ -11,12 +11,13 @@ const storage = multer.diskStorage({
     cb(null, file.fieldname + "-" + uniqueSuffix);
   },
 });
+
 export const upload = multer({ storage });
 
 export const createProduct = async (req, res) => {
   try {
     const { name, price, quantity, categoryId } = req.body;
-    const image = req.file ? `/uploads/${req.file.filename}` : null;
+    const imagePath = req.file ? req.file.filename : null;
 
     if (!name || !price || !categoryId)
       return res.status(400).json({ message: "Missing required fields" });
@@ -24,14 +25,14 @@ export const createProduct = async (req, res) => {
     const category = await Category.findByPk(categoryId);
     if (!category) return res.status(404).json({ message: "Category not found" });
 
-    const product = await Product.create({
+    const newProduct  = await Product.create({
       name,
       price,
       quantity,
-      image,
+      image: imagePath,
       categoryId,
     });
-    res.status(201).json({ message: "Product created", product });
+    res.status(201).json({ message: "Product created", newProduct  });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to create product", error: err.message });

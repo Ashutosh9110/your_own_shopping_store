@@ -55,7 +55,7 @@ export default function ManageOrders() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-teal-50 p-8">
       <h1 className="text-4xl font-bold text-teal-700 mb-8 text-center">
-        📦 Manage Orders
+        📦  Manage Orders
       </h1>
 
       {orders.length === 0 ? (
@@ -86,40 +86,38 @@ export default function ManageOrders() {
                 <select
                   value={order.status}
                   onChange={(e) => updateStatus(order.id, e.target.value)}
-                  className="border rounded-lg p-2 text-sm font-medium text-gray-700"
+                  className="border border-teal-500 rounded-lg p-2 text-sm font-medium text-gray-700 cursor-pointer"
                 >
-                  <option value="Pending">Pending</option>
-                  <option value="Processing">Processing</option>
-                  <option value="Shipped">Shipped</option>
-                  <option value="Delivered">Delivered</option>
-                  <option value="Cancelled">Cancelled</option>
+                  <option value="PENDING">Pending</option>
+                  <option value="PROCESSING">Processing</option>
+                  <option value="SHIPPED">Shipped</option>
+                  <option value="DELIVERED">Delivered</option>
+                  <option value="CANCELLED">Cancelled</option>
                 </select>
               </div>
 
               {/* Items */}
-              <div className="divide-y border-t mt-4">
+              <div className="divide-y border-t mt-4 bg-gray-50 rounded-lg p-3">
                 {order.OrderItems.map((item) => (
                   <div
                     key={item.id}
-                    className="flex justify-between items-center py-3"
+                    className="flex justify-between items-center py-3 hover:bg-gray-100 rounded-lg transition"
                   >
                     <div className="flex items-center gap-3">
                       <img
                         src={`http://localhost:5000${item.Product.image}`}
                         alt={item.Product.name}
-                        className="w-14 h-14 object-cover rounded-md"
+                        className="w-16 h-16 object-cover rounded-md shadow"
                       />
                       <div>
-                        <p className="font-medium text-gray-800">
-                          {item.Product.name}
-                        </p>
+                        <p className="font-medium text-gray-800">{item.Product.name}</p>
                         <p className="text-sm text-gray-500">
-                          {item.quantity} × ${item.price.toFixed(2)}
+                          {item.quantity} × ₹{item.price.toFixed(2)}
                         </p>
                       </div>
                     </div>
                     <p className="font-semibold text-teal-700">
-                      ${(item.price * item.quantity).toFixed(2)}
+                      ₹{(item.price * item.quantity).toFixed(2)}
                     </p>
                   </div>
                 ))}
@@ -132,7 +130,7 @@ export default function ManageOrders() {
                   {order.address}
                 </p>
                 <p className="text-lg font-bold text-teal-700">
-                  Total: ${order.totalAmount.toFixed(2)}
+                  Total: ₹{order.totalAmount.toFixed(2)}
                 </p>
               </div>
             </motion.div>

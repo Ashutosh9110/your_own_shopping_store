@@ -1,0 +1,2 @@
+
+there is no update product section available in the frontend. There is backend code and routes for that. Not done

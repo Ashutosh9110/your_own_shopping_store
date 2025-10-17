@@ -13,7 +13,6 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Read role from URL query (e.g., /login?role=admin)
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const paramRole = params.get("role");

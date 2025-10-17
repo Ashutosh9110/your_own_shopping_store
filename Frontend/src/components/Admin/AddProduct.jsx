@@ -12,15 +12,13 @@ export default function AddProduct({ onSuccess }) {
   });
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [seeding, setSeeding] = useState(false);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/categories", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+        const res = await axios.get("http://localhost:5000/api/categories");
         setCategories(res.data);
       } catch (err) {
         console.error("Error fetching categories:", err);
@@ -30,6 +28,32 @@ export default function AddProduct({ onSuccess }) {
 
     fetchCategories();
   }, []);
+
+
+  const handleSeedCategories = async () => {
+    try {
+      setSeeding(true);
+      await axios.post(
+        "http://localhost:5000/api/categories/seed",
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      const res = await axios.get("http://localhost:5000/api/categories");
+      setCategories(res.data);
+      alert("Default categories seeded!");
+    } catch (err) {
+      console.error("Error seeding categories:", err);
+      alert(
+        err.response?.data?.message ||
+          "Failed to seed categories. Make sure you are logged in as admin."
+      );
+    } finally {
+      setSeeding(false);
+    }
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,6 +90,21 @@ export default function AddProduct({ onSuccess }) {
 
       {/* Category dropdown */}
       <label className="block mb-2 font-medium">Category</label>
+      {categories.length === 0 && (
+        <div className="flex items-center justify-between bg-yellow-50 border border-yellow-200 text-yellow-800 rounded p-2 mb-2">
+          <span>No categories found.</span>
+          <button
+            type="button"
+            onClick={handleSeedCategories}
+            disabled={seeding}
+            className={`ml-3 px-3 py-1 rounded text-white ${
+              seeding ? "bg-yellow-400" : "bg-yellow-600 hover:bg-yellow-700"
+            }`}
+          >
+            {seeding ? "Seeding..." : "Seed defaults"}
+          </button>
+        </div>
+      )}
       <select
         className="border p-2 w-full mb-4 rounded"
         value={product.categoryId}
@@ -119,7 +158,7 @@ export default function AddProduct({ onSuccess }) {
 
       <button
         disabled={loading}
-        className={`w-full bg-teal-600 text-white py-2 rounded hover:bg-teal-700 ${
+        className={`w-full bg-teal-600 text-white py-2 rounded cursor-pointer hover:bg-teal-700 ${
           loading ? "opacity-70 cursor-not-allowed" : ""
         }`}
       >

@@ -2,12 +2,14 @@ import React, { useContext, useState } from "react";
 import { CartContext } from "../../contexts/CartContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
   const { cart, updateCartItem, removeFromCart, fetchCart } = useContext(CartContext);
   const { token } = useContext(AuthContext);
   const [address, setAddress] = useState("");
   const [placingOrder, setPlacingOrder] = useState(false);
+  const navigate = useNavigate();
 
   const api = axios.create({
     baseURL: "http://localhost:5000/api",
@@ -33,15 +35,16 @@ export default function Cart() {
       }));
 
       const res = await api.post("/orders", { cartItems, address });
+          alert("Order placed successfully!");
+          console.log("Order response:", res.data);
 
-      alert("✅ Order placed successfully!");
-      console.log("Order response:", res.data);
-
-      await fetchCart(); // Refresh or clear the cart after order
+      await fetchCart(); 
       setAddress("");
+      navigate("/checkout");
+      
     } catch (err) {
       console.error("Order failed:", err);
-      alert(err.response?.data?.message || "❌ Failed to place order");
+      alert(err.response?.data?.message || "Failed to place order");
     } finally {
       setPlacingOrder(false);
     }
@@ -73,7 +76,7 @@ export default function Cart() {
             />
             <div>
               <p className="font-semibold">{item.Product.name}</p>
-              <p className="text-gray-600">${item.Product.price.toFixed(2)}</p>
+              <p className="text-gray-600">₹{item.Product.price.toFixed(2)}</p>
             </div>
           </div>
 
@@ -87,7 +90,7 @@ export default function Cart() {
             />
             <button
               onClick={() => removeFromCart(item.id)}
-              className="text-red-500 hover:text-red-700"
+              className="text-red-500 hover:text-red-700 cursor-pointer"
             >
               ✕
             </button>
@@ -97,7 +100,7 @@ export default function Cart() {
 
       <div className="mt-6 border-t pt-4">
         <h3 className="text-xl font-semibold mb-4">
-          Total: <span className="text-teal-700">${total.toFixed(2)}</span>
+          Total: <span className="text-teal-700">₹{total.toFixed(2)}</span>
         </h3>
 
         <div className="mb-4">

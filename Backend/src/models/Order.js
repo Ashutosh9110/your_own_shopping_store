@@ -14,10 +14,6 @@ export const Order = sequelize.define("Order", {
     type: DataTypes.UUID,
     allowNull: false,
   },
-  status: {
-    type: DataTypes.ENUM("Pending", "Processing", "Shipped", "Delivered", "Cancelled"),
-    defaultValue: "Pending",
-  },
   totalAmount: {
     type: DataTypes.FLOAT,
     allowNull: false,
@@ -35,8 +31,8 @@ export const Order = sequelize.define("Order", {
     defaultValue: "PENDING",
   },
   status: {
-    type: DataTypes.ENUM("PLACED", "SHIPPED", "DELIVERED", "CANCELLED"),
-    defaultValue: "PLACED",
+    type: DataTypes.ENUM("PENDING", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"),
+    defaultValue: "PENDING",
   },
 });
 

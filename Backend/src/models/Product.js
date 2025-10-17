@@ -25,6 +25,8 @@ const Product = sequelize.define("Product", {
   },
 });
 
+console.log(await Product.findAll({ attributes: ["image"] }));
+
 // Association: one category → many products
 Category.hasMany(Product, { foreignKey: "categoryId", onDelete: "CASCADE" });
 Product.belongsTo(Category, { foreignKey: "categoryId" });

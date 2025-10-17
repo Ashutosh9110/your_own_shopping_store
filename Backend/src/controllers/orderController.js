@@ -31,7 +31,9 @@ export const placeOrder = async (req, res) => {
       userId,
       totalAmount,
       address,
-      status: "pending",
+      status: "PENDING",
+      paymentMethod: "COD",     
+      paymentStatus: "PENDING", 
     });
 
     // Create order items + update stock
@@ -68,7 +70,7 @@ export const getAllOrders = async (req, res) => {
       include: [
         {
           model: OrderItem,
-          include: [{ model: Product, attributes: ["name", "price"] }],
+          include: [{ model: Product, attributes: ["name", "price", "image"] }],
         },
       ],
       order: [["createdAt", "DESC"]],
@@ -123,14 +125,23 @@ export const getOrderById = async (req, res) => {
 export const updateOrderStatus = async (req, res) => {
   try {
     const { status } = req.body;
-    const order = await Order.findByPk(req.params.id);
+    const orderId = req.params.id;
+
+    const order = await Order.findByPk(orderId);
     if (!order) return res.status(404).json({ message: "Order not found" });
 
     order.status = status;
     await order.save();
 
-    res.json({ message: "Order status updated", order });
+    return res.status(200).json({
+      message: "Order status updated successfully",
+      order,
+    });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Error updating order status:", err);
+    res.status(500).json({
+      message: "Failed to update order status",
+      error: err.message,
+    });
   }
 };

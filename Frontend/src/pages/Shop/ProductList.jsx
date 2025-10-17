@@ -5,6 +5,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { CartContext } from "../../contexts/CartContext";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 export default function Products() {
@@ -68,6 +69,12 @@ export default function Products() {
     try {
       setAddingProductId(productId);
       await addToCart(productId, 1);
+        setProducts((prev) =>
+          prev.map((p) =>
+            p.id === productId ? { ...p, quantity: p.quantity - 1 } : p
+          )
+        );
+      // await fetchProducts()
       alert("Product added to cart!");
     } catch (err) {
       console.error("Error adding to cart:", err);
@@ -120,13 +127,29 @@ export default function Products() {
             <h3 className="text-lg font-semibold">{p.name}</h3>
             <p className="text-gray-500">{p.Category?.name}</p>
             <p className="text-teal-700 font-bold mb-2">₹{p.price.toFixed(2)}</p>
-
+            {p.quantity > 0 ? (
+              <p className="text-sm text-gray-500 mb-3">
+                Stock: {p.quantity}
+              </p>
+            ) : (
+              <p className="text-sm text-red-600 font-semibold mb-3">
+                Out of Stock
+              </p>
+            )}
             <button
               onClick={() => handleAddToCart(p.id)}
-              disabled={addingProductId === p.id}
-              className="mt-auto bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 transition disabled:opacity-50 cursor-pointer"
+              disabled={addingProductId === p.id || p.quantity < 1}
+              className={`mt-auto py-2 rounded-lg w-full font-semibold transition cursor-pointer ${
+                p.quantity < 1
+                  ? "bg-gray-400 text-white cursor-not-allowed"
+                  : "bg-teal-600 text-white hover:bg-teal-700"
+              } ${addingProductId === p.id ? "opacity-70" : ""}`}
             >
-              {addingProductId === p.id ? "Adding..." : "Add to Cart"}
+              {p.quantity < 1
+                ? "Out of Stock"
+                : addingProductId === p.id
+                ? "Adding..."
+                : "Add to Cart"}
             </button>
           </div>
         ))}

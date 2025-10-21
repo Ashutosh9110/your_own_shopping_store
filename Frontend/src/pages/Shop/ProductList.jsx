@@ -93,10 +93,7 @@ export default function Products() {
       <div className="flex gap-6">
         {/* 🧭 LEFT SIDEBAR */}
         <aside className="hidden lg:block w-72">
-          <SidebarCategories  onCategorySelect={(categoryName) => {
-            setSelectedCategory(categoryName)
-            setSearch("")
-          }} />  
+          <SidebarCategories />  
         </aside>
 
         {/* 🛍️ RIGHT CONTENT AREA */}

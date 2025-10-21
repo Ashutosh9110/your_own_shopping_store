@@ -102,9 +102,9 @@ export default function SidebarCategories({ onCategorySelect }) {
               {/* Category Header */}
               <button
                 onClick={() => handleCategoryClick(cat)}
-                className="flex items-center justify-between w-full text-left px-2 py-2 hover:bg-gray-50 rounded-md"
+                className="flex items-center justify-between w-full text-left px-2 py-2 hover:bg-gray-50 rounded-md cursor-pointer"
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 cursor-pointer">
                   {iconMap[cat.name] || (
                     <Handbag className="w-5 h-5 text-gray-600" />
                   )}
@@ -114,9 +114,9 @@ export default function SidebarCategories({ onCategorySelect }) {
                 </div>
 
                 {openCategory === cat.id ? (
-                  <ChevronDown className="w-4 h-4 text-gray-600" />
+                  <ChevronDown className="w-4 h-4 text-gray-600 cursor-pointer" />
                 ) : (
-                  <ChevronRight className="w-4 h-4 text-gray-600" />
+                  <ChevronRight className="w-4 h-4 text-gray-600 cursor-pointer" />
                 )}
               </button>
 
@@ -143,7 +143,7 @@ export default function SidebarCategories({ onCategorySelect }) {
                     ))
                   ) : (
                     <li className="text-gray-400 text-sm italic px-2">
-                      No products found
+                      {/* No products found */}
                     </li>
                   )}
                 </ul>

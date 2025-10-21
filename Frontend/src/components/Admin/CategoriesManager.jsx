@@ -22,7 +22,7 @@ export default function CategoryManager() {
     if (!newCategory.trim()) return;
 
     try {
-      await axios.post(
+      await axios.post(00000000
         "http://localhost:5000/api/categories",
         { name: newCategory },
         {

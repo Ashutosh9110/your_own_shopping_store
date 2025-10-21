@@ -35,13 +35,12 @@ export default function Cart() {
       }));
 
       const res = await api.post("/orders", { cartItems, address });
-          alert("Order placed successfully!");
-          console.log("Order response:", res.data);
+      alert("Order placed successfully!");
+      console.log("Order response:", res.data);
 
-      await fetchCart(); 
+      await fetchCart();
       setAddress("");
       navigate("/checkout");
-      
     } catch (err) {
       console.error("Order failed:", err);
       alert(err.response?.data?.message || "Failed to place order");
@@ -61,13 +60,16 @@ export default function Cart() {
 
   return (
     <div className="max-w-4xl mx-auto mt-10 bg-white shadow-lg p-6 rounded-lg">
-      <h2 className="text-3xl font-bold mb-6 text-center text-teal-700">Your Cart</h2>
+      <h2 className="text-3xl font-bold mb-6 text-center text-teal-700">
+        Your Cart
+      </h2>
 
       {cart.map((item) => (
         <div
           key={item.id}
           className="flex justify-between items-center border-b py-4"
         >
+          {/* Product Info */}
           <div className="flex items-center gap-4">
             <img
               src={`http://localhost:5000${item.Product.image}`}
@@ -80,10 +82,13 @@ export default function Cart() {
             </div>
           </div>
 
+          {/* Quantity + Delete */}
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
               <button
-                onClick={() => updateCartItem(item.id, Math.max(1, item.quantity - 1))}
+                onClick={() =>
+                  updateCartItem(item.id, Math.max(1, item.quantity - 1))
+                }
                 className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer"
               >
                 -
@@ -98,6 +103,13 @@ export default function Cart() {
                 +
               </button>
             </div>
+
+            <button
+              onClick={() => removeFromCart(item.id)}
+              className="ml-3 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition cursor-pointer"
+            >
+              Delete
+            </button>
           </div>
         </div>
       ))}

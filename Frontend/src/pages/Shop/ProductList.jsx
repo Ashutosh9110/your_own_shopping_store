@@ -3,8 +3,8 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../contexts/AuthContext";
 import { CartContext } from "../../contexts/CartContext";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import SidebarCategories from "../../components/SidebarCategories"; 
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
@@ -46,6 +46,7 @@ export default function Products() {
   useEffect(() => {
     fetchCategories();
   }, []);
+  
 
   useEffect(() => {
     const timeout = setTimeout(() => fetchProducts(), 400);
@@ -88,6 +89,18 @@ export default function Products() {
     <div className="min-h-screen bg-gray-100 py-10 px-6">
       <h2 className="text-3xl font-bold mb-6 text-center text-teal-700">Browse Products</h2>
 
+
+      <div className="flex gap-6">
+        {/* 🧭 LEFT SIDEBAR */}
+        <aside className="hidden lg:block w-72">
+          <SidebarCategories  onCategorySelect={(categoryName) => {
+            setSelectedCategory(categoryName)
+            setSearch("")
+          }} />  
+        </aside>
+
+        {/* 🛍️ RIGHT CONTENT AREA */}
+        <main className="flex-1">
       {/* Filters */}
       <div className="flex flex-wrap justify-center mb-8 gap-4">
         <select
@@ -153,6 +166,8 @@ export default function Products() {
             </button>
           </div>
         ))}
+        </div>
+        </main>
       </div>
     </div>
   );

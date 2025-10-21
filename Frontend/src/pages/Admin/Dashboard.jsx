@@ -73,22 +73,6 @@ export default function Dashboard() {
         <h1 className="text-4xl font-extrabold text-teal-800 drop-shadow">
           🌿 Admin Dashboard
         </h1>
-
-        <div className="flex gap-3">
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="bg-teal-600 hover:bg-teal-700 text-white px-5 py-2 rounded-xl shadow-md transition-all"
-          >
-            + Add Product
-          </button>
-
-          <button
-            onClick={() => navigate("/admin/orders")}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl shadow-md transition-all"
-          >
-            Manage Orders
-          </button>
-        </div>
       </div>
 
       {/* Filter Section */}

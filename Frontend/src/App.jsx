@@ -32,15 +32,12 @@ function App() {
             <Route path="/register" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
-
             {/* User routes (protected) */}
-            <Route path="/products"
-              element={ <ProtectedRoute> <ProductList /> </ProtectedRoute> } />
+            <Route path="/products" element={ <ProtectedRoute> <ProductList /> </ProtectedRoute> } />
             <Route path="/cart"  element={ <ProtectedRoute> <Cart /> </ProtectedRoute> } />
             <Route path="/orders" element={ <ProtectedRoute> <Orders /> </ProtectedRoute> } />
             <Route path="/profile" element={ <ProtectedRoute> <Profile /> </ProtectedRoute> } />
             <Route path="/checkout" element={ <ProtectedRoute> <Checkout /> </ProtectedRoute> } />
-
             {/* Admin routes (admin-only) */}
             <Route path="/admin" element={ <AdminRoute> <Dashboard /> </AdminRoute> } />
             <Route path="/admin/add-product" element={ <AdminRoute> <AddProduct /> </AdminRoute> } />

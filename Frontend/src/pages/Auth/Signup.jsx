@@ -33,10 +33,10 @@ export default function Signup() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-teal-100 to-green-200">
+    <div className="flex justify-center items-center min-h-screen">
       <form
         onSubmit={handleSignup}
-        className="bg-white p-8 rounded-2xl shadow-lg w-96"
+        className="p-8 rounded-2xl shadow-lg w-96"
       >
         <h2 className="text-3xl font-bold mb-6 text-center text-teal-700">
           Create Account
@@ -71,7 +71,7 @@ export default function Signup() {
 
         <button
           disabled={loading}
-          className="w-full bg-teal-600 text-white py-3 rounded-lg hover:bg-teal-800 transition-all cursor-pointer"
+          className="w-full bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-800 transition-all cursor-pointer"
         >
           {loading ? "Creating..." : "Sign Up"}
         </button>
@@ -79,7 +79,7 @@ export default function Signup() {
         <button
           type="button"
           onClick={() => navigate("/login")}
-          className="w-full bg-teal-600 text-white py-2 mt-2 rounded hover:bg-teal-800 cursor-pointer"
+          className="w-full bg-teal-600 text-white py-2 mt-4 rounded hover:bg-teal-800 cursor-pointer"
         >
           Already have an account? Log In
         </button>

@@ -8,10 +8,12 @@
 }
 
 body {
-  @apply bg-gray-50 text-gray-800 antialiased;
+  background-color: rgb(206, 59, 59); /* #ce3b3b */
+  color: #222; /* for readable text */
   font-family: var(--font-body);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
@@ -56,3 +58,11 @@ html {
   @apply border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none;
 }
 
+.outlined-heading {
+  font-weight: 900;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #fff;
+  font-family: 'Nunito', sans-serif;
+  letter-spacing: 0.2em;
+}

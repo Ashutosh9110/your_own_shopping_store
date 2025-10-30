@@ -86,17 +86,17 @@ export default function Products() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-6">
+    <div className="min-h-screen py-10 px-6">
       <h2 className="text-3xl font-bold mb-6 text-center text-teal-700">Browse Products</h2>
 
 
       <div className="flex gap-6">
-        {/* 🧭 LEFT SIDEBAR */}
+        {/* LEFT SIDEBAR */}
         <aside className="hidden lg:block w-72">
           <SidebarCategories />  
         </aside>
 
-        {/* 🛍️ RIGHT CONTENT AREA */}
+        {/* RIGHT CONTENT AREA */}
         <main className="flex-1">
       {/* Filters */}
       <div className="flex flex-wrap justify-center mb-8 gap-4">

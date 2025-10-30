@@ -42,8 +42,8 @@ export default function Login() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-teal-100 to-green-200">
-      <form onSubmit={handleLogin} className="bg-white p-8 rounded-xl shadow-lg w-96">
+    <div className="flex justify-center items-center min-h-screen ">
+      <form onSubmit={handleLogin} className="p-8 rounded-xl w-96">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
           {role === "admin" ? "Admin Login" : "User Login"}
         </h2>
@@ -67,7 +67,7 @@ export default function Login() {
         />
 
         <select
-          className="border p-3 w-full mb-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400"
+          className="border p-3 w-full mb-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400 cursor-pointer"
           value={role}
           onChange={(e) => setRole(e.target.value)}
         >

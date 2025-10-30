@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Slider from "react-slick";
-import axios from "axios";
 import SidebarCategories from "../components/SidebarCategories";
 import { Shirt, Apple, Cpu, ShoppingBasket } from "lucide-react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import API from "../api/api";
+
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -43,8 +44,8 @@ export default function Welcome() {
 
   // Fetch featured products (or first few)
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/api/products?limit=6")
+    API
+      .get("/api/products?limit=6")
       .then((res) => setFeatured(res.data))
       .catch((err) => console.error("Failed to load featured products:", err));
   }, []);

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AddProduct from "../../components/Admin/AddProduct";
 import EditProduct from "../../components/Admin/EditProduct";
 import { motion } from "framer-motion";
+import API from "../api/api";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -21,7 +21,7 @@ export default function Dashboard() {
       const params = {};
       if (selectedCategory) params.category = selectedCategory;
 
-      const res = await axios.get("http://localhost:5000/api/products", { params });
+      const res = await API.get("/api/products", { params });
       setProducts(res.data);
     } catch (err) {
       console.error("Error loading products:", err);
@@ -31,7 +31,7 @@ export default function Dashboard() {
   // Load categories
   const loadCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/categories");
+      const res = await API.get("/api/categories");
       setCategories(res.data);
     } catch (err) {
       console.error("Error loading categories:", err);
@@ -51,7 +51,7 @@ export default function Dashboard() {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/api/products/${productId}`, {
+      await API.delete(`/api/products/${productId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       loadProducts();

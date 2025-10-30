@@ -1,7 +1,7 @@
 // src/contexts/AuthContext.jsx
 import React, { createContext, useState, useEffect, useContext } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import API from "../api/api";
 
 export const AuthContext = createContext();
 
@@ -11,8 +11,8 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const api = axios.create({
-    baseURL: "http://localhost:5000/api",
+  const api = API.create({
+    baseURL: "/api",
   });
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export function AuthProvider({ children }) {
         const parsedUser = JSON.parse(savedUser);
         setUser(parsedUser);
         setToken(savedToken);
-        axios.defaults.headers.common["Authorization"] = `Bearer ${savedToken}`;
+        API.defaults.headers.common["Authorization"] = `Bearer ${savedToken}`;
       } catch (err) {
         console.error("Invalid user data in localStorage", err);
         localStorage.removeItem("user");
@@ -49,7 +49,7 @@ export function AuthProvider({ children }) {
     localStorage.setItem("user", JSON.stringify(finalUser));
     localStorage.setItem("role", finalUser.role);
   
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    API.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }
   
 
@@ -64,7 +64,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("role");
-    delete axios.defaults.headers.common["Authorization"];
+    delete API.defaults.headers.common["Authorization"];
     navigate("/login");
   }
 

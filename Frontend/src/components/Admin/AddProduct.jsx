@@ -1,6 +1,6 @@
 // src/components/Admin/AddProduct.jsx
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import API from "../api/api";
 
 export default function AddProduct({ onSuccess }) {
   const [product, setProduct] = useState({
@@ -18,7 +18,7 @@ export default function AddProduct({ onSuccess }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/categories");
+        const res = await API.get("/api/categories");
         setCategories(res.data);
       } catch (err) {
         console.error("Error fetching categories:", err);
@@ -33,14 +33,14 @@ export default function AddProduct({ onSuccess }) {
   const handleSeedCategories = async () => {
     try {
       setSeeding(true);
-      await axios.post(
-        "http://localhost:5000/api/categories/seed",
+      await API.post(
+        "/api/categories/seed",
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      const res = await axios.get("http://localhost:5000/api/categories");
+      const res = await API.get("/api/categories");
       setCategories(res.data);
       alert("Default categories seeded!");
     } catch (err) {
@@ -66,7 +66,7 @@ export default function AddProduct({ onSuccess }) {
       formData.append("quantity", product.quantity);
       if (product.imageFile) formData.append("image", product.imageFile);
 
-      await axios.post("http://localhost:5000/api/products", formData, {
+      await API.post("/api/products", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

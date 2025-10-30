@@ -1,6 +1,6 @@
 // src/pages/Orders.jsx
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
+import API from "../api/api";
 import { AuthContext } from "../../contexts/AuthContext";
 
 export default function Orders() {
@@ -13,7 +13,7 @@ export default function Orders() {
       if (!token) return;
       setLoading(true);
       try {
-        const res = await axios.get("http://localhost:5000/api/orders/my-orders", {
+        const res = await API.get("/api/orders/my-orders", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setOrders(res.data);
@@ -92,7 +92,7 @@ export default function Orders() {
                 >
                   <div className="flex items-center gap-4">
                     <img
-                      src={`http://localhost:5000${item.Product.image}`}
+                      src={`${item.Product.image}`}
                       alt={item.Product.name}
                       className="w-16 h-16 rounded-md object-cover"
                     />

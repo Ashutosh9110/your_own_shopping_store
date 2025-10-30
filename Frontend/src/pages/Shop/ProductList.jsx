@@ -1,6 +1,6 @@
 // src/pages/Shop/ProductList.jsx  (or Products.jsx)
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
+import API from "../api/api";
 import { AuthContext } from "../../contexts/AuthContext";
 import { CartContext } from "../../contexts/CartContext";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -27,7 +27,7 @@ export default function Products() {
       if (selectedCategory) params.category = selectedCategory;
       if (search) params.search = search;
 
-      const res = await axios.get("http://localhost:5000/api/products", { params });
+      const res = await API.get("/api/products", { params });
       setProducts(res.data);
     } catch (err) {
       console.error("Failed to load products:", err);
@@ -36,7 +36,7 @@ export default function Products() {
 
   const fetchCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/categories");
+      const res = await API.get("/api/categories");
       setCategories(res.data);
     } catch (err) {
       console.error("Failed to load categories:", err);

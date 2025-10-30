@@ -1,6 +1,6 @@
 // src/components/Admin/EditProduct.jsx
 import React, { useState } from "react";
-import axios from "axios";
+import API from "../api/api";
 
 export default function EditProduct({ product, onClose }) {
   const [updated, setUpdated] = useState(product);
@@ -9,8 +9,8 @@ export default function EditProduct({ product, onClose }) {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(
-        `http://localhost:5000/api/products/${product.id}`,
+      await API.put(
+        `/api/products/${product.id}`,
         {
           category: updated.category,
           name: updated.name,

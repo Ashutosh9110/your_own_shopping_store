@@ -1,6 +1,6 @@
 // src/contexts/CartContext.jsx
 import React, { createContext, useState, useEffect, useContext } from "react";
-import axios from "axios";
+import API from "../api/api";
 import { AuthContext } from "./AuthContext";
 
 export const CartContext = createContext();
@@ -9,8 +9,8 @@ export function CartProvider({ children }) {
   const { token } = useContext(AuthContext);
   const [cart, setCart] = useState([]);
 
-  const api = axios.create({
-    baseURL: "http://localhost:5000/api",
+  const api = API.create({
+    baseURL: "/api",
     headers: { Authorization: token ? `Bearer ${token}` : "" },
   });
 

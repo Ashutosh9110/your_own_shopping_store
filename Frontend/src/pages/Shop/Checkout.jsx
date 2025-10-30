@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import API from "../api/api";
 
 function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState("COD");
@@ -40,8 +40,8 @@ function Checkout() {
       }
 
       const token = localStorage.getItem("token"); // assuming user is logged in
-      const { data: order } = await axios.post(
-        "http://localhost:5000/api/payments/create-order",
+      const { data: order } = await API.post(
+        "/api/payments/create-order",
         { amount },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -57,8 +57,8 @@ function Checkout() {
           alert("🎉 Payment Successful!");
           console.log("Payment response:", response);
           // Optionally verify payment
-          await axios.post(
-            "http://localhost:5000/api/payments/verify",
+          await API.post(
+            "/api/payments/verify",
             {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,

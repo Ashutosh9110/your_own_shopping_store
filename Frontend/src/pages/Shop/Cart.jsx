@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import { CartContext } from "../../contexts/CartContext";
 import { AuthContext } from "../../contexts/AuthContext";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import API from "../api/api";
 
 export default function Cart() {
   const { cart, updateCartItem, removeFromCart, fetchCart } = useContext(CartContext);
@@ -11,8 +11,8 @@ export default function Cart() {
   const [placingOrder, setPlacingOrder] = useState(false);
   const navigate = useNavigate();
 
-  const api = axios.create({
-    baseURL: "http://localhost:5000/api",
+  const api = API.create({
+    baseURL: "/api",
     headers: { Authorization: token ? `Bearer ${token}` : "" },
   });
 
@@ -72,7 +72,7 @@ export default function Cart() {
           {/* Product Info */}
           <div className="flex items-center gap-4">
             <img
-              src={`http://localhost:5000${item.Product.image}`}
+              src={`${item.Product.image}`}
               alt={item.Product.name}
               className="w-20 h-20 object-cover rounded-md"
             />

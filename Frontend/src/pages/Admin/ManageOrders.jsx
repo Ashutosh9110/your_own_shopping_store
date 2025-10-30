@@ -1,8 +1,9 @@
 // src/pages/Admin/ManageOrders.jsx
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
 import { AuthContext } from "../../contexts/AuthContext";
 import { motion } from "framer-motion";
+import API, { BASE_URL } from "../../api/api";
+
 
 export default function ManageOrders() {
   const [orders, setOrders] = useState([]);
@@ -13,7 +14,7 @@ export default function ManageOrders() {
     if (!token) return;
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:5000/api/orders", {
+      const res = await API.get("/api/orders", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setOrders(res.data);
@@ -26,8 +27,8 @@ export default function ManageOrders() {
 
   const updateStatus = async (orderId, newStatus) => {
     try {
-      await axios.put(
-        `http://localhost:5000/api/orders/${orderId}/status`,
+      await API.put(
+        `api/orders/${orderId}/status`,
         { status: newStatus },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -105,7 +106,7 @@ export default function ManageOrders() {
                   >
                     <div className="flex items-center gap-3">
                       <img
-                        src={`http://localhost:5000${item.Product.image}`}
+                        src={`${BASE_URL}${item.Product.image}`}
                         alt={item.Product.name}
                         className="w-16 h-16 object-cover rounded-md shadow"
                       />

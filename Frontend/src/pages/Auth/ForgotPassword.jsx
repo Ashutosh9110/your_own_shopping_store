@@ -1,7 +1,7 @@
-// src/pages/Auth/ForgotPassword.jsx
 import React, { useState } from "react";
-import axios from "axios";
+import API from "API";
 import { useNavigate } from "react-router-dom";
+import API from "../api/api";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -14,7 +14,7 @@ export default function ForgotPassword() {
     setLoading(true);
     setMessage("");
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/forgot-password", { email });
+      const res = await API.post("/api/auth/forgot-password", { email });
       setMessage(res.data.message);
     } catch (err) {
       setMessage(err.response?.data?.message || "Error sending reset link");

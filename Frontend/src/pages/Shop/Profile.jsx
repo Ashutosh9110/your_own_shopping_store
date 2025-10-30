@@ -1,6 +1,6 @@
 // src/pages/Shop/Profile.jsx
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
+import API from "../api/api";
 import { AuthContext } from "../../contexts/AuthContext";
 
 export default function Profile() {
@@ -18,8 +18,8 @@ export default function Profile() {
     phone: "",
   });
 
-  const api = axios.create({
-    baseURL: "http://localhost:5000/api",
+  const api = API.create({
+    baseURL: "/api",
     headers: { Authorization: `Bearer ${token}` },
   });
 

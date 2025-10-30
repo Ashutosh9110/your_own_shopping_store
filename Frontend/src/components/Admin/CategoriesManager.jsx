@@ -1,6 +1,6 @@
 // src/components/Admin/CategoryManager.jsx
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import API from "../api/api";
 
 export default function CategoryManager() {
   const [categories, setCategories] = useState([]);
@@ -9,7 +9,7 @@ export default function CategoryManager() {
 
   const loadCategories = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/categories");
+      const res = await API.get("/api/categories");
       setCategories(res.data);
     } catch (err) {
       console.error("Error loading categories:", err);
@@ -22,8 +22,8 @@ export default function CategoryManager() {
     if (!newCategory.trim()) return;
 
     try {
-      await axios.post(00000000
-        "http://localhost:5000/api/categories",
+      await API.post(
+        "/api/categories",
         { name: newCategory },
         {
           headers: {
@@ -41,7 +41,7 @@ export default function CategoryManager() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/categories/${id}`, {
+      await API.delete(`/api/categories/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

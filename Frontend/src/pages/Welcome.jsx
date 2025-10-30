@@ -66,20 +66,20 @@ export default function Welcome() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-teal-100 via-white to-green-100">
+    <div className="min-h-screen flex flex-col">
       {/* Hero Banner */}
-      <section className="flex flex-col items-center justify-center text-center py-20 px-6 bg-gradient-to-r from-teal-600 to-green-500 text-white shadow-lg">
+      <section className="flex flex-col items-center justify-center text-center py-20 px-6 text-white shadow-lg">
         <motion.h1
-          className="text-5xl sm:text-6xl font-extrabold mb-4"
+          className="text-5xl sm:text-6xl font-extrabold mb-4 outlined-heading text-[1.5em] text-white"
           initial={{ opacity: 0, y: -40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Welcome to Your Own Shopping Store 🛍️
+          Welcome to Your Own Shopping Store
         </motion.h1>
 
         <motion.p
-          className="text-lg sm:text-xl max-w-2xl"
+          className="text-lg sm:text-xl max-w-2xl outlined-heading text-[1.5em]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 1 }}
@@ -89,7 +89,7 @@ export default function Welcome() {
 
         <motion.button
           onClick={() => navigate("/products")}
-          className="mt-8 bg-white text-teal-700 px-8 py-3 rounded-full font-semibold hover:bg-teal-50 shadow-lg transition-all cursor-pointer"
+          className="mt-8 text-teal-700 px-8 py-3 rounded-full font-semibold hover:bg-[#ce3b3b] shadow-lg transition-all cursor-pointer outlined-heading text-[1.5em]"
           whileHover={{ scale: 1.05 }}
         >
           Start Shopping
@@ -98,8 +98,8 @@ export default function Welcome() {
 
       {/* Featured Products Carousel */}
       {featured.length > 0 && (
-        <section className="py-16 px-8 bg-white">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+        <section className="py-16 px-8">
+          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center outlined-heading text-[1.5em]">
             Featured Products
           </h2>
 
@@ -112,15 +112,15 @@ export default function Welcome() {
                 onClick={() => navigate("/products")}
               >
                 <div className="p-4 flex justify-center">
-                  <div className="bg-gray-50 shadow-md rounded-2xl overflow-hidden hover:shadow-xl transition-all flex flex-col items-center p-4 w-64 h-[360px] justify-between">
+                  <div className="rounded-2xl overflow-hidden hover:shadow-xl transition-all flex flex-col items-center p-4 w-64 h-[360px] justify-between bg-[#fff8dc]">
                     <img
                       src={`${BASE_URL}${p.image}`}
                       alt={p.name}
                       className="w-48 h-48 object-cover rounded-lg mb-3"
                     />
-                    <div className="flex flex-col items-center flex-grow justify-center text-center">
+                    <div className="flex flex-col items-center flex-grow justify-center text-center ">
                       <h3 className="text-lg font-semibold text-gray-800">{p.name}</h3>
-                      <p className="text-teal-700 font-bold mt-1">₹{p.price?.toFixed(2)}</p>
+                      <p className="text-gray-800 font-bold mt-1">₹{p.price?.toFixed(2)}</p>
                     </div>
                   </div>
                 </div>
@@ -132,7 +132,7 @@ export default function Welcome() {
       )}
 
       {/* Category Shortcuts */}
-      <section className="py-16 px-8 flex flex-col items-center">
+      <section className="py-16 px-8 flex flex-col items-center outlined-heading text-[1.5em]">
         <h2 className="text-3xl font-bold text-gray-800 mb-8">Shop by Category</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 w-full max-w-6xl">

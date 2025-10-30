@@ -21,7 +21,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white shadow-lg backdrop-blur-md">
+    <nav className="sticky top-0 z-50 bg-gray-800 text-gray-300 shadow-lg backdrop-blur-md outlined-heading text-[1.5em]">
       <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
         <Link
           to="/"
@@ -30,7 +30,7 @@ const Navbar = () => {
           🛍️ <span className="font-heading">ShopEase</span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-6 text-sm font-medium">
+        <div className="hidden md:flex items-center gap-6 text-[20px] font-medium">
           {role === "user" && (
             <>
               <Link to="/products" className="hover:text-yellow-200 transition">Products</Link>
@@ -53,7 +53,7 @@ const Navbar = () => {
           {user ? (
             <button
               onClick={handleLogout}
-              className="bg-red-500 hover:bg-red-400 px-4 py-1.5 rounded-full text-sm font-semibold shadow-md transition-all duration-300"
+              className="bg-red-500 hover:bg-red-400 px-4 py-1.5 rounded-full text-sm font-semibold shadow-md transition-all duration-300 cursor-pointer"
             >
               Logout
             </button>
@@ -61,13 +61,13 @@ const Navbar = () => {
             <>
               <Link
                 to="/login"
-                className="bg-white text-indigo-700 font-semibold px-4 py-1.5 rounded-full hover:bg-indigo-100 transition-all shadow-md"
+                className="font-semibold px-3 py-1.5 rounded-full hover:bg-yellow-300 transition-all shadow-md text-[20px]"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="bg-yellow-400 text-gray-900 font-semibold px-4 py-1.5 rounded-full hover:bg-yellow-300 transition-all shadow-md"
+                className="ont-semibold px-3 py-1.5 rounded-full hover:bg-yellow-300 transition-all shadow-md text-[20px]"
               >
                 Signup
               </Link>

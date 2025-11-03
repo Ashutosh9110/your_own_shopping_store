@@ -61,6 +61,7 @@ export default function Welcome() {
         />
 
         {/* Overlay for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60"></div>
         <div className="absolute inset-0 bg-black/40"></div>
 
         {/* Content */}

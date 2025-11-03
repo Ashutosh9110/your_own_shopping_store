@@ -32,7 +32,7 @@ const Navbar = () => {
           to="/"
           className="text-2xl font-bold tracking-tight flex items-center gap-2 hover:opacity-90 transition"
         >
-          🛍️ <span className="font-heading">ShopEase</span>
+         <span className="font-heading">ShopEase</span>
         </Link>
 
         {/* Desktop Menu */}

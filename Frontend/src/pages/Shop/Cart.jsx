@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { CartContext } from "../../contexts/CartContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import API from "../api/api";
+import API from "../../api/api";
 
 export default function Cart() {
   const { cart, updateCartItem, removeFromCart, fetchCart } = useContext(CartContext);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import API from "../api/api";
+import API from "../../api/api";
 
 function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState("COD");

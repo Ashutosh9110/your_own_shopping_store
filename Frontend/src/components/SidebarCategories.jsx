@@ -27,7 +27,7 @@ const iconMap = {
   Bags: <Handbag className="w-5 h-5 text-red-600" />,
 };
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 export default function SidebarCategories({ onCategorySelect }) {
   const [categories, setCategories] = useState([]);

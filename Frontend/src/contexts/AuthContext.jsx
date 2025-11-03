@@ -11,9 +11,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const api = API.create({
-    baseURL: "/api",
-  });
+
 
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
@@ -36,7 +34,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   async function login(email, password, role = "user") {
-    const res = await api.post("/auth/login", { email, password, role });
+    const res = await API.post("/auth/login", { email, password, role });
     const { token, user: userData } = res.data;
   
     // Fallback user info if backend doesn't send one

@@ -1,6 +1,6 @@
 // src/components/Admin/AddProduct.jsx
 import React, { useState, useEffect } from "react";
-import API from "../api/api";
+import API from "../../api/api";
 
 export default function AddProduct({ onSuccess }) {
   const [product, setProduct] = useState({

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import API from "API";
 import { useNavigate } from "react-router-dom";
-import API from "../api/api";
+import API from "../../api/api";
+// import API from "../api/api";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");

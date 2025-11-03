@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AddProduct from "../../components/Admin/AddProduct";
 import EditProduct from "../../components/Admin/EditProduct";
 import { motion } from "framer-motion";
-import API from "../api/api";
+import API from "../../api/api";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 

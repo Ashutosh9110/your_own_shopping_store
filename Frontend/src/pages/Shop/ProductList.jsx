@@ -1,6 +1,6 @@
 // src/pages/Shop/ProductList.jsx  (or Products.jsx)
 import React, { useEffect, useState, useContext } from "react";
-import API from "../api/api";
+import API from "../../api/api";
 import { AuthContext } from "../../contexts/AuthContext";
 import { CartContext } from "../../contexts/CartContext";
 import { useNavigate, useLocation } from "react-router-dom";

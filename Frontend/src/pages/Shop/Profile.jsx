@@ -1,6 +1,6 @@
 // src/pages/Shop/Profile.jsx
 import React, { useEffect, useState, useContext } from "react";
-import API from "../api/api";
+import API from "../../api/api";
 import { AuthContext } from "../../contexts/AuthContext";
 
 export default function Profile() {

@@ -1,6 +1,6 @@
 // src/components/Admin/EditProduct.jsx
 import React, { useState } from "react";
-import API from "../api/api";
+import API from "../../api/api";
 
 export default function EditProduct({ product, onClose }) {
   const [updated, setUpdated] = useState(product);

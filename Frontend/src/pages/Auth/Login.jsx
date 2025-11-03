@@ -100,7 +100,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2.5 rounded-md font-semibold hover:bg-blue-700 transition disabled:opacity-70"
+            className="w-full bg-blue-800 text-white py-2.5 rounded-md font-semibold hover:bg-blue-500 transition disabled:opacity-70 cursor-pointer"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
@@ -121,7 +121,7 @@ export default function Login() {
             type="button"
             disabled={loading}
             onClick={() => navigate("/register")}
-            className="w-full bg-gray-100 text-blue-700 py-2.5 rounded-md font-semibold hover:bg-blue-50 transition"
+            className="w-full bg-gray-100 text-blue-700 py-2.5 rounded-md font-semibold hover:bg-blue-50 transition cursor-pointer"
           >
             New User? Sign Up
           </button>

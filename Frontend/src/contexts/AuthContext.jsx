@@ -34,7 +34,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   async function login(email, password, role = "user") {
-    const res = await API.post("/auth/login", { email, password, role });
+    const res = await API.post("/api/auth/login", { email, password, role });
     const { token, user: userData } = res.data;
   
     // Fallback user info if backend doesn't send one
@@ -52,7 +52,7 @@ export function AuthProvider({ children }) {
   
 
   async function signup(email, password, role = "user") {
-    const res = await api.post("/auth/register", { email, password, role });
+    const res = await API.post("api/auth/register", { email, password, role });
     return res.data;
   }
 

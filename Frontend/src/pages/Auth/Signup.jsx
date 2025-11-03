@@ -73,7 +73,7 @@ export default function Signup() {
           />
 
           <select
-            className="border border-gray-300 mb-6 w-full p-2 rounded-md focus:outline-none focus:border-red-600"
+            className="border border-gray-300 mb-6 w-full p-2 rounded-md focus:outline-none focus:border-red-600 cursor-pointer"
             value={role}
             onChange={(e) => setRole(e.target.value)}
           >
@@ -84,7 +84,7 @@ export default function Signup() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-red-700 text-white py-2 rounded-md hover:bg-red-800 transition-colors duration-300"
+            className="w-full bg-blue-800 text-white py-2 rounded-md hover:bg-blue-500 transition-colors duration-300 cursor-pointer"
           >
             {loading ? "Creating..." : "Sign Up"}
           </button>

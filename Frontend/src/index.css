@@ -8,7 +8,7 @@
 }
 
 body {
-  background-color: rgb(206, 59, 59); /* #ce3b3b */
+  background-color: white; /* #ce3b3b */
   color: #222; /* for readable text */
   font-family: var(--font-body);
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -62,7 +62,7 @@ html {
   font-weight: 900;
   -webkit-text-fill-color: transparent;
   -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: #fff;
+  -webkit-text-stroke-color: #112ca270;
   font-family: 'Nunito', sans-serif;
   letter-spacing: 0.2em;
 }

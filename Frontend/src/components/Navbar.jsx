@@ -1,4 +1,4 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
@@ -20,9 +20,14 @@ const Navbar = () => {
     navigate("/login");
   };
 
+  // Base class for NavLink items
+  const linkBase =
+    "relative pb-1 transition-all duration-300 hover:text-blue-500 after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-blue-500 after:transition-all after:duration-300";
+
   return (
-    <nav className="sticky top-0 z-50 bg-gray-800 text-gray-300 shadow-lg backdrop-blur-md outlined-heading text-[1.5em]">
+    <nav className="sticky top-0 z-50 bg-white text-gray-800 shadow-md backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+        {/* Logo */}
         <Link
           to="/"
           className="text-2xl font-bold tracking-tight flex items-center gap-2 hover:opacity-90 transition"
@@ -30,30 +35,81 @@ const Navbar = () => {
           🛍️ <span className="font-heading">ShopEase</span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-6 text-[20px] font-medium">
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center gap-8 text-[18px] font-medium">
           {role === "user" && (
             <>
-              <Link to="/products" className="hover:text-yellow-200 transition">Products</Link>
-              <Link to="/cart" className="hover:text-yellow-200 transition">Cart</Link>
-              <Link to="/orders" className="hover:text-yellow-200 transition">My Orders</Link>
-              <Link to="/profile" className="hover:text-yellow-200 transition">Profile</Link>
+              <NavLink
+                to="/products"
+                className={({ isActive }) =>
+                  `${linkBase} ${isActive ? "text-blue-500 after:w-full" : ""}`
+                }
+              >
+                Products
+              </NavLink>
+              <NavLink
+                to="/cart"
+                className={({ isActive }) =>
+                  `${linkBase} ${isActive ? "text-blue-500 after:w-full" : ""}`
+                }
+              >
+                Cart
+              </NavLink>
+              <NavLink
+                to="/orders"
+                className={({ isActive }) =>
+                  `${linkBase} ${isActive ? "text-blue-500 after:w-full" : ""}`
+                }
+              >
+                My Orders
+              </NavLink>
+              <NavLink
+                to="/profile"
+                className={({ isActive }) =>
+                  `${linkBase} ${isActive ? "text-blue-500 after:w-full" : ""}`
+                }
+              >
+                Profile
+              </NavLink>
             </>
           )}
 
           {role === "admin" && (
             <>
-              <Link to="/admin" className="hover:text-green-200 transition">Dashboard</Link>
-              <Link to="/admin/add-product" className="hover:text-green-200 transition">Add Product</Link>
-              <Link to="/admin/orders" className="hover:text-green-200 transition">Manage Orders</Link>
+              <NavLink
+                to="/admin"
+                className={({ isActive }) =>
+                  `${linkBase} ${isActive ? "text-blue-500 after:w-full" : ""}`
+                }
+              >
+                Dashboard
+              </NavLink>
+              <NavLink
+                to="/admin/add-product"
+                className={({ isActive }) =>
+                  `${linkBase} ${isActive ? "text-blue-500 after:w-full" : ""}`
+                }
+              >
+                Add Product
+              </NavLink>
+              <NavLink
+                to="/admin/orders"
+                className={({ isActive }) =>
+                  `${linkBase} ${isActive ? "text-blue-500 after:w-full" : ""}`
+                }
+              >
+                Manage Orders
+              </NavLink>
             </>
           )}
         </div>
 
+        {/* Auth Buttons */}
         <div className="flex items-center gap-3">
           {user ? (
             <button
               onClick={handleLogout}
-              className="bg-red-500 hover:bg-red-400 px-4 py-1.5 rounded-full text-sm font-semibold shadow-md transition-all duration-300 cursor-pointer"
+              className="bg-red-500 hover:bg-red-400 px-4 py-1.5 rounded-full text-sm font-semibold text-white shadow-md transition-all duration-300 cursor-pointer"
             >
               Logout
             </button>
@@ -61,13 +117,13 @@ const Navbar = () => {
             <>
               <Link
                 to="/login"
-                className="font-semibold px-3 py-1.5 rounded-full hover:bg-yellow-300 transition-all shadow-md text-[20px]"
+                className="font-semibold px-3 py-1.5 rounded-full hover:bg-blue-100 text-blue-600 transition-all shadow-sm text-[18px]"
               >
                 Login
               </Link>
               <Link
                 to="/register"
-                className="ont-semibold px-3 py-1.5 rounded-full hover:bg-yellow-300 transition-all shadow-md text-[20px]"
+                className="font-semibold px-3 py-1.5 rounded-full hover:bg-blue-100 text-blue-600 transition-all shadow-sm text-[18px]"
               >
                 Signup
               </Link>

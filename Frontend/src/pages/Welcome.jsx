@@ -69,9 +69,9 @@ export default function Welcome() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Banner */}
-      <section className="flex flex-col items-center justify-center text-center py-20 px-6 text-white shadow-lg">
+      <section className="flex flex-col items-center justify-center text-center py-20 px-6 text-gray-800 shadow-lg">
         <motion.h1
-          className="text-5xl sm:text-6xl font-extrabold mb-4 outlined-heading text-[1.5em] text-white"
+          className="text-5xl sm:text-6xl font-extrabold mb-4 outlined-heading text-[1.5em] text-gray-800"
           initial={{ opacity: 0, y: -40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}

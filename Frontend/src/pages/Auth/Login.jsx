@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+// import signUpImg from "../../assets/signUpImg.png"; // 👈 You can add this later
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,7 +17,6 @@ export default function Login() {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const paramRole = params.get("role");
-    console.log(localStorage.getItem("role"));
     if (paramRole) setRole(paramRole);
   }, [location.search]);
 
@@ -25,15 +25,10 @@ export default function Login() {
     setLoading(true);
     setMessage("");
     try {
-
-      await login(email, password, role)
-
-      if (role === "admin") {
-        navigate("/admin");
-      } else {
-        navigate("/");
-      }
-    } catch (err) {     
+      await login(email, password, role);
+      if (role === "admin") navigate("/admin");
+      else navigate("/");
+    } catch (err) {
       console.error("Login error:", err);
       setMessage(err.response?.data?.message || "Invalid email or password");
     } finally {
@@ -42,65 +37,100 @@ export default function Login() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen ">
-      <form onSubmit={handleLogin} className="p-8 rounded-xl w-96">
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-          {role === "admin" ? "Admin Login" : "User Login"}
-        </h2>
-
-        <input
-          type="email"
-          placeholder="Email"
-          className="border p-3 w-full mb-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
+    <main className="min-h-screen flex flex-col md:flex-row items-center justify-center bg-gray-50 px-6 md:px-0">
+      {/* Left Image Section */}
+      <div className="hidden md:flex w-1/2 justify-center items-center">
+        <img
+          src={"signUpImg"} // 👈 Replace with actual image import
+          alt="Login illustration"
+          className="max-w-lg w-full h-auto rounded-lg object-contain"
         />
+      </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="border p-3 w-full mb-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-
-        <select
-          className="border p-3 w-full mb-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-400 cursor-pointer"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
+      {/* Right Form Section */}
+      <div className="flex w-full md:w-1/2 justify-center py-10">
+        <form
+          onSubmit={handleLogin}
+          className="bg-white shadow-lg rounded-xl p-8 md:p-12 w-full max-w-md"
         >
-          <option value="user">User</option>
-          <option value="admin">Admin</option>
-        </select>
+          <h2 className="text-3xl font-bold mb-2 text-center text-gray-900">
+            {role === "admin" ? "Admin Login" : "User Login"}
+          </h2>
+          <p className="text-gray-500 text-center mb-8">
+            Log in to access your account
+          </p>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-teal-600 text-white py-2 mb-2 rounded hover:bg-teal-800 cursor-pointer"
-        >
-          {loading ? "Logging in..." : "Login"}
-        </button>
+          {/* Email Input */}
+          <div className="mb-6">
+            <input
+              type="email"
+              placeholder="Email"
+              className="border-b-2 border-gray-300 w-full py-2 px-1 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-blue-500 transition"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-        <p
-          className="text-black text-sm mt-3 text-center cursor-pointer"
-          onClick={() => navigate("/forgot-password")}
-        >
-          Forgot Password?
-        </p>
+          {/* Password Input */}
+          <div className="mb-6">
+            <input
+              type="password"
+              placeholder="Password"
+              className="border-b-2 border-gray-300 w-full py-2 px-1 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-blue-500 transition"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
 
-        <button
-          type="button"
-          disabled={loading}
-          className="w-full bg-teal-600 text-white py-2 mt-2 rounded hover:bg-teal-800 cursor-pointer"
-          onClick={() => navigate("/register")}
-        >
-          New User? Sign Up
-        </button>
+          {/* Role Dropdown */}
+          <div className="mb-6">
+            <select
+              className="border-b-2 border-gray-300 w-full py-2 text-gray-700 focus:outline-none focus:border-blue-500 cursor-pointer bg-transparent"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+            >
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
 
-        {message && <p className="text-center mt-4 text-sm text-red-600">{message}</p>}
-      </form>
-    </div>
+          {/* Login Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-blue-600 text-white py-2.5 rounded-md font-semibold hover:bg-blue-700 transition disabled:opacity-70"
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
+
+          {/* Forgot Password */}
+          <p
+            className="text-sm text-blue-600 hover:underline mt-4 text-center cursor-pointer"
+            onClick={() => navigate("/forgot-password")}
+          >
+            Forgot Password?
+          </p>
+
+          {/* Divider */}
+          <div className="my-6 border-t border-gray-200"></div>
+
+          {/* Signup Link */}
+          <button
+            type="button"
+            disabled={loading}
+            onClick={() => navigate("/register")}
+            className="w-full bg-gray-100 text-blue-700 py-2.5 rounded-md font-semibold hover:bg-blue-50 transition"
+          >
+            New User? Sign Up
+          </button>
+
+          {message && (
+            <p className="text-center mt-4 text-sm text-red-600">{message}</p>
+          )}
+        </form>
+      </div>
+    </main>
   );
 }

@@ -145,7 +145,6 @@ export default function Welcome() {
   <div className="flex flex-col gap-4">
     {/* --- ROW 1 --- */}
     <div className="flex flex-col md:flex-row w-full gap-4">
-      {/* 1/3 Width */}
       <div
         className="relative group overflow-hidden rounded-2xl h-[400px] md:w-1/3 w-full cursor-pointer"
         onClick={() => handleCategoryClick("fruits")}
@@ -165,7 +164,6 @@ export default function Welcome() {
         />
       </div>
 
-      {/* 2/3 Width */}
       <div
         className="relative group overflow-hidden rounded-2xl h-[400px] md:w-2/3 w-full cursor-pointer"
         onClick={() => handleCategoryClick("vegetables")}
@@ -188,7 +186,6 @@ export default function Welcome() {
 
     {/* --- ROW 2 --- */}
     <div className="flex flex-col md:flex-row w-full gap-4">
-      {/* 2/3 Width */}
       <div
         className="relative group overflow-hidden rounded-2xl h-[400px] md:w-2/3 w-full cursor-pointer"
         onClick={() => handleCategoryClick("Electronics")}
@@ -208,7 +205,7 @@ export default function Welcome() {
           />
       </div>
 
-      {/* 1/3 Width */}
+  
       <div
         className="relative group overflow-hidden rounded-2xl h-[400px] md:w-1/3 w-full cursor-pointer"
         onClick={() => handleCategoryClick("watches")}
@@ -226,6 +223,47 @@ export default function Welcome() {
             onClick={() => handleCategoryClick("watches")}
             className="absolute bottom-20 left-75"
           />
+      </div>
+    </div>
+
+     {/* --- ROW 3 --- */}
+     <div className="flex flex-col md:flex-row w-full gap-4">
+      <div
+        className="relative group overflow-hidden rounded-2xl h-[400px] md:w-1/3 w-full cursor-pointer"
+        onClick={() => handleCategoryClick("grocery")}
+      >
+        <video
+          src="/assets/categories/videos/grocery.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
+        />
+        <AnimatedCategoryButton 
+          label="Grocery"
+          onClick={() => handleCategoryClick("grocery")}
+          className="absolute bottom-20 left-15"
+        />
+      </div>
+
+      <div
+        className="relative group overflow-hidden rounded-2xl h-[400px] md:w-2/3 w-full cursor-pointer"
+        onClick={() => handleCategoryClick("personalCare")}
+      >
+        <video
+          src="/assets/categories/videos/personalCare.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
+        />
+       <AnimatedCategoryButton 
+          label="Personal Care"
+          onClick={() => handleCategoryClick("personalCare")}
+          className="absolute bottom-20 left-190"
+        />
       </div>
     </div>
   </div>

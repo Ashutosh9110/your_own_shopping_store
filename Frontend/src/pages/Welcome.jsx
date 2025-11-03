@@ -7,6 +7,7 @@ import { Shirt, Apple, Cpu, ShoppingBasket } from "lucide-react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import API from "../api/api";
+import AnimatedCategoryButton from "../components/AnimatedCategoryButton";
 
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -157,11 +158,11 @@ export default function Welcome() {
           playsInline
           className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
         />
-        <button className="absolute bottom-8 left-8 bg-white/30 backdrop-blur-md px-6 py-2 rounded-md text-gray-800 font-semibold border border-gray-200 
-          transition-all duration-300 group-hover:bg-white/60 group-hover:scale-105 relative overflow-hidden">
-          <span className="relative z-10">Fruits</span>
-          <span className="absolute inset-0 border-2 border-gray-800 opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
-        </button>
+        <AnimatedCategoryButton 
+          label="Fruits"
+          onClick={() => handleCategoryClick("fruits")}
+          className="absolute bottom-20 left-15"
+        />
       </div>
 
       {/* 2/3 Width */}
@@ -177,11 +178,11 @@ export default function Welcome() {
           playsInline
           className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
         />
-        <button className="absolute bottom-8 left-8 bg-white/30 backdrop-blur-md px-6 py-2 rounded-md text-gray-800 font-semibold border border-gray-200 
-          transition-all duration-300 group-hover:bg-white/60 group-hover:scale-105 relative overflow-hidden">
-          <span className="relative z-10">Vegetables</span>
-          <span className="absolute inset-0 border-2 border-gray-800 opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
-        </button>
+       <AnimatedCategoryButton 
+          label="Vegetables"
+          onClick={() => handleCategoryClick("vegetables")}
+          className="absolute bottom-20 left-15"
+        />
       </div>
     </div>
 
@@ -200,11 +201,11 @@ export default function Welcome() {
           playsInline
           className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
         />
-        <button className="absolute bottom-8 left-8 bg-white/30 backdrop-blur-md px-6 py-2 rounded-md text-gray-800 font-semibold border border-gray-200 
-          transition-all duration-300 group-hover:bg-white/60 group-hover:scale-105 relative overflow-hidden">
-          <span className="relative z-10">Electronics</span>
-          <span className="absolute inset-0 border-2 border-gray-800 opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
-        </button>
+        <AnimatedCategoryButton 
+            label="Electronics"
+            onClick={() => handleCategoryClick("electronics")}
+            className="absolute bottom-20 left-15"
+          />
       </div>
 
       {/* 1/3 Width */}
@@ -220,11 +221,11 @@ export default function Welcome() {
           playsInline
           className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
         />
-        <button className="absolute bottom-8 left-8 bg-white/30 backdrop-blur-md px-6 py-2 rounded-md text-gray-800 font-semibold border border-gray-200 
-          transition-all duration-300 group-hover:bg-white/60 group-hover:scale-105 relative overflow-hidden">
-          <span className="relative z-10">Watches</span>
-          <span className="absolute inset-0 border-2 border-gray-800 opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
-        </button>
+         <AnimatedCategoryButton 
+            label="Watches"
+            onClick={() => handleCategoryClick("watches")}
+            className="absolute bottom-20 left-15"
+          />
       </div>
     </div>
   </div>

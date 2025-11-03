@@ -98,7 +98,7 @@ export default function Welcome() {
       </section>
 
       {/* Featured Products Carousel */}
-      {featured.length > 0 && (
+      {/* {featured.length > 0 && (
         <section className="py-16 px-8">
           <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center outlined-heading text-[1.5em]">
             Featured Products
@@ -130,26 +130,96 @@ export default function Welcome() {
           </Slider>
 
         </section>
-      )}
+      )} */}
 
       {/* Category Shortcuts */}
-      <section className="py-16 px-8 flex flex-col items-center outlined-heading text-[1.5em]">
-        <h2 className="text-3xl font-bold text-gray-800 mb-8">Shop by Category</h2>
+      {/* Category Showcase Section */}
+<section className="py-20 px-4 md:px-12 bg-white">
+  <h2 className="text-4xl font-heading font-bold text-center mb-12 text-gray-800">
+    Shop by Category
+  </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 w-full max-w-6xl">
-          {categories.map((cat) => (
-            <motion.div
-              key={cat.name}
-              whileHover={{ scale: 1.05 }}
-              className={`cursor-pointer flex flex-col items-center justify-center p-8 rounded-2xl shadow-md hover:shadow-xl text-center ${cat.color}`}
-              onClick={() => handleCategoryClick(cat.name)}
-            >
-              <div className="mb-4">{cat.icon}</div>
-              <h3 className="text-lg font-semibold text-white">{cat.name}</h3>
-            </motion.div>
-          ))}
-        </div>
-      </section>
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+    {/* Category Card 1 */}
+    <div
+      className="relative group overflow-hidden rounded-2xl h-[400px]"
+      onClick={() => handleCategoryClick("Fruits")}
+    >
+      <video
+        src="/assets/categories/videos/fruits2.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
+      />
+      <button className="absolute bottom-8 left-8 bg-white/30 backdrop-blur-md px-6 py-2 rounded-md text-gray-800 font-semibold border border-gray-200 
+        transition-all duration-300 group-hover:bg-white/60 group-hover:scale-105 relative overflow-hidden">
+        <span className="relative z-10">Fruits</span>
+        <span className="absolute inset-0 border-2 border-gray-800 opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
+      </button>
+    </div>
+
+    {/* Category Card 2 */}
+    <div
+      className="relative group overflow-hidden rounded-2xl h-[400px]"
+      onClick={() => handleCategoryClick("vegetables")}
+    >
+      <video
+        src="/assets/categories/videos/vegetables.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
+      ></video>
+      <button className="absolute bottom-8 left-8 bg-white/30 backdrop-blur-md px-6 py-2 rounded-md text-gray-800 font-semibold border border-gray-200 
+        transition-all duration-300 group-hover:bg-white/60 group-hover:scale-105 relative overflow-hidden">
+        <span className="relative z-10">vegetables</span>
+        <span className="absolute inset-0 border-2 border-gray-800 opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
+      </button>
+    </div>
+
+    {/* Category Card 3 */}
+    <div
+      className="relative group overflow-hidden rounded-2xl h-[400px]"
+      onClick={() => handleCategoryClick("Dresses")}
+    >
+      <video
+        src="/assets/categories/videos/vegetables.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
+      ></video>
+      <button className="absolute bottom-8 left-8 bg-white/30 backdrop-blur-md px-6 py-2 rounded-md text-gray-800 font-semibold border border-gray-200 
+        transition-all duration-300 group-hover:bg-white/60 group-hover:scale-105 relative overflow-hidden">
+        <span className="relative z-10">Dresses</span>
+        <span className="absolute inset-0 border-2 border-gray-800 opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
+      </button>
+    </div>
+        {/* Category Card 4 */}
+        <div
+      className="relative group overflow-hidden rounded-2xl h-[400px]"
+      onClick={() => handleCategoryClick("Watches")}
+    >
+      <video
+        src="/assets/categories/videos/watches.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
+      ></video>
+      <button className="absolute bottom-8 left-8 bg-white/30 backdrop-blur-md px-6 py-2 rounded-md text-gray-800 font-semibold border border-gray-200 
+        transition-all duration-300 group-hover:bg-white/60 group-hover:scale-105 relative overflow-hidden">
+        <span className="relative z-10">Watches</span>
+        <span className="absolute inset-0 border-2 border-gray-800 opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
+      </button>
+    </div>
+  </div>
+</section>
 
       {/* Footer */}
       <footer className="mt-auto py-6 bg-gray-800 text-gray-300 text-center text-sm">

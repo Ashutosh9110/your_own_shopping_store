@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import signupImg from "../../assets/signup2.gif"
+// import signupImg from "../../assets/signup2.gif"
 // import "inter-ui/inter.css"; // ensure Inter font is imported globally or here
 
 export default function Signup() {
@@ -33,9 +33,9 @@ export default function Signup() {
   return (
     <div className="flex min-h-screen font-[Inter]">
       {/* Left image section */}
-      <div className="hidden md:flex w-1/2 bg-[#e9f1f5] justify-center items-center">
+      <div className="hidden md:flex w-1/2 justify-center items-center">
         <img
-          src={signupImg}
+          src="/assets/signup2.gif"
           alt="Shopping cart and phone"
           className="w-3/4 max-w-lg object-contain"
         />

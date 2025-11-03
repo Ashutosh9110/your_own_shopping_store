@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import loginImg from "../../assets/login.gif";
+// import loginImg from "../../assets/login.gif";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -41,7 +41,7 @@ export default function Login() {
       {/* Left Image Section */}
       <div className="hidden md:flex w-1/2 justify-center items-center">
         <img
-          src={loginImg}
+          src="/assets/login.gif"
           alt="Login illustration"
           className="max-w-lg w-full h-auto rounded-lg object-contain"
         />

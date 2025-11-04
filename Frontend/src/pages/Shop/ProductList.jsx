@@ -114,7 +114,7 @@ export default function Products() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.05 }}
-            className="bg-gray-50 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col text-center cursor-pointer"
+            className="bg-gray-50 rounded-2xl transition-all duration-300 flex flex-col text-center cursor-pointer"
           >
             <div className="relative">
               <img
@@ -139,7 +139,7 @@ export default function Products() {
                     key={i}
                     size={16}
                     className={`${
-                      i < 4 ? "text-green-500 fill-green-500" : "text-gray-300"
+                      i < 4 ? "text-yellow-500 fill-yellow-500" : "text-gray-300"
                     }`}
                   />
                 ))}
@@ -151,10 +151,10 @@ export default function Products() {
               <button
                 onClick={() => handleAddToCart(p.id)}
                 disabled={addingProductId === p.id || p.quantity < 1}
-                className={`mt-auto py-2.5 px-6 rounded-full font-semibold transition-all duration-300 ${
+                className={`mt-auto py-2.5 px-6 rounded-full font-semibold transition-all duration-300 cursor-pointer ${
                   p.quantity < 1
-                    ? "bg-gray-300 text-white cursor-not-allowed"
-                    : "bg-teal-600 text-white hover:bg-teal-700"
+                    ? "bg-gray-500 text-white cursor-not-allowed"
+                    : "bg-green-700 text-white hover:bg-teal-700"
                 } ${addingProductId === p.id ? "opacity-70" : ""}`}
               >
                 {p.quantity < 1

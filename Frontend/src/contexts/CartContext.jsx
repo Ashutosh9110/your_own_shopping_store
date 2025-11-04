@@ -9,14 +9,9 @@ export function CartProvider({ children }) {
   const { token } = useContext(AuthContext);
   const [cart, setCart] = useState([]);
 
-  const api = API.create({
-    baseURL: "/api",
-    headers: { Authorization: token ? `Bearer ${token}` : "" },
-  });
-
   async function fetchCart() {
     if (!token) return;
-    const res = await api.get("/cart");
+    const res = await API.get("/api/cart");
     const items = res.data?.CartItems || [];
 
     const sorted = [...items].sort((a, b) => a.id - b.id);
@@ -25,19 +20,19 @@ export function CartProvider({ children }) {
 
   async function addToCart(productId, quantity = 1) {
     if (!token) throw new Error("Not authenticated");
-    const res = await api.post("/cart/add", { productId, quantity });
+    const res = await API.post("/api/cart/add", { productId, quantity });
     await fetchCart(); // refresh cart
     return res.data;
   }
 
   async function updateCartItem(id, quantity) {
-    const res = await api.put(`/cart/update/${id}`, { quantity });
+    const res = await API.put(`/api/cart/update/${id}`, { quantity });
     await fetchCart();
     return res.data;
   }
 
   async function removeFromCart(id) {
-    await api.delete(`/cart/remove/${id}`);
+    await API.delete(`/api/cart/remove/${id}`);
     await fetchCart();
   }
 

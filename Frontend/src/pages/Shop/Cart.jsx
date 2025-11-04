@@ -11,11 +11,6 @@ export default function Cart() {
   const [placingOrder, setPlacingOrder] = useState(false);
   const navigate = useNavigate();
 
-  const api = API.create({
-    baseURL: "/api",
-    headers: { Authorization: token ? `Bearer ${token}` : "" },
-  });
-
   const handleCheckout = async () => {
     if (!token) {
       alert("Please log in to place an order.");
@@ -34,7 +29,7 @@ export default function Cart() {
         quantity: item.quantity,
       }));
 
-      const res = await api.post("/orders", { cartItems, address });
+      const res = await API.post("/api/orders", { cartItems, address });
       alert("Order placed successfully!");
       console.log("Order response:", res.data);
 

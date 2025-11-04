@@ -87,7 +87,7 @@ export default function Products() {
 
   return (
     <div className="min-h-screen py-10 px-6">
-      <h2 className="text-3xl font-bold mb-6 text-center text-teal-700">Browse Products</h2>
+      <h2 className="text-3xl font-bold mb-6 text-center text-teal-700">Products</h2>
 
 
       <div className="flex gap-6">

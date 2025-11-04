@@ -252,7 +252,7 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("personalCare")}
       >
         <video
-          src="/assets/categories/videos/personalCare.mp4"
+          src="/assets/categories/videos/personalCare.mp4"  
           autoPlay
           muted
           loop

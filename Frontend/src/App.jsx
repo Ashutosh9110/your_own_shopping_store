@@ -13,6 +13,7 @@ import AddProduct from "./components/Admin/AddProduct";
 import ManageOrders from "./pages/Admin/ManageOrders";
 
 import ProductList from "./pages/Shop/ProductList";
+// import ProductPage from "./pages/products/ProductPage";
 import Cart from "./pages/Shop/Cart";
 import Orders from "./pages/Shop/Orders";
 import Profile from "./pages/Shop/Profile";
@@ -21,6 +22,7 @@ import Profile from "./pages/Shop/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import Footer from "./components/Footer";
+import ProductPage from "./pages/Shop/ProductPage";
 
 function App() {
   return (
@@ -35,6 +37,7 @@ function App() {
             <Route path="/reset-password/:token" element={<ResetPassword />} />
             {/* User routes (protected) */}
             <Route path="/products" element={ <ProtectedRoute> <ProductList /> </ProtectedRoute> } />
+            <Route path="/products/:id" element={<ProductPage />} />
             <Route path="/cart"  element={ <ProtectedRoute> <Cart /> </ProtectedRoute> } />
             <Route path="/orders" element={ <ProtectedRoute> <Orders /> </ProtectedRoute> } />
             <Route path="/profile" element={ <ProtectedRoute> <Profile /> </ProtectedRoute> } />

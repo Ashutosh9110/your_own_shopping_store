@@ -26,7 +26,7 @@ const Footer = () => {
       links: [
         { text: "+91 987-123-123", path: "/" },
         { text: "contact@shoppingstore.com", path: "/" },
-        { text: "Mumbai, India", path: "/" },
+        { text: "Delhi, India", path: "/" },
       ],
     },
   ];

@@ -36,11 +36,11 @@ const Navbar = () => {
           to="/"
           className="text-2xl font-bold tracking-tight flex items-center hover:opacity-90 transition"
         >
-          Your<span className="text-green-600">Store</span>
+          <span className="text-gray-600">Your</span><span className="text-green-600">Store</span><span className="text-green-600 text-3xl leading-8">.</span>
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-8 text-[18px] font-medium">
+        <div className="hidden md:flex items-center gap-8 text-[18px] font-medium text-gray-600">
           {role === "user" && (
             <>
               <NavLink
@@ -116,8 +116,8 @@ const Navbar = () => {
               className={`px-4 py-1.5 rounded-full text-sm font-semibold shadow-md transition-all duration-300 cursor-pointer 
                 ${
                   location.pathname === "/"
-                    ? "bg-red-500/80 hover:bg-red-500 text-white"
-                    : "bg-red-500 hover:bg-red-400 text-white"
+                    ? "bg-green-600 hover:bg-red-500 text-white"
+                    : "bg-green-500 hover:bg-red-400 text-white"
                 }`}
             >
               Logout

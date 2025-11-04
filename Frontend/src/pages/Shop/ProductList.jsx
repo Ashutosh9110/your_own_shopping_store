@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import API from "../../api/api";
 import { AuthContext } from "../../contexts/AuthContext";
-import { CartContext } from "../../contexts/CartContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import SidebarCategories from "../../components/SidebarCategories";
 import { motion } from "framer-motion";
@@ -14,10 +13,6 @@ export default function Products() {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [search, setSearch] = useState("");
-  const [addingProductId, setAddingProductId] = useState(null);
-
-  const { user, token } = useContext(AuthContext);
-  const { addToCart } = useContext(CartContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -57,25 +52,6 @@ export default function Products() {
     setSelectedCategory(category);
   }, [location]);
 
-  const handleAddToCart = async (productId) => {
-    if (!token) {
-      alert("Please log in to add items to your cart.");
-      navigate("/login");
-      return;
-    }
-
-    try {
-      setAddingProductId(productId);
-      await addToCart(productId, 1);
-      alert("Product added to cart!");
-    } catch (err) {
-      console.error("Error adding to cart:", err);
-      alert("Failed to add to cart.");
-    } finally {
-      setAddingProductId(null);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-white py-12 px-6">
       <h2 className="text-3xl font-bold mb-10 text-center text-gray-900">
@@ -111,58 +87,37 @@ export default function Products() {
         {products.map((p, idx) => (
           <motion.div
             key={p.id}
+            onClick={() => navigate(`/products/${p.id}`)}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.05 }}
-            className="bg-gray-50 rounded-2xl transition-all duration-300 flex flex-col text-center cursor-pointer"
+            className="bg-[#F5F5F5] rounded-lg p-4 cursor-pointer hover:scale-105 transition duration-300"
           >
-            <div className="relative">
+            <div className="flex flex-col items-center">
               <img
                 src={`${BASE_URL}${p.image}`}
                 alt={p.name}
-                className="w-full h-64 object-contain bg-white rounded-t-2xl p-6 transition-transform duration-300 hover:scale-105"
+                className="w-auto h-48 object-contain mb-3"
               />
-              {p.quantity < 1 && (
-                <div className="absolute top-3 right-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
-                  Out of Stock
+              <div className="flex justify-between w-full text-slate-800 text-sm font-medium">
+                <div>
+                  <p>{p.name}</p>
+                  <div className="flex">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        size={14}
+                        className={`${
+                          i < 4
+                            ? "text-green-500 fill-green-500"
+                            : "text-gray-300"
+                        }`}
+                      />
+                    ))}
+                  </div>
                 </div>
-              )}
-            </div>
-
-            <div className="p-5 flex flex-col flex-1 items-center">
-              <h3 className="text-lg font-semibold text-gray-800 mb-1">
-                {p.name}
-              </h3>
-              <div className="flex justify-center mb-2">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    size={16}
-                    className={`${
-                      i < 4 ? "text-yellow-500 fill-yellow-500" : "text-gray-300"
-                    }`}
-                  />
-                ))}
+                <p className="font-semibold">₹{p.price.toFixed(2)}</p>
               </div>
-              <p className="text-gray-900 font-bold text-lg mb-3">
-                ₹{p.price.toFixed(2)}
-              </p>
-
-              <button
-                onClick={() => handleAddToCart(p.id)}
-                disabled={addingProductId === p.id || p.quantity < 1}
-                className={`mt-auto py-2.5 px-6 rounded-full font-semibold transition-all duration-300 cursor-pointer ${
-                  p.quantity < 1
-                    ? "bg-gray-500 text-white cursor-not-allowed"
-                    : "bg-green-700 text-white hover:bg-teal-700"
-                } ${addingProductId === p.id ? "opacity-70" : ""}`}
-              >
-                {p.quantity < 1
-                  ? "Out of Stock"
-                  : addingProductId === p.id
-                  ? "Adding..."
-                  : "Add to Cart"}
-              </button>
             </div>
           </motion.div>
         ))}

@@ -39,7 +39,7 @@ function Checkout() {
         return;
       }
 
-      const token = localStorage.getItem("token"); // assuming user is logged in
+      const token = localStorage.getItem("token");
       const { data: order } = await API.post(
         "/api/payments/create-order",
         { amount },

@@ -52,6 +52,7 @@ export default function Cart() {
     (sum, item) => sum + item.Product.price * item.quantity,
     0
   );
+  
 
   return (
     <div className="max-w-4xl mx-auto mt-10 bg-white shadow-lg p-6 rounded-lg">
@@ -67,15 +68,17 @@ export default function Cart() {
           {/* Product Info */}
           <div className="flex items-center gap-4">
             <img
-              src={`${item.Product.image}`}
+              src={`http://localhost:5000${item.Product.image}`}
               alt={item.Product.name}
               className="w-20 h-20 object-cover rounded-md"
             />
+            
             <div>
               <p className="font-semibold">{item.Product.name}</p>
               <p className="text-gray-600">₹{item.Product.price.toFixed(2)}</p>
             </div>
           </div>
+          
 
           {/* Quantity + Delete */}
           <div className="flex items-center gap-3">

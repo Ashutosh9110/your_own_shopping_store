@@ -47,12 +47,12 @@ export const getProducts = async (req, res) => {
     // Base filter object
     const whereClause = {};
 
-    // 🔹 Search filter
+    // Search filter
     if (search) {
       whereClause.name = { [Op.iLike]: `%${search}%` };
     }
 
-    // 🔹 Base query config
+    // Base query config
     const queryOptions = {
       where: whereClause,
       include: [
@@ -64,7 +64,7 @@ export const getProducts = async (req, res) => {
       order: [["createdAt", "DESC"]],
     };
 
-    // 🔹 Category filter (via name)
+    // Category filter (via name)
     if (category) {
       queryOptions.include[0].where = {
         name: { [Op.iLike]: category },

@@ -5,7 +5,7 @@ dotenv.config();
 
 export const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
-  console.log("Incoming token:", authHeader);
+  // console.log("Incoming token:", authHeader);
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({ message: "Access denied: No token provided" });
@@ -15,7 +15,7 @@ export const verifyToken = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // { id, role }
+    req.user = decoded; 
     next();
   } catch (err) {
     return res.status(403).json({ message: "Invalid or expired token" });

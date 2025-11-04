@@ -121,9 +121,9 @@ export default function Login() {
             type="button"
             disabled={loading}
             onClick={() => navigate("/register")}
-            className="w-full text-gray-800 py-2.5 rounded-md font-semibold transition cursor-pointer"
+            className="w-full text-sm text-gray-600 py-2.5 rounded-md font-semibold transition cursor-pointer"
           >
-            New User? Sign Up
+            New User? <span className="text-gray-800">Sign Up</span>
           </button>
 
           {message && (

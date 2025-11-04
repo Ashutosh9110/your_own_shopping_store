@@ -47,10 +47,10 @@ export default function Signup() {
           onSubmit={handleSignup}
           className="w-full max-w-sm bg-white p-8 rounded-lg shadow-md"
         >
-          <h2 className="text-3xl font-semibold mb-2 text-gray-900">
+          <h2 className="text-3xl font-semibold mb-2 text-green-600">
             Create Account
           </h2>
-          <p className="text-sm text-gray-500 mb-6">
+          <p className="text-sm text-gray-600 mb-6">
             Enter your details below
           </p>
 
@@ -73,7 +73,7 @@ export default function Signup() {
           />
 
           <select
-            className="border border-gray-300 mb-6 w-full p-2 rounded-md focus:outline-none focus:border-red-600 cursor-pointer"
+            className="border border-gray-300 mb-6 w-full p-2 rounded-md focus:outline-none focus:border-green-600 cursor-pointer bg-transparent"
             value={role}
             onChange={(e) => setRole(e.target.value)}
           >
@@ -84,7 +84,7 @@ export default function Signup() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-800 text-white py-2 rounded-md hover:bg-blue-500 transition-colors duration-300 cursor-pointer"
+            className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-800 transition-colors duration-300 cursor-pointer"
           >
             {loading ? "Creating..." : "Sign Up"}
           </button>
@@ -93,7 +93,7 @@ export default function Signup() {
             Already have an account?{" "}
             <span
               onClick={() => navigate("/login")}
-              className="text-red-700 font-medium hover:underline cursor-pointer"
+              className="w-full text-gray-600 py-2.5 rounded-md font-semibold transition cursor-pointer"
             >
               Log In
             </span>

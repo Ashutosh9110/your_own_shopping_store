@@ -22,7 +22,7 @@ const Navbar = () => {
 
   // Base class for NavLink items
   const linkBase =
-    "relative pb-1 transition-all duration-300 hover:text-blue-400 after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-blue-400 after:transition-all after:duration-300";
+    "relative pb-1 transition-all duration-300 hover:text-green-600 after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-0 hover:after:w-full after:bg-green-600 after:transition-all after:duration-300";
 
   return (
     <nav
@@ -46,7 +46,7 @@ const Navbar = () => {
               <NavLink
                 to="/products"
                 className={({ isActive }) =>
-                  `${linkBase} ${isActive ? "text-blue-400 after:w-full" : ""}`
+                  `${linkBase} ${isActive ? "text-green-600 after:w-full" : ""}`
                 }
               >
                 Products
@@ -54,7 +54,7 @@ const Navbar = () => {
               <NavLink
                 to="/cart"
                 className={({ isActive }) =>
-                  `${linkBase} ${isActive ? "text-blue-400 after:w-full" : ""}`
+                  `${linkBase} ${isActive ? "text-green-600 after:w-full" : ""}`
                 }
               >
                 Cart
@@ -62,7 +62,7 @@ const Navbar = () => {
               <NavLink
                 to="/orders"
                 className={({ isActive }) =>
-                  `${linkBase} ${isActive ? "text-blue-400 after:w-full" : ""}`
+                  `${linkBase} ${isActive ? "text-green-600 after:w-full" : ""}`
                 }
               >
                 My Orders
@@ -70,7 +70,7 @@ const Navbar = () => {
               <NavLink
                 to="/profile"
                 className={({ isActive }) =>
-                  `${linkBase} ${isActive ? "text-blue-400 after:w-full" : ""}`
+                  `${linkBase} ${isActive ? "text-green-600 after:w-full" : ""}`
                 }
               >
                 Profile
@@ -116,8 +116,8 @@ const Navbar = () => {
               className={`px-4 py-1.5 rounded-full text-sm font-semibold shadow-md transition-all duration-300 cursor-pointer 
                 ${
                   location.pathname === "/"
-                    ? "bg-green-600 hover:bg-red-500 text-white"
-                    : "bg-green-500 hover:bg-red-400 text-white"
+                    ? "bg-gray-600 hover:bg-red-500 text-white"
+                    : "bg-gray-600 hover:bg-red-400 text-white"
                 }`}
             >
               Logout

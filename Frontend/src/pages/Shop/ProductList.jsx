@@ -49,8 +49,11 @@ export default function Products() {
     const category = params.get("category") || "";
     setSelectedCategory(category);
   }, [location]);
+
+
+
   return (
-    <div className="min-h-screen bg-white py-12 px-6">
+    <div className="min-h-screen bg-white py-25 px-6">
       <h2 className="text-3xl font-bold mb-10 text-center text-gray-900">
         Latest Products
       </h2>

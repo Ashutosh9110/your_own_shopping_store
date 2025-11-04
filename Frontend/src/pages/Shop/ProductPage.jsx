@@ -43,7 +43,7 @@ export default function ProductPage() {
   ).toFixed(2);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-6">
+    <div className="min-h-screen bg-gray-50 py-18 px-6">
       <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 p-8">
 
@@ -137,7 +137,7 @@ export default function ProductPage() {
                   addToCart(product.id, 1)
                   navigate("/cart");
                 }}
-                className="flex items-center justify-center gap-2 bg-slate-800 text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-slate-900 transition cursor-pointer"
+                className="flex items-center justify-center gap-2 bg-slate-800 text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-slate-700 transition cursor-pointer"
               >
                 <ShoppingCart size={18} /> Add to Cart
               </button>

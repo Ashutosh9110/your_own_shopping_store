@@ -25,7 +25,7 @@ const allowedOrigins = [
 
 // CORS setup
 const corsOptions = {
-  origin: function (origin, callback) {
+  origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -33,17 +33,23 @@ const corsOptions = {
       callback(new Error("Not allowed by CORS"));
     }
   },
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
   credentials: true,
-  optionsSuccessStatus: 204,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "X-Requested-With",
+    "Accept",
+  ],
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions))
 
 // Middleware
 app.use(express.json());
-app.use("/uploads", express.static("src/uploads"));
+app.use("/uploads", cors(corsOptions), express.static("src/uploads"));
 
 // API routes
 app.use("/api/auth", authRoutes);
@@ -53,6 +59,11 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/users", userRoutes);
+
+// Health check route
+app.get("/", (req, res) => {
+  res.json({ message: "Backend is running" });
+});
 
 sequelize   
   .sync()

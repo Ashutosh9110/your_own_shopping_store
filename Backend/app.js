@@ -20,6 +20,7 @@ const allowedOrigins = [
   "http://localhost:5174",
   "http://localhost:3000",
   "https://yourownshoppingstore.netlify.app",
+  "https://your-own-shopping-store.onrender.com"
 ];
 
 // CORS setup
@@ -42,7 +43,7 @@ app.use(cors(corsOptions));
 
 // Middleware
 app.use(express.json());
-app.use("/uploads", cors(corsOptions), express.static("src/uploads"));
+app.use("/uploads", express.static("src/uploads"));
 
 // API routes
 app.use("/api/auth", authRoutes);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import API, { BASE_URL }from "../../api/api";
+import API, { BASE_URL } from "../../api/api";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import SidebarCategories from "../../components/SidebarCategories";
@@ -49,7 +49,6 @@ export default function Products() {
     const category = params.get("category") || "";
     setSelectedCategory(category);
   }, [location]);
-
   return (
     <div className="min-h-screen bg-white py-12 px-6">
       <h2 className="text-3xl font-bold mb-10 text-center text-gray-900">
@@ -97,6 +96,7 @@ export default function Products() {
                 alt={p.name}
                 className="w-auto h-48 object-contain mb-3"
               />
+              
               <div className="flex justify-between w-full text-slate-800 text-sm font-medium">
                 <div>
                   <p>{p.name}</p>

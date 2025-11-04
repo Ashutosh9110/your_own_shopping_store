@@ -268,12 +268,6 @@ export default function Welcome() {
     </div>
   </div>
 </section>
-
-
-      {/* Footer */}
-      <footer className="mt-auto py-6 bg-gray-800 text-gray-300 text-center text-sm">
-        © {new Date().getFullYear()} Your Own Shopping Store — All rights reserved.
-      </footer>
-    </div>
+</div>
   );
 }

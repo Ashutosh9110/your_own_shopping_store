@@ -20,6 +20,7 @@ import Profile from "./pages/Shop/Profile";
   
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
             <Route path="/admin/add-product" element={ <AdminRoute> <AddProduct /> </AdminRoute> } />
             <Route path="/admin/orders" element={ <AdminRoute> <ManageOrders /> </AdminRoute> } />
           </Routes>
+          <Footer />
       </>
   );
 }

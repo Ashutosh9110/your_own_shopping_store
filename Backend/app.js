@@ -45,11 +45,12 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions))
+app.options("/{*splat}", cors(corsOptions))
 
 // Middleware
 app.use(express.json());
 app.use("/uploads", cors(corsOptions), express.static("src/uploads"));
+
 
 // API routes
 app.use("/api/auth", authRoutes);

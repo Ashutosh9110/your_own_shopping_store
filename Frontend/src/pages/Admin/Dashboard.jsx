@@ -104,7 +104,7 @@ export default function Dashboard() {
               className="h-36 w-56 object-cover rounded-xl mb-4 mx-auto"
             />
             <h3 className="font-bold text-lg text-teal-800">{p.name}</h3>
-            <p className="text-gray-600 mb-1">₹{p.price}</p>
+            <p className="text-gray-600 mb-1">${p.price}</p>
             <p className="text-sm text-gray-500 mb-3">Stock: {p.quantity}</p>
 
             <div className="flex justify-center gap-3 mt-auto">

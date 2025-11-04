@@ -110,14 +110,14 @@ export default function Products() {
                         size={14}
                         className={`${
                           i < 4
-                            ? "text-green-500 fill-green-500"
-                            : "text-gray-300"
+                            ? "text-yellow-500 fill-yellow-500"
+                            : "text-gray-400"
                         }`}
                       />
                     ))}
                   </div>
                 </div>
-                <p className="font-semibold">₹{p.price.toFixed(2)}</p>
+                <p className="font-semibold">${p.price.toFixed(2)}</p>
               </div>
             </div>
           </motion.div>

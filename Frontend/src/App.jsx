@@ -1,5 +1,7 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
+import Loader from "./components/Loader";
 
 import Welcome from "./pages/Welcome";
 import Login from "./pages/Auth/Login";
@@ -13,7 +15,6 @@ import AddProduct from "./components/Admin/AddProduct";
 import ManageOrders from "./pages/Admin/ManageOrders";
 
 import ProductList from "./pages/Shop/ProductList";
-// import ProductPage from "./pages/products/ProductPage";
 import Cart from "./pages/Shop/Cart";
 import Orders from "./pages/Shop/Orders";
 import Profile from "./pages/Shop/Profile";
@@ -25,8 +26,20 @@ import Footer from "./components/Footer";
 import ProductPage from "./pages/Shop/ProductPage";
 
 function App() {
+
+  const location = useLocation();
+  const [loading, setLoading] = useState(false);
+
+  // Show loader when route changes
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => setLoading(false), 800); // duration for animation
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
   return (
       <>
+        {loading && <Loader message="Redirecting . . ." />}
+
         <Navbar />
           <Routes>
             {/* Public routes */}

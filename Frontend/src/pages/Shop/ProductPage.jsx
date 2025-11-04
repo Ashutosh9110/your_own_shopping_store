@@ -99,11 +99,11 @@ export default function ProductPage() {
 
               {/* Price and Discount */}
               <div className="flex items-baseline gap-4 mb-6">
-                <h2 className="text-4xl font-bold text-slate-800">
-                  ₹{discountedPrice}
+                <h2 className="text-xl font-bold text-gray-600">
+                  ${discountedPrice}
                 </h2>
-                <span className="text-gray-500 line-through text-lg">
-                  ₹{product.price.toFixed(2)}
+                <span className="text-gray-600 line-through text-md">
+                  ${product.price.toFixed(2)}
                 </span>
                 <span className="text-green-600 font-medium bg-green-100 px-3 py-1 rounded-full text-sm">
                   Save {discount}%
@@ -137,7 +137,7 @@ export default function ProductPage() {
                   addToCart(product.id, 1)
                   navigate("/cart");
                 }}
-                className="flex items-center justify-center gap-2 bg-slate-800 text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-slate-700 transition cursor-pointer"
+                className="flex items-center justify-center gap-2 bg-gray-600 text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-slate-700 transition cursor-pointer"
               >
                 <ShoppingCart size={18} /> Add to Cart
               </button>

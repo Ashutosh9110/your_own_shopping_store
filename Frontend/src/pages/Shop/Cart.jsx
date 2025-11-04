@@ -75,7 +75,7 @@ export default function Cart() {
             
             <div>
               <p className="font-semibold">{item.Product.name}</p>
-              <p className="text-gray-600">₹{item.Product.price.toFixed(2)}</p>
+              <p className="text-gray-600">${item.Product.price.toFixed(2)}</p>
             </div>
           </div>
           
@@ -114,7 +114,7 @@ export default function Cart() {
 
       <div className="mt-6 border-t pt-4">
         <h3 className="text-xl font-semibold mb-4">
-          <span className="text-gray-600">Total: </span><span className="text-gray-600">₹{total.toFixed(2)}</span>
+          <span className="text-gray-600">Total: </span><span className="text-gray-600">${total.toFixed(2)}</span>
         </h3>
 
         <div className="mb-4">

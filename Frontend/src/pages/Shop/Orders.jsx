@@ -92,7 +92,7 @@ export default function Orders() {
                 >
                   <div className="flex items-center gap-4">
                     <img
-                      src={`${item.Product.image}`}
+                      src={`http://localhost:5000${item.Product.image}`}
                       alt={item.Product.name}
                       className="w-16 h-16 rounded-md object-cover"
                     />

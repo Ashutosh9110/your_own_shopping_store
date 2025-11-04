@@ -1,6 +1,4 @@
-// src/components/SidebarCategories.jsx
 import React, { useState, useEffect, useContext } from "react";
-import { BASE_URL }from "../../api/api";
 
 import axios from "axios";
 import {
@@ -18,6 +16,7 @@ import {
 import { CartContext } from "../contexts/CartContext";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../api/api";
 
 const iconMap = {
   Clothing: <Shirt className="w-5 h-5 text-teal-600" />,

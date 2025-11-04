@@ -42,7 +42,7 @@ app.use(cors(corsOptions));
 
 // Middleware
 app.use(express.json());
-app.use("/uploads", express.static("src/uploads"));
+app.use("/uploads", cors(corsOptions), express.static("src/uploads"));
 
 // API routes
 app.use("/api/auth", authRoutes);

@@ -1,5 +1,7 @@
 // src/components/SidebarCategories.jsx
 import React, { useState, useEffect, useContext } from "react";
+import { BASE_URL }from "../../api/api";
+
 import axios from "axios";
 import {
   Shirt,
@@ -27,7 +29,6 @@ const iconMap = {
   Bags: <Handbag className="w-5 h-5 text-red-600" />,
 };
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 export default function SidebarCategories({ onCategorySelect }) {
   const [categories, setCategories] = useState([]);

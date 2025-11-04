@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
-import API from "../../api/api";
+import API, { BASE_URL }from "../../api/api";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import SidebarCategories from "../../components/SidebarCategories";
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
-
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -18,7 +16,7 @@ export default function Products() {
 
   const fetchProducts = async () => {
     try {
-      const params = {};
+      const params = {};  
       if (selectedCategory) params.category = selectedCategory;
       if (search) params.search = search;
       const res = await API.get("/api/products", { params });

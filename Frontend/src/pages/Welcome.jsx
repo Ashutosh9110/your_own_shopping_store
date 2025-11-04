@@ -10,7 +10,10 @@ import API from "../api/api";
 import AnimatedCategoryButton from "../components/AnimatedCategoryButton";
 
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL =
+  import.meta.env.MODE === "development"
+    ? "http://localhost:5000"
+    : "https://your-own-shopping-store.onrender.com";
 
 export default function Welcome() {
   const navigate = useNavigate();

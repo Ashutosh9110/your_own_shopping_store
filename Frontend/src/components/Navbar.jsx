@@ -34,9 +34,9 @@ const Navbar = () => {
         {/* Logo */}
         <Link
           to="/"
-          className="text-2xl font-bold tracking-tight flex items-center gap-2 hover:opacity-90 transition"
+          className="text-2xl font-bold tracking-tight flex items-center hover:opacity-90 transition"
         >
-          <span className="font-heading">ShopEase</span>
+          Your<span className="text-green-600">Store</span>
         </Link>
 
         {/* Desktop Menu */}

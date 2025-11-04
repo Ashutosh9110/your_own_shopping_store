@@ -53,7 +53,7 @@ export default function Login() {
           onSubmit={handleLogin}
           className="bg-white shadow-lg rounded-xl p-8 md:p-12 w-full max-w-md"
         >
-          <h2 className="text-3xl font-bold mb-2 text-center text-gray-900">
+          <h2 className="text-3xl font-bold mb-2 text-center text-green-600">
             {role === "admin" ? "Admin Login" : "User Login"}
           </h2>
           <p className="text-gray-500 text-center mb-8">
@@ -87,7 +87,7 @@ export default function Login() {
           {/* Role Dropdown */}
           <div className="mb-6">
             <select
-              className="border-b-2 border-gray-300 w-full py-2 text-gray-700 focus:outline-none focus:border-blue-500 cursor-pointer bg-transparent"
+              className="border-b-2 border-gray-300 w-full py-2 text-gray-700 focus:outline-none focus:border-green-600 cursor-pointer bg-transparent"
               value={role}
               onChange={(e) => setRole(e.target.value)}
             >
@@ -100,14 +100,14 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-800 text-white py-2.5 rounded-md font-semibold hover:bg-blue-500 transition disabled:opacity-70 cursor-pointer"
+            className="w-full bg-green-600 text-white py-2.5 rounded-md font-semibold hover:bg-green-800 transition disabled:opacity-70 cursor-pointer"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
 
           {/* Forgot Password */}
           <p
-            className="text-sm text-blue-600 hover:underline mt-4 text-center cursor-pointer"
+            className="text-sm text-gray-500 hover:underline mt-4 text-center cursor-pointer"
             onClick={() => navigate("/forgot-password")}
           >
             Forgot Password?
@@ -121,7 +121,7 @@ export default function Login() {
             type="button"
             disabled={loading}
             onClick={() => navigate("/register")}
-            className="w-full bg-gray-100 text-blue-700 py-2.5 rounded-md font-semibold hover:bg-blue-50 transition cursor-pointer"
+            className="w-full text-gray-800 py-2.5 rounded-md font-semibold transition cursor-pointer"
           >
             New User? Sign Up
           </button>

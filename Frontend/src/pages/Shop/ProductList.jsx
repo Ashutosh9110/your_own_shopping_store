@@ -1,12 +1,13 @@
-// src/pages/Shop/ProductList.jsx  (or Products.jsx)
 import React, { useEffect, useState, useContext } from "react";
 import API from "../../api/api";
 import { AuthContext } from "../../contexts/AuthContext";
 import { CartContext } from "../../contexts/CartContext";
 import { useNavigate, useLocation } from "react-router-dom";
-import SidebarCategories from "../../components/SidebarCategories"; 
+import SidebarCategories from "../../components/SidebarCategories";
+import { motion } from "framer-motion";
+import { Star } from "lucide-react";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -20,13 +21,11 @@ export default function Products() {
   const navigate = useNavigate();
   const location = useLocation();
 
-
   const fetchProducts = async () => {
     try {
       const params = {};
       if (selectedCategory) params.category = selectedCategory;
       if (search) params.search = search;
-
       const res = await API.get("/api/products", { params });
       setProducts(res.data);
     } catch (err) {
@@ -46,7 +45,6 @@ export default function Products() {
   useEffect(() => {
     fetchCategories();
   }, []);
-  
 
   useEffect(() => {
     const timeout = setTimeout(() => fetchProducts(), 400);
@@ -59,7 +57,6 @@ export default function Products() {
     setSelectedCategory(category);
   }, [location]);
 
-  
   const handleAddToCart = async (productId) => {
     if (!token) {
       alert("Please log in to add items to your cart.");
@@ -70,12 +67,6 @@ export default function Products() {
     try {
       setAddingProductId(productId);
       await addToCart(productId, 1);
-        setProducts((prev) =>
-          prev.map((p) =>
-            p.id === productId ? { ...p, quantity: p.quantity - 1 } : p
-          )
-        );
-      // await fetchProducts()
       alert("Product added to cart!");
     } catch (err) {
       console.error("Error adding to cart:", err);
@@ -86,85 +77,95 @@ export default function Products() {
   };
 
   return (
-    <div className="min-h-screen py-10 px-6">
-      <h2 className="text-3xl font-bold mb-6 text-center text-teal-700">Products</h2>
+    <div className="min-h-screen bg-white py-12 px-6">
+      <h2 className="text-3xl font-bold mb-10 text-center text-gray-900">
+        Latest Products
+      </h2>
 
-
-      <div className="flex gap-6">
-        {/* LEFT SIDEBAR */}
-        <aside className="hidden lg:block w-72">
-          <SidebarCategories />  
-        </aside>
-
-        {/* RIGHT CONTENT AREA */}
-        <main className="flex-1">
       {/* Filters */}
-      <div className="flex flex-wrap justify-center mb-8 gap-4">
+      <div className="flex flex-wrap justify-center mb-10 gap-4">
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="border rounded-lg p-2 cursor-pointer"
+          className="border border-gray-300 rounded-lg px-4 py-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-teal-500"
         >
           <option value="">All Categories</option>
           {categories.map((c) => (
-            <option key={c.id} value={c.name}>{c.name}</option>
+            <option key={c.id} value={c.name}>
+              {c.name}
+            </option>
           ))}
         </select>
 
         <input
           type="text"
           placeholder="Search products..."
-          className="border p-2 rounded-lg w-64"
+          className="border border-gray-300 px-4 py-2 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-teal-500"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 
       {/* Product Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {products.map((p) => (
-          <div
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        {products.map((p, idx) => (
+          <motion.div
             key={p.id}
-            className="bg-white shadow rounded-lg p-4 hover:shadow-lg transition flex flex-col"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: idx * 0.05 }}
+            className="bg-gray-50 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col text-center cursor-pointer"
           >
-          <div className="flex justify-center">
-            <img
-              src={`${BASE_URL}${p.image}`}
-              alt={p.name}
-              className="w-48 h-36 object-cover rounded-md mb-3"
-            />
-          </div>
-            <h3 className="text-lg font-semibold">{p.name}</h3>
-            <p className="text-gray-500">{p.Category?.name}</p>
-            <p className="text-teal-700 font-bold mb-2">₹{p.price.toFixed(2)}</p>
-            {p.quantity > 0 ? (
-              <p className="text-sm text-gray-500 mb-3">
-                Stock: {p.quantity}
+            <div className="relative">
+              <img
+                src={`${BASE_URL}${p.image}`}
+                alt={p.name}
+                className="w-full h-64 object-contain bg-white rounded-t-2xl p-6 transition-transform duration-300 hover:scale-105"
+              />
+              {p.quantity < 1 && (
+                <div className="absolute top-3 right-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">
+                  Out of Stock
+                </div>
+              )}
+            </div>
+
+            <div className="p-5 flex flex-col flex-1 items-center">
+              <h3 className="text-lg font-semibold text-gray-800 mb-1">
+                {p.name}
+              </h3>
+              <div className="flex justify-center mb-2">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    size={16}
+                    className={`${
+                      i < 4 ? "text-green-500 fill-green-500" : "text-gray-300"
+                    }`}
+                  />
+                ))}
+              </div>
+              <p className="text-gray-900 font-bold text-lg mb-3">
+                ₹{p.price.toFixed(2)}
               </p>
-            ) : (
-              <p className="text-sm text-red-600 font-semibold mb-3">
-                Out of Stock
-              </p>
-            )}
-            <button
-              onClick={() => handleAddToCart(p.id)}
-              disabled={addingProductId === p.id || p.quantity < 1}
-              className={`mt-auto py-2 rounded-lg w-full font-semibold transition cursor-pointer ${
-                p.quantity < 1
-                  ? "bg-gray-400 text-white cursor-not-allowed"
-                  : "bg-teal-600 text-white hover:bg-teal-700"
-              } ${addingProductId === p.id ? "opacity-70" : ""}`}
-            >
-              {p.quantity < 1
-                ? "Out of Stock"
-                : addingProductId === p.id
-                ? "Adding..."
-                : "Add to Cart"}
-            </button>
-          </div>
+
+              <button
+                onClick={() => handleAddToCart(p.id)}
+                disabled={addingProductId === p.id || p.quantity < 1}
+                className={`mt-auto py-2.5 px-6 rounded-full font-semibold transition-all duration-300 ${
+                  p.quantity < 1
+                    ? "bg-gray-300 text-white cursor-not-allowed"
+                    : "bg-teal-600 text-white hover:bg-teal-700"
+                } ${addingProductId === p.id ? "opacity-70" : ""}`}
+              >
+                {p.quantity < 1
+                  ? "Out of Stock"
+                  : addingProductId === p.id
+                  ? "Adding..."
+                  : "Add to Cart"}
+              </button>
+            </div>
+          </motion.div>
         ))}
-        </div>
-        </main>
       </div>
     </div>
   );

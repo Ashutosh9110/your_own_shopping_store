@@ -116,8 +116,8 @@ const Navbar = () => {
               className={`px-4 py-1.5 rounded-full text-sm font-semibold shadow-md transition-all duration-300 cursor-pointer 
                 ${
                   location.pathname === "/"
-                    ? "bg-gray-600 hover:bg-red-500 text-white"
-                    : "bg-gray-600 hover:bg-red-400 text-white"
+                    ? "bg-gray-600 hover:bg-gray-500 text-white"
+                    : "bg-gray-600 hover:bg-gray-500 text-white"
                 }`}
             >
               Logout

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { CartContext } from "../../contexts/CartContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import API from "../../api/api";
+import API, { BASE_URL } from "../../api/api";
 
 export default function Cart() {
   const { cart, updateCartItem, removeFromCart, fetchCart } = useContext(CartContext);
@@ -68,7 +68,7 @@ export default function Cart() {
           {/* Product Info */}
           <div className="flex items-center gap-4">
             <img
-              src={`http://localhost:5000${item.Product.image}`}
+              src={`${BASE_URL}${item.Product.image}`}
               alt={item.Product.name}
               className="w-20 h-20 object-cover rounded-md"
             />

@@ -100,7 +100,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-start gap-10">
           {/* Brand + description */}
           <div>
-            <Link to="/" className="text-4xl font-bold text-gray-800">
+            <Link to="/" className="text-4xl font-bold text-gray-600">
               Your<span className="text-green-600">Store</span>
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed">
@@ -114,7 +114,7 @@ const Footer = () => {
                   href={item.link}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full hover:scale-105 transition-transform"
+                  className="flex items-center justify-center w-10 h-10 bg-gray-600 hover:bg-gray-500 rounded-full hover:scale-105 transition-transform"
                 >
                   {item.icon}
                 </a>
@@ -126,9 +126,10 @@ const Footer = () => {
           <div className="flex flex-wrap gap-8 md:gap-16">
             {linkSections.map((section, index) => (
               <div key={index}>
-                <h3 className="font-semibold text-gray-800 mb-3">
-                  {section.title}
-                </h3>
+<h3 className="font-semibold mb-3 bg-gradient-to-r from-green-400 to-blue-600 bg-clip-text text-transparent">
+  {section.title}
+</h3>
+
                 <ul className="space-y-2 text-sm">
                   {section.links.map((link, i) => (
                     <li key={i}>
@@ -146,7 +147,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <p className="text-sm text-center text-gray-500 mt-10 border-t pt-6">
+        <p className="text-sm text-center text-gray-600 mt-10 border-t pt-6">
           © {new Date().getFullYear()} Your Own Shopping Store — All rights
           reserved.
         </p>

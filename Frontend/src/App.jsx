@@ -38,7 +38,7 @@ function App() {
   }, [location.pathname]);
   return (
       <>
-        {loading && <Loader message="Almost there, promise 🤞 . . ." />}
+        {loading && <Loader message="Almost there, promise . . . 🫰" />}
 
         <Navbar />
           <Routes>

@@ -90,13 +90,13 @@ export default function Profile() {
 
   return (
     <div className="max-w-3xl mx-auto bg-white shadow-lg p-6 rounded-lg mt-10">
-      <h2 className="text-3xl font-bold text-center text-teal-700 mb-6">
+      <h2 className="text-3xl font-bold text-center text-gray-600 mb-6">
         My Profile
       </h2>
 
       {/* Profile Info */}
       <div className="mb-8">
-        <h3 className="text-xl font-semibold mb-4 text-gray-800">Personal Info</h3>
+        <h3 className="text-xl font-semibold mb-4 text-gray-600">Personal Info</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <input
             type="text"
@@ -122,7 +122,7 @@ export default function Profile() {
         </div>
         <button
           onClick={handleProfileUpdate}
-          className="mt-4 bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition cursor-pointer"
+          className="mt-4 bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-500 transition cursor-pointer"
         >
           Update Profile
         </button>
@@ -130,7 +130,7 @@ export default function Profile() {
 
       {/* Addresses */}
       <div>
-        <h3 className="text-xl font-semibold mb-4 text-gray-800">
+        <h3 className="text-xl font-semibold mb-4 text-gray-600">
           Saved Addresses
         </h3>
 
@@ -161,7 +161,7 @@ export default function Profile() {
 
         {/* Add Address */}
         <div className="mt-6 border-t pt-4">
-          <h4 className="font-semibold mb-3">Add New Address</h4>
+          <h4 className="font-semibold mb-3 text-gray-600">Add New Address</h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <input
               type="text"
@@ -229,7 +229,7 @@ export default function Profile() {
           </div>
           <button
             onClick={handleAddAddress}
-            className="mt-4 bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition cursor-pointer"
+            className="mt-4 bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-500 transition cursor-pointer"
           >
             Add Address
           </button>

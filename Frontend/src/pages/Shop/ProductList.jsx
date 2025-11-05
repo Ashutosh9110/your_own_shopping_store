@@ -54,7 +54,7 @@ export default function Products() {
 
   return (
     <div className="min-h-screen bg-white py-25 px-6">
-      <h2 className="text-3xl font-bold mb-10 text-center text-gray-900">
+      <h2 className="text-3xl font-bold mb-10 text-center text-gray-600">
         Latest Products
       </h2>
 

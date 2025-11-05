@@ -1,6 +1,6 @@
 // src/pages/Orders.jsx
 import React, { useEffect, useState, useContext } from "react";
-import API from "../../api/api";
+import API, { BASE_URL } from "../../api/api";
 import { AuthContext } from "../../contexts/AuthContext";
 
 export default function Orders() {
@@ -50,7 +50,7 @@ export default function Orders() {
 
   return (
     <div className="max-w-5xl mx-auto mt-10 px-4">
-      <h2 className="text-3xl font-bold mb-6 text-center text-teal-700">
+      <h2 className="text-3xl font-bold mb-6 mt-25 text-center text-gray-600">
         My Orders
       </h2>
 
@@ -92,7 +92,7 @@ export default function Orders() {
                 >
                   <div className="flex items-center gap-4">
                     <img
-                      src={`http://localhost:5000${item.Product.image}`}
+                      src={`${BASE_URL}${item.Product.image}`}
                       alt={item.Product.name}
                       className="w-16 h-16 rounded-md object-cover"
                     />
@@ -114,7 +114,7 @@ export default function Orders() {
               <p className="text-gray-600">
                 <span className="font-semibold">Shipping:</span> {order.address}
               </p>
-              <p className="text-xl font-bold text-teal-700">
+              <p className="text-xl font-bold text-gray-600">
                 Total: ${order.totalAmount.toFixed(2)}
               </p>
             </div>

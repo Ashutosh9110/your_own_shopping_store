@@ -5,7 +5,6 @@ import { verifyToken } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// User must be logged in to initiate payment
 router.post("/create-order", verifyToken, createOrder);
 router.post("/verify", verifyToken, verifyPayment);
 

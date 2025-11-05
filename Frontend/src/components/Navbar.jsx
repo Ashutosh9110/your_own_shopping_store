@@ -82,8 +82,9 @@ const Navbar = () => {
             <>
               <NavLink
                 to="/admin"
+                end
                 className={({ isActive }) =>
-                  `${linkBase} ${isActive ? "text-blue-400 after:w-full" : ""}`
+                  `${linkBase} ${isActive ? "text-green-600 after:w-full" : ""}`
                 }
               >
                 Dashboard
@@ -91,7 +92,7 @@ const Navbar = () => {
               <NavLink
                 to="/admin/add-product"
                 className={({ isActive }) =>
-                  `${linkBase} ${isActive ? "text-blue-400 after:w-full" : ""}`
+                  `${linkBase} ${isActive ? "text-green-600 after:w-full" : ""}`
                 }
               >
                 Add Product
@@ -99,7 +100,7 @@ const Navbar = () => {
               <NavLink
                 to="/admin/orders"
                 className={({ isActive }) =>
-                  `${linkBase} ${isActive ? "text-blue-400 after:w-full" : ""}`
+                  `${linkBase} ${isActive ? "text-green-600 after:w-full" : ""}`
                 }
               >
                 Manage Orders

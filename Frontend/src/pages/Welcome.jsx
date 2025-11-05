@@ -49,17 +49,20 @@ export default function Welcome() {
     ],
   };
 
+  
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Banner */}
       <section className="relative w-full h-screen flex flex-col items-center justify-center text-center text-white overflow-hidden">
         {/* Background Video */}
         <video
-          src="/assets/categories/videos/shopping.mp4" 
+          src={`${BASE_URL}/api/videos/shopping.webm`}
           autoPlay
           muted
           loop
           playsInline
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover"
         />
 
@@ -153,11 +156,12 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("fruits")}
       >
         <video
-          src="/assets/categories/videos/fruits2.mp4"
+          src={`${BASE_URL}/api/videos/fruits2.webm`}
           autoPlay
           muted
           loop
           playsInline
+          preload="auto"
           className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
         />
         <AnimatedCategoryButton 
@@ -172,11 +176,12 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("vegetables")}
       >
         <video
-          src="/assets/categories/videos/vegetables.mp4"
+          src={`${BASE_URL}/api/videos/vegetables.webm`}
           autoPlay
           muted
           loop
           playsInline
+          preload="auto"
           className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
         />
        <AnimatedCategoryButton 
@@ -194,11 +199,12 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("Electronics")}
       >
         <video
-          src="/assets/categories/videos/electronics.mp4"
+          src={`${BASE_URL}/api/videos/electronics.webm`}
           autoPlay
           muted
           loop
           playsInline
+          preload="auto"
           className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
         />
         <AnimatedCategoryButton 
@@ -214,11 +220,12 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("watches")}
       >
         <video
-          src="/assets/categories/videos/watches.mp4"
+          src={`${BASE_URL}/api/videos/watches.webm`}
           autoPlay
           muted
           loop
           playsInline
+          preload="auto"
           className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
         />
          <AnimatedCategoryButton 
@@ -236,11 +243,12 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("grocery")}
       >
         <video
-          src="/assets/categories/videos/grocery.mp4"
+          src={`${BASE_URL}/api/videos/grocery.webm`}
           autoPlay
           muted
           loop
           playsInline
+          preload="auto"
           className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
         />
         <AnimatedCategoryButton 
@@ -255,11 +263,12 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("personalCare")}
       >
         <video
-          src="/assets/categories/videos/personalCare.mp4"  
+          src={`${BASE_URL}/api/videos/personalCare.webm`}  
           autoPlay
           muted
           loop
           playsInline
+          preload="auto"
           className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
         />
        <AnimatedCategoryButton 

@@ -9,6 +9,7 @@ import orderRoutes from "./src/routes/orderRoutes.js";
 import cartRoutes from "./src/routes/cartRoutes.js";
 import paymentRoutes from "./src/routes/paymentRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
+import videoRoutes from "./src/routes/videoRoutes.js";
 
 dotenv.config();
 
@@ -60,6 +61,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/videos", videoRoutes);
 
 // Health check route
 app.get("/", (req, res) => {

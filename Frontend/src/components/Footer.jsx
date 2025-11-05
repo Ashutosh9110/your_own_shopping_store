@@ -126,9 +126,9 @@ const Footer = () => {
           <div className="flex flex-wrap gap-8 md:gap-16">
             {linkSections.map((section, index) => (
               <div key={index}>
-<h3 className="font-semibold mb-3 bg-gradient-to-r from-green-400 to-blue-600 bg-clip-text text-transparent">
-  {section.title}
-</h3>
+                <h3 className="font-semibold mb-3 bg-gradient-to-r from-green-400 to-blue-600 bg-clip-text text-transparent">
+                  {section.title}
+                </h3>
 
                 <ul className="space-y-2 text-sm">
                   {section.links.map((link, i) => (

@@ -18,15 +18,11 @@ export default function Profile() {
     phone: "",
   });
 
-  const api = API.create({
-    baseURL: "/api",
-    headers: { Authorization: `Bearer ${token}` },
-  });
 
   // Fetch user + address info
   const fetchProfile = async () => {
     try {
-      const res = await api.get("/users/profile");
+      const res = await API.get("api/users/profile");
       setProfile(res.data);
       setForm({
         name: res.data.name || "",
@@ -46,7 +42,7 @@ export default function Profile() {
   // Update profile info
   const handleProfileUpdate = async () => {
     try {
-      await api.put("/users/profile", form);
+      await API.put("api/users/profile", form);
       alert("Profile updated!");
       fetchProfile();
     } catch (err) {
@@ -58,7 +54,7 @@ export default function Profile() {
   // Add new address
   const handleAddAddress = async () => {
     try {
-      await api.post("/users/address", newAddress);
+      await API.post("api/users/address", newAddress);
       alert("Address added!");
       setNewAddress({
         fullName: "",
@@ -79,7 +75,7 @@ export default function Profile() {
   const handleDeleteAddress = async (id) => {
     if (!window.confirm("Are you sure you want to delete this address?")) return;
     try {
-      await api.delete(`/users/address/${id}`);
+      await API.delete(`api/users/address/${id}`);
       fetchProfile();
     } catch (err) {
       console.error("Failed to delete address", err);
@@ -147,7 +143,7 @@ export default function Profile() {
                 <p className="text-sm text-gray-600">
                   {a.street}, {a.city}, {a.state}, {a.postalCode}, {a.country}
                 </p>
-                <p className="text-sm text-gray-600">📞 {a.phone}</p>
+                <p className="text-sm text-gray-600"> {a.phone}</p>
               </div>
               <button
                 onClick={() => handleDeleteAddress(a.id)}

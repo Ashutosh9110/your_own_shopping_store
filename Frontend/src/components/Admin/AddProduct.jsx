@@ -1,6 +1,6 @@
-// src/components/Admin/AddProduct.jsx
 import React, { useState, useEffect } from "react";
 import API from "../../api/api";
+import { useNavigate } from "react-router-dom";
 
 export default function AddProduct({ onSuccess }) {
   const [product, setProduct] = useState({
@@ -10,10 +10,12 @@ export default function AddProduct({ onSuccess }) {
     quantity: "",
     imageFile: null,
   });
+
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [seeding, setSeeding] = useState(false);
   const token = localStorage.getItem("token");
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -76,16 +78,18 @@ export default function AddProduct({ onSuccess }) {
       alert("Product added successfully!");
       setProduct({ categoryId: "", name: "", price: "", quantity: "", imageFile: null });
       onSuccess?.();
+      navigate("/admin")
     } catch (err) {
       console.error("Add product error:", err);
-      alert(err.response?.data?.message || "❌ Failed to add product.");
+      alert(err.response?.data?.message || "Failed to add product.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white shadow rounded p-4 mb-6">
+ 
+      <form onSubmit={handleSubmit} className="bg-white shadow rounded p-4 mb-6 pt-30">
       <h2 className="font-bold mb-4 text-xl">Add New Product</h2>
 
       {/* Category dropdown */}
@@ -158,7 +162,7 @@ export default function AddProduct({ onSuccess }) {
 
       <button
         disabled={loading}
-        className={`w-full bg-teal-600 text-white py-2 rounded cursor-pointer hover:bg-teal-700 ${
+        className={`w-full bg-gray-600 text-white py-2 rounded cursor-pointer hover:bg-gray-500 ${
           loading ? "opacity-70 cursor-not-allowed" : ""
         }`}
       >

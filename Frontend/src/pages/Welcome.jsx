@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import Slider from "react-slick";
 import SidebarCategories from "../components/SidebarCategories";
 import { Shirt, Apple, Cpu, ShoppingBasket } from "lucide-react";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
 import API, { BASE_URL } from "../api/api";
 import AnimatedCategoryButton from "../components/AnimatedCategoryButton";
 

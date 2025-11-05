@@ -10,6 +10,8 @@ import cartRoutes from "./src/routes/cartRoutes.js";
 import paymentRoutes from "./src/routes/paymentRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
 import videoRoutes from "./src/routes/videoRoutes.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
@@ -50,8 +52,15 @@ app.options("/{*splat}", cors(corsOptions))
 
 // Middleware
 app.use(express.json());
-app.use("/uploads", cors(corsOptions), express.static("src/uploads"));
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(
+  "/uploads",
+  cors(corsOptions),
+  express.static(path.join(__dirname, "src/uploads"))
+);
 
 // API routes
 app.use("/api/auth", authRoutes);
@@ -64,7 +73,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/videos", videoRoutes);
 
 // Health check route
-app.get("/", (req, res) => {
+app.get("/", (req, res) => {  
   res.json({ message: "Backend is running" });
 });
 

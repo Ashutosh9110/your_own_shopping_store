@@ -6,14 +6,10 @@ import SidebarCategories from "../components/SidebarCategories";
 import { Shirt, Apple, Cpu, ShoppingBasket } from "lucide-react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import API from "../api/api";
+import API, { BASE_URL } from "../api/api";
 import AnimatedCategoryButton from "../components/AnimatedCategoryButton";
 
 
-const BASE_URL =
-  import.meta.env.MODE === "development"
-    ? "http://localhost:5000"
-    : "https://your-own-shopping-store.onrender.com";
 
 export default function Welcome() {
   const navigate = useNavigate();
@@ -34,20 +30,20 @@ export default function Welcome() {
   }, []);
 
   // Carousel settings
-  const settings = {
-    dots: true,
-    infinite: true,
-    autoplay: true,
-    autoplaySpeed: 2500,
-    speed: 800,
-    slidesToShow: 5,
-    slidesToScroll: 1,
-    pauseOnHover: true,
-    responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: 2 } },
-      { breakpoint: 640, settings: { slidesToShow: 1 } },
-    ],
-  };
+  // const settings = {
+  //   dots: true,
+  //   infinite: true,
+  //   autoplay: true,
+  //   autoplaySpeed: 2500,
+  //   speed: 800,
+  //   slidesToShow: 5,
+  //   slidesToScroll: 1,
+  //   pauseOnHover: true,
+  //   responsive: [
+  //     { breakpoint: 1024, settings: { slidesToShow: 2 } },
+  //     { breakpoint: 640, settings: { slidesToShow: 1 } },
+  //   ],
+  // };
 
   
 
@@ -57,7 +53,7 @@ export default function Welcome() {
       <section className="relative w-full h-screen flex flex-col items-center justify-center text-center text-white overflow-hidden">
         {/* Background Video */}
         <video
-          src={`${BASE_URL}/api/videos/shopping.webm`}
+          src={`${BASE_URL}/uploads/shopping.webm`}
           autoPlay
           muted
           loop
@@ -156,7 +152,7 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("fruits")}
       >
         <video
-          src={`${BASE_URL}/api/videos/fruits2.webm`}
+          src={`${BASE_URL}/uploads/fruits2.webm`}
           autoPlay
           muted
           loop
@@ -176,7 +172,7 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("vegetables")}
       >
         <video
-          src={`${BASE_URL}/api/videos/vegetables.webm`}
+          src={`${BASE_URL}/uploads/vegetables.webm`}
           autoPlay
           muted
           loop
@@ -199,7 +195,7 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("Electronics")}
       >
         <video
-          src={`${BASE_URL}/api/videos/electronics.webm`}
+          src={`${BASE_URL}/uploads/electronics.webm`}
           autoPlay
           muted
           loop
@@ -220,7 +216,7 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("watches")}
       >
         <video
-          src={`${BASE_URL}/api/videos/watches.webm`}
+          src={`${BASE_URL}/uploads/watches.webm`}
           autoPlay
           muted
           loop
@@ -243,7 +239,7 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("grocery")}
       >
         <video
-          src={`${BASE_URL}/api/videos/grocery.webm`}
+          src={`${BASE_URL}/uploads/grocery.webm`}
           autoPlay
           muted
           loop
@@ -263,7 +259,7 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("personalCare")}
       >
         <video
-          src={`${BASE_URL}/api/videos/personalCare.webm`}  
+          src={`${BASE_URL}/uploads/personalCare.webm`}  
           autoPlay
           muted
           loop

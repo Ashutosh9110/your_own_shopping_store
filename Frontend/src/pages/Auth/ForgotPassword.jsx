@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import API from "../../api/api";
 import { motion } from "framer-motion";
 import { BASE_URL } from "../../api/api";
+import { Link } from "react-router-dom";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -42,6 +43,13 @@ export default function ForgotPassword() {
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
       />
+
+          <Link
+            to="/"
+            className="absolute top-6 left-6 text-white text-lg font-semibold hover:underline z-20"
+          >
+            ← Back to Home
+          </Link>
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/70"></div>
 
       {/* Form Card */}

@@ -48,6 +48,7 @@ export default function Welcome() {
   
 
   return (
+    
     <div className="min-h-screen flex flex-col">
       {/* Hero Banner */}
       <section className="relative w-full h-screen flex flex-col items-center justify-center text-center text-white overflow-hidden">

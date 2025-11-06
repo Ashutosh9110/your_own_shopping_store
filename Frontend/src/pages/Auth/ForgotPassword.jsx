@@ -1,56 +1,99 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import API from "../../api/api";
-// import API from "../api/api";
+import { motion } from "framer-motion";
+import { BASE_URL } from "../../api/api";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [resetLink, setResetLink] = useState(null);
 
-  const handleReset = async (e) => {
+  const handleForgot = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setMessage("");
+    setResetLink(null);
+
     try {
+      setLoading(true);
       const res = await API.post("/api/auth/forgot-password", { email });
-      setMessage(res.data.message);
+      setMessage(res.data.message || "Check your inbox for reset instructions.");
+
+      // if backend returned link (for testing)
+      if (res.data.resetURL) {
+        setResetLink(res.data.resetURL);
+      }
     } catch (err) {
-      setMessage(err.response?.data?.message || "Error sending reset link");
+      console.error(err);
+      setMessage(err.response?.data?.message || "Something went wrong.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <form onSubmit={handleReset} className="bg-white p-8 rounded-lg shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-4 text-center">Forgot Password</h2>
-        <input
-          type="email"
-          placeholder="Enter your email"
-          className="border p-2 w-full mb-3 rounded"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <button
-          disabled={loading}
-          className="w-full bg-teal-600 text-white py-2 rounded hover:bg-green-800"
-        >
-          {loading ? "Sending..." : "Send Reset Link"}
-        </button>
-        <p
-          className="text-teal-600 text-sm mt-3 text-center cursor-pointer hover:text-black"
-          onClick={() => navigate("/login")}
-        >
-          Back to Login
-        </p>
+    <div className="relative w-full h-screen flex items-center justify-center text-center text-white overflow-hidden">
+      {/* Background video */}
+      <video
+        src={`${BASE_URL}/uploads/shopping.webm`}
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/70"></div>
+
+      {/* Form Card */}
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="relative z-10 bg-white/15 backdrop-blur-md p-10 rounded-2xl border border-white/20 w-[90%] max-w-md text-left"
+      >
+        <h2 className="text-3xl font-bold mb-6 text-center text-white">
+          Forgot Password
+        </h2>
+
+        <form onSubmit={handleForgot} className="flex flex-col gap-4">
+          <input
+            type="email"
+            placeholder="Enter your registered email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="px-4 py-3 rounded-lg bg-white/20 text-white placeholder-gray-300 outline-none focus:ring-2 focus:ring-white"
+          />
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="mt-4 w-full py-3 font-semibold rounded-lg bg-white/90 text-black hover:bg-white transition-all"
+          >
+            {loading ? "Sending..." : "Send Reset Link"}
+          </button>
+        </form>
+
         {message && (
-          <p className="text-center mt-4 text-sm text-gray-700">{message}</p>
+          <p className="mt-4 text-center text-yellow-300 font-medium">
+            {message}
+          </p>
         )}
-      </form>
+
+        {resetLink && (
+          <p className="mt-4 text-center text-green-300">
+            Test link:{" "}
+            <a
+              href={resetLink}
+              className="underline text-green-400 break-all"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {resetLink}
+            </a>
+          </p>
+        )}
+      </motion.div>
     </div>
   );
 }

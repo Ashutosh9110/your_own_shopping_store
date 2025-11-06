@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import User from "../models/User.js";
 import dotenv from "dotenv";
-import nodemailer from "nodemailer";
+import { sendMail } from "../utils/sendMail.js"; 
 
 dotenv.config();
 
@@ -74,9 +74,13 @@ export const login = async (req, res) => {
 };
 
 export const logout = async (req, res) => {
-  // JWT logout handled client-side — invalidate by ignoring token
   res.json({ message: "Logged out successfully" });
 };
+
+
+
+console.log(process.env.FRONTEND_URL);
+
 
 export const forgotPassword = async (req, res) => {
   try {
@@ -84,9 +88,8 @@ export const forgotPassword = async (req, res) => {
     const user = await User.findOne({ where: { email } });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // Generate token
     const resetToken = crypto.randomBytes(32).toString("hex");
-    const resetTokenExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 min expiry
+    const resetTokenExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 min
 
     user.resetToken = resetToken;
     user.resetTokenExpiry = resetTokenExpiry;
@@ -94,30 +97,23 @@ export const forgotPassword = async (req, res) => {
 
     const resetURL = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-    // Send email (setup required)
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+    await sendMail(
+      email,
+      "Reset your password - Your Own Shopping Store",
+      resetURL
+    );
+    res.json({ message: "Password reset email sent successfully" });
 
-    await transporter.sendMail({
-      to: email,
-      subject: "Password Reset Request",
-      html: `
-        <h2>Reset Your Password</h2>
-        <p>Click the link below to reset your password:</p>
-        <a href="${resetURL}" target="_blank">${resetURL}</a>
-        <p>This link expires in 15 minutes.</p>
-      `,
-    });
 
-    res.json({ message: "Password reset email sent" });
+    // return res.json({
+    //   message:
+    //     "Password reset link generated successfully (for local testing).",
+    //   resetURL,
+    // });
+
   } catch (err) {
     console.error("Forgot password error:", err);
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: "Error sending reset email" });
   }
 };
 

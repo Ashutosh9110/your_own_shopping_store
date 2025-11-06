@@ -28,7 +28,7 @@ export function AuthProvider({ children }) {
         localStorage.removeItem("user");
       }
     } else {
-      localStorage.removeItem("user"); // cleanup invalid values
+      localStorage.removeItem("user")
     }
     setLoading(false);
   }, []);

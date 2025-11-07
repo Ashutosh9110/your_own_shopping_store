@@ -1,4 +1,5 @@
 // src/controllers/productController.js
+import { sequelize } from "../config/db.js"; 
 import Product from "../models/Product.js";
 import Category from "../models/Category.js";
 import multer from "multer";
@@ -55,7 +56,6 @@ export const getProducts = async (req, res) => {
       whereClause.name = { [Op.iLike]: `%${search}%` };
     }
 
-    // Base query config
     const queryOptions = {
       where: whereClause,
       include: [
@@ -67,12 +67,19 @@ export const getProducts = async (req, res) => {
       order: [["createdAt", "DESC"]],
     };
 
-    // Category filter (via name)
-    if (category) {
-      queryOptions.include[0].where = {
-        name: { [Op.iLike]: category },
-      };
-    }
+      if (category) {
+        const normalizedCategory = category.toLowerCase().replace(/\s+/g, "");
+      
+        queryOptions.include[0].where = sequelize.where(
+          sequelize.fn(
+            "REPLACE",
+            sequelize.fn("LOWER", sequelize.col("Category.name")),
+            " ",
+            ""
+          ),
+          normalizedCategory
+        );
+      } 
 
     const products = await Product.findAll(queryOptions);
     res.json(products);

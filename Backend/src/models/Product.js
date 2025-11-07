@@ -26,7 +26,7 @@ const Product = sequelize.define("Product", {
 });
 
 
-// Association: one category → many products
+// Association: one category => many products
 Category.hasMany(Product, { foreignKey: "categoryId", onDelete: "CASCADE" });
 Product.belongsTo(Category, { foreignKey: "categoryId" });
 

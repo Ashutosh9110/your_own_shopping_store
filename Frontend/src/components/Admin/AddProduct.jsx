@@ -13,9 +13,8 @@ export default function AddProduct({ onSuccess }) {
 
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [seeding, setSeeding] = useState(false);
-  const token = localStorage.getItem("token");
-  const navigate = useNavigate()
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -25,41 +24,18 @@ export default function AddProduct({ onSuccess }) {
       } catch (err) {
         console.error("Error fetching categories:", err);
         alert("Failed to load categories. Please try again.");
+      } finally {
+        setLoadingCategories(false);
       }
     };
 
     fetchCategories();
   }, []);
 
-
-  const handleSeedCategories = async () => {
-    try {
-      setSeeding(true);
-      await API.post(
-        "/api/categories/seed",
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      const res = await API.get("/api/categories");
-      setCategories(res.data);
-      alert("Default categories seeded!");
-    } catch (err) {
-      console.error("Error seeding categories:", err);
-      alert(
-        err.response?.data?.message ||
-          "Failed to seed categories. Make sure you are logged in as admin."
-      );
-    } finally {
-      setSeeding(false);
-    }
-  };
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
       const formData = new FormData();
       formData.append("categoryId", product.categoryId);
@@ -76,9 +52,15 @@ export default function AddProduct({ onSuccess }) {
       });
 
       alert("Product added successfully!");
-      setProduct({ categoryId: "", name: "", price: "", quantity: "", imageFile: null });
+      setProduct({
+        categoryId: "",
+        name: "",
+        price: "",
+        quantity: "",
+        imageFile: null,
+      });
       onSuccess?.();
-      navigate("/admin")
+      navigate("/admin");
     } catch (err) {
       console.error("Add product error:", err);
       alert(err.response?.data?.message || "Failed to add product.");
@@ -88,40 +70,33 @@ export default function AddProduct({ onSuccess }) {
   };
 
   return (
- 
-      <form onSubmit={handleSubmit} className="bg-white shadow rounded p-4 mb-6 pt-30">
+    <form onSubmit={handleSubmit} className="bg-white shadow rounded p-4 mb-6 pt-30">
       <h2 className="font-bold mb-4 text-xl">Add New Product</h2>
 
       {/* Category dropdown */}
       <label className="block mb-2 font-medium">Category</label>
-      {categories.length === 0 && (
-        <div className="flex items-center justify-between bg-yellow-50 border border-yellow-200 text-yellow-800 rounded p-2 mb-2">
-          <span>No categories found.</span>
-          <button
-            type="button"
-            onClick={handleSeedCategories}
-            disabled={seeding}
-            className={`ml-3 px-3 py-1 rounded text-white ${
-              seeding ? "bg-yellow-400" : "bg-yellow-600 hover:bg-yellow-700"
-            }`}
-          >
-            {seeding ? "Seeding..." : "Seed defaults"}
-          </button>
+
+      {loadingCategories ? (
+        <div className="text-gray-500 mb-4">Loading categories...</div>
+      ) : categories.length === 0 ? (
+        <div className="text-red-600 mb-4">
+          No categories found. Try refreshing or check backend logs.
         </div>
+      ) : (
+        <select
+          className="border p-2 w-full mb-4 rounded"
+          value={product.categoryId}
+          onChange={(e) => setProduct({ ...product, categoryId: e.target.value })}
+          required
+        >
+          <option value="">Select Category</option>
+          {categories.map((cat) => (
+            <option key={cat.id} value={cat.id}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
       )}
-      <select
-        className="border p-2 w-full mb-4 rounded"
-        value={product.categoryId}
-        onChange={(e) => setProduct({ ...product, categoryId: e.target.value })}
-        required
-      >
-        <option value="">Select Category</option>
-        {categories.map((cat) => (
-          <option key={cat.id} value={cat.id}>
-            {cat.name}
-          </option>
-        ))}
-      </select>
 
       <label className="block mb-2 font-medium">Product Name</label>
       <input
@@ -157,7 +132,9 @@ export default function AddProduct({ onSuccess }) {
       <input
         type="file"
         className="border p-2 w-full mb-4 rounded"
-        onChange={(e) => setProduct({ ...product, imageFile: e.target.files[0] })}
+        onChange={(e) =>
+          setProduct({ ...product, imageFile: e.target.files[0] })
+        }
       />
 
       <button

@@ -18,10 +18,9 @@ export default function Welcome() {
 
 
   const handleCategoryClick = (cat) => {
-    navigate(`/products?category=${cat.toLowerCase()}`);
+    navigate(`/products?category=${encodeURIComponent(cat)}`);
   };
 
-  // Fetch featured products (or first few)
   useEffect(() => {
     API
       .get("/api/products?limit=6")
@@ -257,7 +256,7 @@ export default function Welcome() {
 
       <div
         className="relative group overflow-hidden rounded-2xl h-[400px] md:w-2/3 w-full cursor-pointer"
-        onClick={() => handleCategoryClick("personalCare")}
+        onClick={() => handleCategoryClick("Personal Care")}
       >
         <video
           src={`${BASE_URL}/uploads/personalCare.webm`}  
@@ -270,7 +269,7 @@ export default function Welcome() {
         />
        <AnimatedCategoryButton 
           label="Personal Care"
-          onClick={() => handleCategoryClick("personalCare")}
+          onClick={() => handleCategoryClick("Personal Care")}
           className="absolute bottom-20 left-190"
         />
       </div>

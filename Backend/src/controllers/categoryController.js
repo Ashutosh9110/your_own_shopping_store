@@ -1,6 +1,5 @@
 import Category from "../models/Category.js";
 
-// Create a new category
 export const createCategory = async (req, res) => {
   try {
     const { name } = req.body;
@@ -16,9 +15,28 @@ export const createCategory = async (req, res) => {
   }
 };
 
-// Get all categories
+const defaultCategories = [
+  "Fruits",
+  "Vegetables",
+  "Electronics",
+  "Grocery",
+  "Clothing",
+  "Stationery",
+  "Watches",
+  "Personal Care"
+];
+
 export const getCategories = async (req, res) => {
   try {
+    const existing = await Category.findAll();
+    const existingNames = existing.map((c) => c.name);
+
+    const missing = defaultCategories.filter((n) => !existingNames.includes(n));
+    if (missing.length > 0) {
+      await Category.bulkCreate(missing.map((name) => ({ name })));
+      console.log("Auto-added missing categories:", missing);
+    }
+
     const categories = await Category.findAll({ order: [["name", "ASC"]] });
     res.json(categories);
   } catch (err) {
@@ -26,7 +44,6 @@ export const getCategories = async (req, res) => {
   }
 };
 
-// Delete a category
 export const deleteCategory = async (req, res) => {
   try {
     const { id } = req.params;
@@ -39,24 +56,4 @@ export const deleteCategory = async (req, res) => {
   }
 };
 
-
-// src/controllers/categoryController.js
-export const seedDefaultCategories = async (req, res) => {
-  try {
-    const defaultCategories = ["Fruits", "Electronics", "Grocery", "Clothing", "Stationery"];
-    const added = [];
-
-    for (const name of defaultCategories) {
-      const existing = await Category.findOne({ where: { name } });
-      if (!existing) {
-        await Category.create({ name });
-        added.push(name);
-      }
-    }
-
-    res.json({ message: "Default categories seeded", added });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
 

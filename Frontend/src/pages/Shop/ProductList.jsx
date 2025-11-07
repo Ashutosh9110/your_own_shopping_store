@@ -45,8 +45,8 @@ export default function Products() {
   }, [selectedCategory, search]);
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const category = params.get("category") || "";
+    const categoryParam = new URLSearchParams(location.search).get("category");
+    const category = categoryParam?.replace(/\s+/g, "").toLowerCase();
     setSelectedCategory(category);
   }, [location]);
 

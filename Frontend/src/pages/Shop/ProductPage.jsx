@@ -100,10 +100,10 @@ export default function ProductPage() {
               {/* Price and Discount */}
               <div className="flex items-baseline gap-4 mb-6">
                 <h2 className="text-xl font-bold text-gray-600">
-                  ${discountedPrice}
+                ₹{discountedPrice}
                 </h2>
                 <span className="text-gray-600 line-through text-md">
-                  ${product.price.toFixed(2)}
+                ₹{product.price.toFixed(2)}
                 </span>
                 <span className="text-green-600 font-medium bg-green-100 px-3 py-1 rounded-full text-sm">
                   Save {discount}%

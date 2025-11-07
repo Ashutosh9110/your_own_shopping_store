@@ -99,12 +99,12 @@ export default function Orders() {
                     <div>
                       <p className="font-medium text-gray-800">{item.Product.name}</p>
                       <p className="text-sm text-gray-500">
-                        {item.quantity} × ${item.price.toFixed(2)}
+                        {item.quantity} × ₹{item.price.toFixed(2)}
                       </p>
                     </div>
                   </div>
                   <p className="text-teal-700 font-semibold">
-                  ${(item.quantity * item.price).toFixed(2)}
+                  ₹{(item.quantity * item.price).toFixed(2)}
                   </p>
                 </div>
               ))}

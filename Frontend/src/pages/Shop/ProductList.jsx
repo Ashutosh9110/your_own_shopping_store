@@ -117,7 +117,7 @@ export default function Products() {
                     ))}
                   </div>
                 </div>
-                <p className="font-semibold">${p.price.toFixed(2)}</p>
+                <p className="font-semibold">₹{p.price.toFixed(2)}</p>
               </div>
             </div>
           </motion.div>

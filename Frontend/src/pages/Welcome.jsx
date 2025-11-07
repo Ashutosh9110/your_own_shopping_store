@@ -8,6 +8,8 @@ import { Shirt, Apple, Cpu, ShoppingBasket } from "lucide-react";
 // import "slick-carousel/slick/slick-theme.css";
 import API, { BASE_URL } from "../api/api";
 import AnimatedCategoryButton from "../components/AnimatedCategoryButton";
+import NewsletterBox from "../components/NewsletterBox";
+
 
 
 
@@ -276,6 +278,8 @@ export default function Welcome() {
     </div>
   </div>
 </section>
+<NewsletterBox />
+
 </div>
   );
 }

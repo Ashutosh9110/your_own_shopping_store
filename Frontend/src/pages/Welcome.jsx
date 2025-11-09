@@ -55,7 +55,8 @@ export default function Welcome() {
       <section className="relative w-full h-screen flex flex-col items-center justify-center text-center text-white overflow-hidden">
         {/* Background Video */}
         <video
-          src={`${BASE_URL}/uploads/shopping.webm`}
+          src="https://res.cloudinary.com/djm65usjg/video/upload/v1762694530/shopping_xns41y.webm"
+          // poster="/fallback-bg.jpg"
           autoPlay
           muted
           loop
@@ -154,7 +155,7 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("fruits")}
       >
         <video
-          src={`${BASE_URL}/uploads/fruits2.webm`}
+          src="https://res.cloudinary.com/djm65usjg/video/upload/v1762694531/fruits2_hyh36s.webm"
           autoPlay
           muted
           loop
@@ -174,7 +175,7 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("vegetables")}
       >
         <video
-          src={`${BASE_URL}/uploads/vegetables.webm`}
+          src="https://res.cloudinary.com/djm65usjg/video/upload/v1762694530/vegetables_mpgm2n.webm"
           autoPlay
           muted
           loop
@@ -197,7 +198,7 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("Electronics")}
       >
         <video
-          src={`${BASE_URL}/uploads/electronics.webm`}
+          src="https://res.cloudinary.com/djm65usjg/video/upload/v1762694529/electronics_c6e7ij.webm"
           autoPlay
           muted
           loop
@@ -218,7 +219,7 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("watches")}
       >
         <video
-          src={`${BASE_URL}/uploads/watches.webm`}
+          src="https://res.cloudinary.com/djm65usjg/video/upload/v1762694531/watches_qnqtfb.webm"
           autoPlay
           muted
           loop
@@ -241,7 +242,7 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("grocery")}
       >
         <video
-          src={`${BASE_URL}/uploads/grocery.webm`}
+          src="https://res.cloudinary.com/djm65usjg/video/upload/v1762694529/grocery_bdgt9e.webm"
           autoPlay
           muted
           loop
@@ -261,7 +262,7 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("Personal Care")}
       >
         <video
-          src={`${BASE_URL}/uploads/personalCare.webm`}  
+          src="https://res.cloudinary.com/djm65usjg/video/upload/v1762694529/personalCare_sou9n6.webm"
           autoPlay
           muted
           loop

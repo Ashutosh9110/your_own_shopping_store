@@ -7,7 +7,7 @@ import { useAuth } from "../../contexts/AuthContext";
 export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("user");
+  const [ role ] = useState("user");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const { signup } = useAuth();
@@ -72,14 +72,14 @@ export default function Signup() {
             required
           />
 
-          <select
+          {/* <select
             className="border border-gray-300 mb-6 w-full p-2 rounded-md focus:outline-none focus:border-green-600 cursor-pointer bg-transparent"
             value={role}
             onChange={(e) => setRole(e.target.value)}
           >
             <option value="user">User</option>
             <option value="admin">Admin</option>
-          </select>
+          </select> */}
 
           <button
             type="submit"

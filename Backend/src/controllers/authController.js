@@ -21,7 +21,7 @@ export const register = async (req, res) => {
     const existing = await User.findOne({ where: { email } });
     if (existing) {
       console.warn(`Registration failed: ${email} already exists`);
-      return res.status(409).json({ message: "Email already exists" }); // 👈 use 409 (Conflict)
+      return res.status(409).json({ message: "Email already exists" }); // 409 (Conflict)
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -46,16 +46,15 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { email, password, role } = req.body;
+    const { email, password } = req.body;
+
     const user = await User.findOne({ where: { email } });
     if (!user) return res.status(404).json({ message: "User not found" });
 
     const validPass = await bcrypt.compare(password, user.password);
     if (!validPass) return res.status(401).json({ message: "Invalid credentials" });
 
-    if (role   === "admin" && user.role !== "admin")
-      return res.status(403).json({ message: "Unauthorized: Not an admin" });
-
+    // Generate JWT token
     const token = jwt.sign(
       { id: user.id, role: user.role },
       process.env.JWT_SECRET,
@@ -65,13 +64,16 @@ export const login = async (req, res) => {
     res.json({
       message: "Login successful",
       token,
-      role: user.role,
+      role: user.role, // 
     });
   } catch (err) {
     console.error("Login error:", err);
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: "Server error" });
   }
 };
+
+
+
 
 export const logout = async (req, res) => {
   res.json({ message: "Logged out successfully" });

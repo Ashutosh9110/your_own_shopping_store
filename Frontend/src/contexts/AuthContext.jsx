@@ -1,4 +1,3 @@
-// src/contexts/AuthContext.jsx
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/api";
@@ -10,8 +9,6 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
-
 
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
@@ -28,31 +25,32 @@ export function AuthProvider({ children }) {
         localStorage.removeItem("user");
       }
     } else {
-      localStorage.removeItem("user")
+      localStorage.removeItem("user");
     }
     setLoading(false);
   }, []);
 
-  async function login(email, password, role = "user") {
-    const res = await API.post("/api/auth/login", { email, password, role });
-    const { token, user: userData } = res.data;
-  
-    // Fallback user info if backend doesn't send one
-    const finalUser = userData || { email, role };
-  
+  async function login(email, password) {
+    const res = await API.post("/api/auth/login", { email, password });
+    const { token, role } = res.data;
+
+    const finalUser = { email, role };
+
     setUser(finalUser);
     setToken(token);
-  
+
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(finalUser));
-    localStorage.setItem("role", finalUser.role);
-  
+    localStorage.setItem("role", role);
+
     API.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+    if (role === "admin") navigate("/admin/dashboard");
+    else navigate("/");
   }
-  
 
   async function signup(email, password, role = "user") {
-    const res = await API.post("api/auth/register", { email, password, role });
+    const res = await API.post("/api/auth/register", { email, password, role });
     return res.data;
   }
 
@@ -67,7 +65,9 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, signup, loading }}>
+    <AuthContext.Provider
+      value={{ user, token, login, logout, signup, loading }}
+    >
       {!loading && children}
     </AuthContext.Provider>
   );

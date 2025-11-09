@@ -10,6 +10,7 @@ import cartRoutes from "./src/routes/cartRoutes.js";
 import paymentRoutes from "./src/routes/paymentRoutes.js";
 import userRoutes from "./src/routes/userRoutes.js";
 import videoRoutes from "./src/routes/videoRoutes.js";
+import adminSetupRoute from "./src/routes/adminSetupRoute.js";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -71,6 +72,8 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/videos", videoRoutes);
+app.use("/api/admin", adminSetupRoute);
+
 
 // Health check route
 app.get("/", (req, res) => {  

@@ -125,28 +125,7 @@ const Navbar = () => {
             </button>
           ) : (
             <>
-              <Link
-                to="/login"
-                className={`font-semibold px-3 py-1.5 rounded-full transition-all shadow-sm text-[18px]
-                  ${
-                    location.pathname === "/"
-                      ? "text-white hover:bg-white/20"
-                      : "text-blue-600 hover:bg-blue-100"
-                  }`}
-              >
-                Login
-              </Link>
-              <Link
-                to="/register"
-                className={`font-semibold px-3 py-1.5 rounded-full transition-all shadow-sm text-[18px]
-                  ${
-                    location.pathname === "/"
-                      ? "text-white hover:bg-white/20"
-                      : "text-blue-600 hover:bg-blue-100"
-                  }`}
-              >
-                Signup
-              </Link>
+
             </>
           )}
         </div>

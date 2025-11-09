@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Loader from "./components/Loader";
@@ -30,7 +30,12 @@ function App() {
   const location = useLocation();
   const [loading, setLoading] = useState(false);
 
-  // Show loader when route changes
+  const AdminRoute = ({ children }) => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    return token && role === "admin" ? children : <Navigate to="/login" />;
+  };
+
   useEffect(() => {
     setLoading(true);
     const timer = setTimeout(() => setLoading(false), 800); // duration for animation
@@ -56,7 +61,7 @@ function App() {
             <Route path="/profile" element={ <ProtectedRoute> <Profile /> </ProtectedRoute> } />
             <Route path="/checkout" element={ <ProtectedRoute> <Checkout /> </ProtectedRoute> } />
             {/* Admin routes (admin-only) */}
-            <Route path="/admin" element={ <AdminRoute> <Dashboard /> </AdminRoute> } />
+            <Route path="/admin" element={ <AdminRoute><Dashboard /></AdminRoute> } />
             <Route path="/admin/add-product" element={ <AdminRoute> <AddProduct /> </AdminRoute> } />
             <Route path="/admin/orders" element={ <AdminRoute> <ManageOrders /> </AdminRoute> } />
           </Routes>

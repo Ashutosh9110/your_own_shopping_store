@@ -85,7 +85,7 @@ export default function Profile() {
   if (!profile) return <p className="text-center mt-20">Loading profile...</p>;
 
   return (
-    <div className="max-w-3xl mx-auto bg-white shadow-lg p-6 rounded-lg mt-10">
+    <div className="max-w-3xl mx-auto bg-white shadow-lg p-6 rounded-lg mt-30">
       <h2 className="text-3xl font-bold text-center text-gray-600 mb-6">
         My Profile
       </h2>

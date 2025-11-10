@@ -49,7 +49,7 @@ export default function Orders() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto mt-10 px-4">
+    <div className="max-w-5xl mx-auto mt-30 px-4">
       <h2 className="text-3xl font-bold mb-6 mt-25 text-center text-gray-600">
         My Orders
       </h2>
@@ -77,7 +77,7 @@ export default function Orders() {
                     ? "bg-yellow-100 text-yellow-700"
                     : order.status === "Cancelled"
                     ? "bg-red-100 text-red-700"
-                    : "bg-blue-100 text-blue-700"
+                    : "bg-blue-100 text-green-600"
                 }`}
               >
                 {order.status}

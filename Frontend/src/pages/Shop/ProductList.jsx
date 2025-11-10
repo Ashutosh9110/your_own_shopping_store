@@ -50,8 +50,8 @@ export default function Products() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-20 px-6 font-[Poppins]">
-      <h2 className="text-4xl font-semibold mb-12 text-center text-gray-800">
-        Explore Our <span className="text-teal-600">Latest Products</span>
+      <h2 className="text-4xl font-semibold mb-12 text-center text-gray-800 mt-15">
+        Explore Our <span className="text-green-600">Latest Products</span>
       </h2>
 
       {/* Filters */}
@@ -59,7 +59,7 @@ export default function Products() {
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="border border-gray-300 bg-white rounded-xl px-5 py-2 text-gray-700 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+          className="border border-gray-300 bg-white rounded-xl px-5 py-2 text-gray-700 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-600 transition"
         >
           <option value="">All Categories</option>
           {categories.map((c) => (
@@ -72,7 +72,7 @@ export default function Products() {
         <input
           type="text"
           placeholder="Search for a product..."
-          className="border border-gray-300 bg-white px-5 py-2 rounded-xl w-72 text-gray-700 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+          className="border border-gray-300 bg-white px-5 py-2 rounded-xl w-72 text-gray-700 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-600 transition"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -119,10 +119,10 @@ export default function Products() {
               </div>
 
               <div className="flex justify-between items-center">
-                <p className="text-teal-600 text-lg font-semibold">
+                <p className="text-gray-600 text-lg font-semibold">
                   ₹{p.price.toFixed(2)}
                 </p>
-                <button className="bg-teal-500 text-white px-4 py-1 rounded-full text-sm font-medium hover:bg-teal-600 transition">
+                <button className="bg-green-600 text-white px-4 py-1 rounded-full text-sm font-medium hover:bg-green-800 transition cursor-pointer">
                   View
                 </button>
               </div>

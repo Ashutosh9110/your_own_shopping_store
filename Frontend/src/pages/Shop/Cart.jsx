@@ -55,7 +55,7 @@ export default function Cart() {
   
 
   return (
-    <div className="max-w-4xl mx-auto mt-20 bg-white shadow-lg p-6 rounded-lg">
+    <div className="max-w-4xl mx-auto mt-30 bg-white shadow-lg p-6 rounded-lg">
       <h2 className="text-3xl font-bold mb-6 text-center text-gray-600">
         Your Cart
       </h2>

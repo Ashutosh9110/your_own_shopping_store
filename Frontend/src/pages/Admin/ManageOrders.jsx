@@ -87,7 +87,7 @@ export default function ManageOrders() {
                 <select
                   value={order.status}
                   onChange={(e) => updateStatus(order.id, e.target.value)}
-                  className="border border-teal-500 rounded-lg p-2 text-sm font-medium text-gray-700 cursor-pointer"
+                  className="border border-green-600 rounded-lg p-2 text-sm font-medium text-gray-600 cursor-pointer"
                 >
                   <option value="PENDING">Pending</option>
                   <option value="PROCESSING">Processing</option>

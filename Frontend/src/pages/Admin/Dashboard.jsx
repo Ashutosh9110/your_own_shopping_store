@@ -68,7 +68,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-200 via-teal-100 to-green-100 p-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-8 mt-25 gap-4">
         <h1 className="text-4xl font-extrabold text-teal-800 drop-shadow">
           🌿 Admin Dashboard
         </h1>
@@ -92,17 +92,30 @@ export default function Dashboard() {
 
       {/* Product Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {products.map((p) => (
-          <motion.div
-            key={p.id}
-            whileHover={{ scale: 1.03 }}
-            className="bg-white/80 backdrop-blur-md shadow-xl rounded-2xl p-4 transition-all border border-teal-100 flex flex-col items-center text-center"
-          >
-            <img
-              src={`${BASE_URL}${p.image}`}
-              alt={p.name}
-              className="h-36 w-56 object-cover rounded-xl mb-4 mx-auto"
-            />
+      {products.map((p) => {
+        const firstImage =
+          Array.isArray(p.image) && p.image.length > 0
+            ? p.image[0]
+            : "/placeholder.png";
+
+          return (
+          
+            <motion.div
+              key={p.id}
+              whileHover={{ scale: 1.03 }}
+              className="bg-white/80 backdrop-blur-md shadow-xl rounded-2xl p-4 transition-all border border-teal-100 flex flex-col items-center text-center"
+            >
+             <img
+                src={
+                  p.image?.length
+                    ? p.image[0].startsWith("http")
+                      ? p.image[0]
+                      : `${BASE_URL.replace(/\/$/, "")}${p.image[0]}`
+                    : "/placeholder.png"
+                }
+                alt={p.name}
+                className="h-36 w-56 object-cover rounded-xl mb-4 mx-auto"
+              />
             <h3 className="font-bold text-lg text-teal-800">{p.name}</h3>
             <p className="text-gray-600 mb-1">₹{p.price}</p>
             <p className="text-sm text-gray-500 mb-3">Stock: {p.quantity}</p>
@@ -122,7 +135,8 @@ export default function Dashboard() {
               </button>
             </div>
           </motion.div>
-        ))}
+          )
+        })}
       </div>
 
       {/* Modals */}

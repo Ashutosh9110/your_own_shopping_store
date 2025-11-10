@@ -18,9 +18,8 @@ export default function Login() {
     try {
       const response = await login(email, password);
 
-      // ✅ Redirect based on backend role
       if (response.role === "admin") {
-        navigate("/admin/dashboard");
+        navigate("/admin");
       } else {
         navigate("/");
       }

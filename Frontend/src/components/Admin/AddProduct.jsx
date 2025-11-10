@@ -8,9 +8,8 @@ export default function AddProduct({ onSuccess }) {
     name: "",
     price: "",
     quantity: "",
-    imageFile: null,
   });
-
+  const [imageFiles, setImageFiles] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingCategories, setLoadingCategories] = useState(true);
@@ -28,7 +27,6 @@ export default function AddProduct({ onSuccess }) {
         setLoadingCategories(false);
       }
     };
-
     fetchCategories();
   }, []);
 
@@ -42,7 +40,10 @@ export default function AddProduct({ onSuccess }) {
       formData.append("name", product.name);
       formData.append("price", product.price);
       formData.append("quantity", product.quantity);
-      if (product.imageFile) formData.append("image", product.imageFile);
+
+      for (let i = 0; i < imageFiles.length; i++) {
+        formData.append("images", imageFiles[i]);
+      }
 
       await API.post("/api/products", formData, {
         headers: {
@@ -52,13 +53,8 @@ export default function AddProduct({ onSuccess }) {
       });
 
       alert("Product added successfully!");
-      setProduct({
-        categoryId: "",
-        name: "",
-        price: "",
-        quantity: "",
-        imageFile: null,
-      });
+      setProduct({ categoryId: "", name: "", price: "", quantity: "" });
+      setImageFiles([]);
       onSuccess?.();
       navigate("/admin");
     } catch (err) {
@@ -70,12 +66,10 @@ export default function AddProduct({ onSuccess }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white shadow rounded p-4 mb-6 pt-30">
+    <form onSubmit={handleSubmit} className="bg-white shadow rounded p-4 mb-6">
       <h2 className="font-bold mb-4 text-xl">Add New Product</h2>
 
-      {/* Category dropdown */}
       <label className="block mb-2 font-medium">Category</label>
-
       {loadingCategories ? (
         <div className="text-gray-500 mb-4">Loading categories...</div>
       ) : categories.length === 0 ? (
@@ -128,13 +122,12 @@ export default function AddProduct({ onSuccess }) {
         required
       />
 
-      <label className="block mb-2 font-medium">Image</label>
+      <label className="block mb-2 font-medium">Images (max 5)</label>
       <input
         type="file"
+        multiple
         className="border p-2 w-full mb-4 rounded"
-        onChange={(e) =>
-          setProduct({ ...product, imageFile: e.target.files[0] })
-        }
+        onChange={(e) => setImageFiles(Array.from(e.target.files))}
       />
 
       <button
@@ -148,3 +141,4 @@ export default function AddProduct({ onSuccess }) {
     </form>
   );
 }
+  

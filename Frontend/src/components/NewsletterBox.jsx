@@ -27,7 +27,7 @@ const NewsletterBox = () => {
           required
           type="email"
           placeholder="Enter your email"
-          className="flex-grow text-gray-300 placeholder-gray-400 px-6 py-3 outline-none"
+          className="flex-grow text-gray-500 placeholder-gray-400 px-6 py-3 outline-none"
         />
         <button
           type="submit"

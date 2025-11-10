@@ -5,7 +5,7 @@ const BASE_URL =
     ? import.meta.env.VITE_API_BASE_URL
     : import.meta.env.VITE_BACKEND_URL;
 
-// console.log("BASE_URL being used:", BASE_URL);
+    // console.log("🌍 BASE_URL being used:", BASE_URL, "| mode:", import.meta.env.MODE);
 
 
 

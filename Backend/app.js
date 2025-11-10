@@ -81,7 +81,7 @@ app.get("/", (req, res) => {
 });
 
 sequelize
-  .sync()
+  .sync({alter: true})
   .then(() => {
     console.log("Database connected & synced");
   })

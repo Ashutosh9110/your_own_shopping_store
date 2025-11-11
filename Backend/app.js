@@ -64,12 +64,32 @@ const __dirname = path.dirname(__filename);
 // );
 
 
+// app.use("/uploads", (req, res, next) => {
+//   const allowedOrigin = "https://yourownshoppingstore.netlify.app";
+//   res.header("Access-Control-Allow-Origin", allowedOrigin);
+//   res.header("Access-Control-Allow-Methods", "GET, OPTIONS");
+//   next();
+// }, express.static(path.join(__dirname, "src/uploads")));
+
+
 app.use("/uploads", (req, res, next) => {
   const allowedOrigin = "https://yourownshoppingstore.netlify.app";
+  const requestOrigin = req.headers.origin;
+
+  console.log("\n [UPLOAD REQUEST]");
+  console.log("Path:", req.path);
+  console.log("Full URL:", req.protocol + "://" + req.get("host") + req.originalUrl);
+  console.log("Origin Header:", requestOrigin);
+
   res.header("Access-Control-Allow-Origin", allowedOrigin);
   res.header("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+  console.log("Response CORS header:", res.getHeader("Access-Control-Allow-Origin"));
+
   next();
 }, express.static(path.join(__dirname, "src/uploads")));
+
 
 
 
@@ -92,11 +112,17 @@ app.get("/", (req, res) => {
 });
 
 sequelize
-  .sync({alter: true})
+  .sync()
   .then(() => {
     console.log("Database connected & synced");
   })
   .catch((err) => console.error("DB error:", err));
+
+  app.use((req, res, next) => {
+    console.warn("404 - Not Found:", req.originalUrl);
+    res.status(404).json({ message: "Route not found" });
+  });
+
 
 app.listen(process.env.PORT || 5000, () => {
   console.log(`Server running on port ${process.env.PORT || 5000}`);

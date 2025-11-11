@@ -115,6 +115,8 @@ export default function Products() {
         const imgSrc1 = img1 ? formatUrl(img1) : "/placeholder.png";
         const imgSrc2 = img2 ? formatUrl(img2) : imgSrc1;
 
+        console.log("🖼️ Image for product:", p.name, "| imgSrc1:", imgSrc1);
+
         return (
           <>
             <img
@@ -122,6 +124,7 @@ export default function Products() {
               alt={p.name}
               className="w-full h-full object-contain transition-transform duration-700 transform group-hover:scale-95"
               style={{ position: "absolute", inset: 0, margin: "auto" }}
+              onError={() => console.warn("❌ Failed to load image:", imgSrc1)}
             />
             <img
               src={imgSrc2}

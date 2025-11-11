@@ -67,4 +67,6 @@ html {
   letter-spacing: 0.2em;
 }
 
-
+img {
+  cross-origin: anonymous;
+}

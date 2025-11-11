@@ -105,32 +105,33 @@ export default function Products() {
 
                 {/* two images stacked, fade & translate on hover */}
                 <div className="relative w-full h-56 flex items-center justify-center p-6">
-                  {(() => {
-                    const formatUrl = (url) =>
-                      url?.startsWith("http")
-                        ? url
-                        : `${BASE_URL.replace(/\/$/, "")}${url}`;
+      {/* Utility function to ensure correct image URL */}
+      {(() => {
+        const formatUrl = (url) =>
+          url?.startsWith("http")
+            ? url
+            : `${BASE_URL.replace(/\/$/, "")}${url}`;
 
-                    const imgSrc1 = img1 ? formatUrl(img1) : "/placeholder.png";
-                    const imgSrc2 = img2 ? formatUrl(img2) : imgSrc1;
+        const imgSrc1 = img1 ? formatUrl(img1) : "/placeholder.png";
+        const imgSrc2 = img2 ? formatUrl(img2) : imgSrc1;
 
-                    return (
-                      <>
-                        <img
-                          src={imgSrc1}
-                          alt={p.name}
-                          className="w-full h-full object-contain transition-transform duration-700 transform group-hover:scale-95"
-                          style={{ position: "absolute", inset: 0, margin: "auto" }}
-                        />
-                        <img
-                          src={imgSrc2}
-                          alt={`${p.name}-alt`}
-                          className="w-full h-full object-contain opacity-0 translate-y-2 transition-all duration-700 group-hover:opacity-100 group-hover:translate-y-0"
-                          style={{ position: "absolute", inset: 0, margin: "auto" }}
-                        />
-                      </>
-                    );
-                  })()}
+        return (
+          <>
+            <img
+              src={imgSrc1}
+              alt={p.name}
+              className="w-full h-full object-contain transition-transform duration-700 transform group-hover:scale-95"
+              style={{ position: "absolute", inset: 0, margin: "auto" }}
+            />
+            <img
+              src={imgSrc2}
+              alt={`${p.name}-alt`}
+              className="w-full h-full object-contain opacity-0 translate-y-2 transition-all duration-700 group-hover:opacity-100 group-hover:translate-y-0"
+              style={{ position: "absolute", inset: 0, margin: "auto" }}
+            />
+          </>
+        );
+      })()}
 
                 </div>
 

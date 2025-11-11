@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import API, { BASE_URL }from "../../api/api";
+import API, { BASE_URL } from "../../api/api";
 import { CartContext } from "../../contexts/CartContext";
 import { Star, ShoppingCart, Zap } from "lucide-react";
 
@@ -12,14 +12,26 @@ export default function ProductPage() {
   const [selectedImage, setSelectedImage] = useState("");
   const [discount, setDiscount] = useState(0);
 
-  // Fetch product details
+  const formatImageUrl = (img) => {   // Utility to ensure consistent image URL logic
+    if (!img) return "/placeholder.png";
+    return img.startsWith("http")
+      ? img
+      : `${BASE_URL.replace(/\/$/, "")}${img}`;
+  };
+
   const fetchProduct = async () => {
     try {
       const res = await API.get(`/api/products/${id}`);
       const p = res.data;
       setProduct(p);
-      setSelectedImage(`${BASE_URL}${p.image}`);
-      setDiscount(p.discount || 15); // default 15% if not provided
+
+      
+      const firstImage = Array.isArray(p.image) //  Handle array or separate image fields gracefully
+        ? p.image[0]
+        : p.image || p.image1 || p.image2;
+
+      setSelectedImage(formatImageUrl(firstImage));
+      setDiscount(p.discount || 15);
     } catch (err) {
       console.error("Failed to load product:", err);
     }
@@ -42,12 +54,15 @@ export default function ProductPage() {
     (product.price * discount) / 100
   ).toFixed(2);
 
+  const imageList = Array.isArray(product.image)
+    ? product.image
+    : [product.image, product.image2, product.image3, product.image4].filter(Boolean);
+
   return (
     <div className="min-h-screen bg-gray-50 py-18 px-6">
       <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 p-8">
 
-          {/* Image Gallery */}
           <div>
             <div className="bg-gray-100 rounded-2xl p-6 flex items-center justify-center mb-4">
               <img
@@ -56,21 +71,24 @@ export default function ProductPage() {
                 className="w-full h-auto max-h-[420px] object-contain"
               />
             </div>
-            <div className="flex justify-center gap-3">
-              {[product.image, product.image2, product.image3, product.image4]
-                .filter(Boolean)
-                .map((img, i) => (
+
+            <div className="flex justify-center gap-3 flex-wrap">
+              {imageList.map((img, i) => {
+                const fullUrl = formatImageUrl(img);
+                return (
                   <img
                     key={i}
-                    src={`${BASE_URL}${img}`}
-                    onClick={() => setSelectedImage(`${BASE_URL}${img}`)}
+                    src={fullUrl}
+                    alt={`thumb-${i}`}
+                    onClick={() => setSelectedImage(fullUrl)}
                     className={`w-20 h-20 object-cover rounded-lg cursor-pointer border-2 ${
-                      selectedImage === `${BASE_URL}${img}`
+                      selectedImage === fullUrl
                         ? "border-slate-800"
                         : "border-transparent"
                     }`}
                   />
-                ))}
+                );
+              })}
             </div>
           </div>
 
@@ -100,10 +118,10 @@ export default function ProductPage() {
               {/* Price and Discount */}
               <div className="flex items-baseline gap-4 mb-6">
                 <h2 className="text-xl font-bold text-gray-600">
-                ₹{discountedPrice}
+                  ₹{discountedPrice}
                 </h2>
                 <span className="text-gray-600 line-through text-md">
-                ₹{product.price.toFixed(2)}
+                  ₹{product.price.toFixed(2)}
                 </span>
                 <span className="text-green-600 font-medium bg-green-100 px-3 py-1 rounded-full text-sm">
                   Save {discount}%
@@ -130,11 +148,10 @@ export default function ProductPage() {
               </div>
             </div>
 
-            {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mt-6">
               <button
                 onClick={() => {
-                  addToCart(product.id, 1)
+                  addToCart(product.id, 1);
                   navigate("/cart");
                 }}
                 className="flex items-center justify-center gap-2 bg-gray-600 text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-slate-700 transition cursor-pointer"

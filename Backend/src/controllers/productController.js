@@ -59,9 +59,9 @@ export const getProducts = async (req, res) => {
     });
 
 
-    products.forEach((p, i) => {
-      console.log(`  #${i + 1} product name:`, p.name, "| image:", p.image);
-    });
+    // products.forEach((p, i) => {
+    //   console.log(`  #${i + 1} product name:`, p.name, "| image:", p.image);
+    // });
 
     const normalized = products.map((p) => {
       const json = p.toJSON();

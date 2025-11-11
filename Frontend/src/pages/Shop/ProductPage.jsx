@@ -12,18 +12,18 @@ export default function ProductPage() {
   const [selectedImage, setSelectedImage] = useState("");
   const [discount, setDiscount] = useState(0);
 
-  const formatImageUrl = (img) => {   // Utility to ensure consistent image URL logic
+  const formatImageUrl = (img) => {   
     if (!img) return "/placeholder.png";
     return img.startsWith("http")
       ? img
-      : `${BASE_URL.replace(/\/$/, "")}${img}`;
+      : `${BASE_URL.replace(/\/$/, "")}${img}`;                                             
   };
 
   const fetchProduct = async () => {
     try {
       const res = await API.get(`/api/products/${id}`);
       const p = res.data;
-      setProduct(p);
+      setProduct(p);  
 
       
       const firstImage = Array.isArray(p.image) //  Handle array or separate image fields gracefully

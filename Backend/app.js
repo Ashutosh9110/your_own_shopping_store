@@ -57,11 +57,22 @@ app.use(express.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(
-  "/uploads",
-  cors(corsOptions),
-  express.static(path.join(__dirname, "src/uploads"))
-);
+// app.use(
+//   "/uploads",
+//   cors(corsOptions),
+//   express.static(path.join(__dirname, "src/uploads"))
+// );
+
+
+app.use("/uploads", (req, res, next) => {
+  const allowedOrigin = "https://yourownshoppingstore.netlify.app";
+  res.header("Access-Control-Allow-Origin", allowedOrigin);
+  res.header("Access-Control-Allow-Methods", "GET, OPTIONS");
+  next();
+}, express.static(path.join(__dirname, "src/uploads")));
+
+
+
 
 // API routes
 app.use("/api/auth", authRoutes);

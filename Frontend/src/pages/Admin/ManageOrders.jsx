@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { motion } from "framer-motion";
 import API, { BASE_URL } from "../../api/api";
+import { formatUrl } from "../../utils/formatUrl";
 
 
 export default function ManageOrders() {
@@ -105,11 +106,12 @@ export default function ManageOrders() {
                     className="flex justify-between items-center py-3 hover:bg-gray-100 rounded-lg transition cursor-pointer"
                   >
                     <div className="flex items-center gap-3">
-                      <img
-                        src={`${BASE_URL}${item.Product.image}`}
-                        alt={item.Product.name}
-                        className="w-16 h-16 object-cover rounded-md shadow"
-                      />
+                    <img
+                      src={formatUrl(item.Product.image)}
+                      alt={item.Product.name}
+                      className="w-16 h-16 object-cover rounded-md shadow"
+                    />
+
                       <div>
                         <p className="font-medium text-gray-800">{item.Product.name}</p>
                         <p className="text-sm text-gray-500">

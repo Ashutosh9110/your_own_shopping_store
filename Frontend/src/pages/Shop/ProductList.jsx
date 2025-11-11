@@ -115,7 +115,7 @@ export default function Products() {
         const imgSrc1 = img1 ? formatUrl(img1) : "/placeholder.png";
         const imgSrc2 = img2 ? formatUrl(img2) : imgSrc1;
 
-        console.log("🖼️ Image for product:", p.name, "| imgSrc1:", imgSrc1);
+        console.log("Image for product:", p.name, "| imgSrc1:", imgSrc1);
 
         return (
           <>

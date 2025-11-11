@@ -3,6 +3,8 @@ import { CartContext } from "../../contexts/CartContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import API, { BASE_URL } from "../../api/api";
+import { formatUrl } from "../../utils/formatUrl";
+
 
 export default function Cart() {
   const { cart, updateCartItem, removeFromCart, fetchCart } = useContext(CartContext);
@@ -51,7 +53,7 @@ export default function Cart() {
   const total = cart.reduce(
     (sum, item) => sum + item.Product.price * item.quantity,
     0
-  );
+  ); 
   
 
   return (
@@ -67,11 +69,11 @@ export default function Cart() {
         >
           {/* Product Info */}
           <div className="flex items-center gap-4">
-            <img
-              src={`${BASE_URL}${item.Product.image}`}
-              alt={item.Product.name}
-              className="w-20 h-20 object-cover rounded-md"
-            />
+          <img
+            src={formatUrl(item.Product.image)}
+            alt={item.Product.name}
+            className="w-20 h-20 object-cover rounded-md"
+          />
             
             <div>
               <p className="font-semibold">{item.Product.name}</p>

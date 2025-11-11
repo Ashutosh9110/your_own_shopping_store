@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import API, { BASE_URL } from "../../api/api";
 import { CartContext } from "../../contexts/CartContext";
 import { Star, ShoppingCart, Zap } from "lucide-react";
+import { formatUrl } from "../../utils/formatUrl";
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -12,12 +13,7 @@ export default function ProductPage() {
   const [selectedImage, setSelectedImage] = useState("");
   const [discount, setDiscount] = useState(0);
 
-  const formatImageUrl = (img) => {   
-    if (!img) return "/placeholder.png";
-    return img.startsWith("http")
-      ? img
-      : `${BASE_URL.replace(/\/$/, "")}${img}`;                                             
-  };
+
 
   const fetchProduct = async () => {
     try {
@@ -30,7 +26,7 @@ export default function ProductPage() {
         ? p.image[0]
         : p.image || p.image1 || p.image2;
 
-      setSelectedImage(formatImageUrl(firstImage));
+      setSelectedImage(formatUrl(firstImage));
       setDiscount(p.discount || 15);
     } catch (err) {
       console.error("Failed to load product:", err);
@@ -74,7 +70,7 @@ export default function ProductPage() {
 
             <div className="flex justify-center gap-3 flex-wrap">
               {imageList.map((img, i) => {
-                const fullUrl = formatImageUrl(img);
+                const fullUrl = formatUrl(img);
                 return (
                   <img
                     key={i}

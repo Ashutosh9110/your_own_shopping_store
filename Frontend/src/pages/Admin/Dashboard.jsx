@@ -4,6 +4,7 @@ import AddProduct from "../../components/Admin/AddProduct";
 import EditProduct from "../../components/Admin/EditProduct";
 import { motion } from "framer-motion";
 import API, { BASE_URL } from "../../api/api";
+import { formatUrl } from "../../utils/formatUrl";
 
 export default function Dashboard() {
   const [products, setProducts] = useState([]);
@@ -14,12 +15,6 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
  
-  const formatImageUrl = (img) => {
-    if (!img) return "/placeholder.png";
-    return img.startsWith("http")
-      ? img
-      : `${BASE_URL.replace(/\/$/, "")}${img}`;
-  };
 
   const loadProducts = async () => {
     try {
@@ -109,7 +104,7 @@ export default function Dashboard() {
               className="bg-white/80 backdrop-blur-md shadow-xl rounded-2xl p-4 transition-all border border-teal-100 flex flex-col items-center text-center"
             >
               <img
-                src={formatImageUrl(firstImage)}
+                src={formatUrl(firstImage)}
                 alt={p.name}
                 className="h-36 w-56 object-cover rounded-xl mb-4 mx-auto"
               />

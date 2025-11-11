@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { CartContext } from "../../contexts/CartContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import API, { BASE_URL } from "../../api/api";
+import API from "../../api/api";
 import { formatUrl } from "../../utils/formatUrl";
 
 

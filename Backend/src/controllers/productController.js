@@ -22,9 +22,8 @@ export const createProduct = async (req, res) => {
   try {
     const { name, price, quantity, categoryId } = req.body;
 
-    const baseUrl = `${req.protocol}://${req.get("host")}`;
+    const baseUrl = process.env.RENDER_EXTERNAL_URL || `${req.protocol}://${req.get("host")}`;    
     let imagesArray = [];
-
     if (req.files && req.files.length > 0) {
       imagesArray = req.files.map((f) => `${baseUrl}/uploads/${f.filename}`);
     } else if (req.file) {
@@ -104,8 +103,7 @@ export const updateProduct = async (req, res) => {
 
     if (!product) return res.status(404).json({ message: "Product not found" });
 
-    const baseUrl = `${req.protocol}://${req.get("host")}`;
-
+    const baseUrl = process.env.RENDER_EXTERNAL_URL || `${req.protocol}://${req.get("host")}`;
     if (req.files && Array.isArray(req.files) && req.files.length > 0) {
       // Replace with new uploaded images
       product.image = req.files.map((f) => `${baseUrl}/uploads/${f.filename}`);

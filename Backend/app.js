@@ -17,7 +17,6 @@ import { fileURLToPath } from "url";
 dotenv.config();
 
 const app = express();
-const BASE_URL = process.env.RENDER_EXTERNAL_URL || `http://localhost:${process.env.PORT || 5000}`;
 
 // Allowed frontend origins
 const allowedOrigins = [

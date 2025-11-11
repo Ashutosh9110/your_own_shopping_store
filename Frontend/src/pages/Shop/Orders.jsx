@@ -40,7 +40,7 @@ export default function Orders() {
         <p className="text-gray-500 text-lg">You haven’t placed any orders yet.</p>
         <a
           href="/products"
-          className="mt-4 bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700"
+          className="mt-4 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-400"
         >
           Browse Products
         </a>

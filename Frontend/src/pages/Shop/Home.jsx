@@ -13,7 +13,7 @@ export default function Home() {
       <p className="text-gray-600 mb-4">You’re successfully logged in!</p>
       <button
         onClick={() => navigate("/products")}
-        className="bg-teal-600 text-white px-6 py-2 rounded hover:bg-teal-700"
+        className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-400"
       >
         Browse Products
       </button>

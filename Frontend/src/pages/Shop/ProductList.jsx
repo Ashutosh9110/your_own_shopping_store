@@ -1,4 +1,3 @@
-// src/components/Products.jsx
 import React, { useEffect, useState } from "react";
 import API, { BASE_URL } from "../../api/api";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -48,6 +47,7 @@ export default function Products() {
     const category = categoryParam?.replace(/\s+/g, "").toLowerCase();
     setSelectedCategory(category);
   }, [location]);
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-20 px-6 font-[Poppins]">
@@ -82,9 +82,7 @@ export default function Products() {
       {/* Product Grid */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
         {products.map((p, idx) => {
-          // normalize images to array (backend should already return array)
           const imgs = Array.isArray(p.image) ? p.image : p.image ? [p.image] : [];
-          // choose first and fallback second
           const img1 = imgs[0] || "/placeholder.png";
           const img2 = imgs[1] || imgs[0] || "/placeholder.png";
 
@@ -98,14 +96,9 @@ export default function Products() {
               whileHover={{ scale: 1.03 }}
               className="bg-white rounded-2xl overflow-hidden cursor-pointer border border-gray-100 hover:shadow-2xl transition-all duration-300"
             >
-              {/* Card image area */}
               <div className="relative group">
-                {/* background accent (changes on hover) */}
                 <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-br from-transparent to-transparent transition-all duration-500 pointer-events-none group-hover:from-green-50 group-hover:to-green-100" />
-
-                {/* two images stacked, fade & translate on hover */}
                 <div className="relative w-full h-56 flex items-center justify-center p-6">
-      {/* Utility function to ensure correct image URL */}
       {(() => {
         const formatUrl = (url) =>
           url?.startsWith("http")
@@ -124,7 +117,7 @@ export default function Products() {
               alt={p.name}
               className="w-full h-full object-contain transition-transform duration-700 transform group-hover:scale-95"
               style={{ position: "absolute", inset: 0, margin: "auto" }}
-              onError={() => console.warn("❌ Failed to load image:", imgSrc1)}
+              onError={() => console.warn("Failed to load image:", imgSrc1)}
             />
             <img
               src={imgSrc2}
@@ -138,7 +131,6 @@ export default function Products() {
 
                 </div>
 
-                {/* subtle overlay & border change */}
                 <div className="absolute inset-0 rounded-2xl pointer-events-none border-2 border-transparent group-hover:border-green-500 transition-colors duration-300" />
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/0 to-transparent opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
               </div>

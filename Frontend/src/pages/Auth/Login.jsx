@@ -16,13 +16,8 @@ export default function Login() {
     setLoading(true);
     setMessage("");
     try {
-      const response = await login(email, password);
+      await login(email, password);
 
-      if (response.role === "admin") {
-        navigate("/admin");
-      } else {
-        navigate("/");
-      }
     } catch (err) {
       console.error("Login error:", err);
       setMessage(err.response?.data?.message || "Invalid email or password");

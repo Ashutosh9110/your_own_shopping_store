@@ -61,7 +61,7 @@ function App() {
             <Route path="/profile" element={ <ProtectedRoute> <Profile /> </ProtectedRoute> } />
             <Route path="/checkout" element={ <ProtectedRoute> <Checkout /> </ProtectedRoute> } />
             {/* Admin routes (admin-only) */}
-            <Route path="/admin" element={ <AdminRoute><Dashboard /></AdminRoute> } />
+            <Route path="/admin/dashboard" element={ <AdminRoute><Dashboard /></AdminRoute> } />
             <Route path="/admin/add-product" element={ <AdminRoute> <AddProduct /> </AdminRoute> } />
             <Route path="/admin/orders" element={ <AdminRoute> <ManageOrders /> </AdminRoute> } />
           </Routes>

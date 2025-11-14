@@ -55,15 +55,35 @@ export const getProducts = async (req, res) => {
   try {
     const { category, search } = req.query;
 
-    const products = await Product.findAll({
-      include: [{ model: Category, attributes: ["id", "name"] }],
+    const whereClause = {};
+    if (search) {
+      whereClause.name = { [Op.iLike]: `%${search}%` };
+    }
+
+    const queryOptions = {
+      where: whereClause,
+      include: [
+        {
+          model: Category,
+          attributes: ["id", "name"],
+        },
+      ],
       order: [["createdAt", "DESC"]],
-    });
+    };
 
-
-    // products.forEach((p, i) => {
-    //   console.log(`  #${i + 1} product name:`, p.name, "| image:", p.image);
-    // });
+    if (category) {
+      const normalizedCategory = category.toLowerCase().replace(/[\s-]+/g, "")
+      queryOptions.include[0].where = sequelize.where(
+        sequelize.fn(
+          "REPLACE",
+          sequelize.fn("LOWER", sequelize.col("Category.name")),
+          " ",
+          ""
+        ),
+        normalizedCategory
+      );
+    }
+    const products = await Product.findAll(queryOptions);
 
     const normalized = products.map((p) => {
       const json = p.toJSON();
@@ -71,13 +91,13 @@ export const getProducts = async (req, res) => {
       else if (!Array.isArray(json.image)) json.image = [json.image];
       return json;
     });
-
     res.json(normalized);
   } catch (err) {
-    console.error("❌ Error fetching products:", err);
+    console.error("Error fetching products:", err);
     res.status(500).json({ message: "Failed to fetch products" });
   }
 };
+
 
 
 // ==================== Get Single Product ====================

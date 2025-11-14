@@ -81,7 +81,7 @@ const Navbar = () => {
           {role === "admin" && (
             <>
               <NavLink
-                to="/admin"
+                to="/admin/dashboard"
                 end
                 className={({ isActive }) =>
                   `${linkBase} ${isActive ? "text-green-600 after:w-full" : ""}`

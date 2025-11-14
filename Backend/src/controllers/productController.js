@@ -22,7 +22,6 @@ export const createProduct = async (req, res) => {
   try {
     const { name, price, quantity, categoryId } = req.body;
 
-    // FIX 1 — Correct base URL handling for Render + Netlify
     const backendUrl =
     process.env.RENDER_EXTERNAL_URL ||
     process.env.BACKEND_PUBLIC_URL ||
@@ -31,20 +30,18 @@ export const createProduct = async (req, res) => {
       : `${req.protocol}://${req.get("host")}`);
   
 
-    // FIX 2 — Ensure clean URL (no trailing slash)
     const baseUrl = backendUrl.replace(/\/$/, "");
 
     let imagesArray = [];
 
-    // FIX 3 — Always store PUBLIC absolute URLs
     if (req.files?.length > 0) {
       imagesArray = req.files.map((f) => `${baseUrl}/uploads/${f.filename}`);
     } else if (req.file) {
       imagesArray = [`${baseUrl}/uploads/${req.file.filename}`];
     }
-    console.log("Computed backend URL:", backendUrl);
-    console.log("Saving image URL:", `${backendUrl}/uploads/${req.file?.filename}`);
-    
+console.log("Computed backend URL:", backendUrl);
+console.log("Saving image URL:", `${backendUrl}/uploads/${req.file?.filename}`);
+
     const newProduct = await Product.create({
       name,
       price,

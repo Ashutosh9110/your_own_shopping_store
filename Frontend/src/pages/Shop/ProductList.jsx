@@ -118,15 +118,24 @@ export default function ProductList() {
                       <img
                         src={imgSrc1}
                         alt={p.name}
-                        className="w-full h-48 sm:h-56 md:h-64 object-contain transition-transform duration-700 transform group-hover:scale-95"
-                        style={{ position: "absolute", inset: 0, margin: "auto" }}
-                        onError={() => console.warn("Failed to load image:", imgSrc1)}
+                        className="
+                          absolute inset-0 m-auto
+                          w-full h-full object-contain
+                          transition-all duration-500
+                          opacity-100 group-hover:opacity-0
+                          scale-100 group-hover:scale-95
+                        "
                       />
                       <img
                         src={imgSrc2}
-                        alt={`${p.name}-alt`}
-                        className="w-full h-48 sm:h-56 md:h-64 object-contain opacity-0 translate-y-2 transition-all duration-700 group-hover:opacity-100 group-hover:translate-y-0"
-                        style={{ position: "absolute", inset: 0, margin: "auto" }}
+                        alt={p.name + '-alt'}
+                        className="
+                          absolute inset-0 m-auto
+                          w-full h-full object-contain
+                          transition-all duration-500
+                          opacity-0 group-hover:opacity-100
+                          scale-105 group-hover:scale-100
+                        "
                       />
                     </>
                   );

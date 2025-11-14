@@ -22,18 +22,29 @@ export const createProduct = async (req, res) => {
   try {
     const { name, price, quantity, categoryId } = req.body;
 
-    const baseUrl =
-      process.env.NODE_ENV === "production"
-        ? "https://your-own-shopping-store.onrender.com"
-        : `${req.protocol}://${req.get("host")}`;
+    // FIX 1 — Correct base URL handling for Render + Netlify
+    const backendUrl =
+    process.env.RENDER_EXTERNAL_URL ||
+    process.env.BACKEND_PUBLIC_URL ||
+    (process.env.NODE_ENV === "production"
+      ? "https://your-own-shopping-store.onrender.com"
+      : `${req.protocol}://${req.get("host")}`);
+  
+
+    // FIX 2 — Ensure clean URL (no trailing slash)
+    const baseUrl = backendUrl.replace(/\/$/, "");
+
     let imagesArray = [];
-    if (req.files && req.files.length > 0) {
+
+    // FIX 3 — Always store PUBLIC absolute URLs
+    if (req.files?.length > 0) {
       imagesArray = req.files.map((f) => `${baseUrl}/uploads/${f.filename}`);
     } else if (req.file) {
       imagesArray = [`${baseUrl}/uploads/${req.file.filename}`];
     }
-
-
+    console.log("Computed backend URL:", backendUrl);
+    console.log("Saving image URL:", `${backendUrl}/uploads/${req.file?.filename}`);
+    
     const newProduct = await Product.create({
       name,
       price,
@@ -48,6 +59,7 @@ export const createProduct = async (req, res) => {
     res.status(500).json({ message: "Failed to create product" });
   }
 };
+
 
 
 // ==================== Get All Products ====================
@@ -126,10 +138,15 @@ export const updateProduct = async (req, res) => {
 
     if (!product) return res.status(404).json({ message: "Product not found" });
 
-    const baseUrl =
-    process.env.NODE_ENV === "production"
-      ? "https://your-own-shopping-store.onrender.com"
-      : `${req.protocol}://${req.get("host")}`;
+    const backendUrl =
+      process.env.RENDER_EXTERNAL_URL ||
+      process.env.BACKEND_PUBLIC_URL ||
+      (process.env.NODE_ENV === "production"
+        ? "https://your-own-shopping-store.onrender.com"
+        : `${req.protocol}://${req.get("host")}`);
+  
+    
+    const baseUrl = backendUrl.replace(/\/$/, "");
 
     if (req.files && Array.isArray(req.files) && req.files.length > 0) {
       // Replace with new uploaded images

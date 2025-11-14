@@ -56,7 +56,7 @@ export default function AddProduct({ onSuccess }) {
       setProduct({ categoryId: "", name: "", price: "", quantity: "" });
       setImageFiles([]);
       onSuccess?.();
-      navigate("/admin");
+      navigate("/admin/dashboard");
     } catch (err) {
       console.error("Add product error:", err);
       alert(err.response?.data?.message || "Failed to add product.");

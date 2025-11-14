@@ -99,35 +99,38 @@ export default function ProductList() {
               <div className="relative group">
                 <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-br from-transparent to-transparent transition-all duration-500 pointer-events-none group-hover:from-green-50 group-hover:to-green-100" />
                 <div className="relative w-full h-56 flex items-center justify-center p-6">
-      {(() => {
-        const formatUrl = (url) =>
-          url?.startsWith("http")
-            ? url
-            : `${BASE_URL.replace(/\/$/, "")}${url}`;
+                {(() => {
+                const formatUrl = (url) => {
+                  if (!url) return "/placeholder.png";
+                  if (url.startsWith("http://") || url.startsWith("https://")) {
+                    return url
+                  }
+                  return `${BASE_URL.replace(/\/$/, "")}${url.startsWith("/") ? "" : "/"}${url}`;
+                };
 
-        const imgSrc1 = img1 ? formatUrl(img1) : "/placeholder.png";
-        const imgSrc2 = img2 ? formatUrl(img2) : imgSrc1;
+                  const imgSrc1 = img1 ? formatUrl(img1) : "/placeholder.png";
+                  const imgSrc2 = img2 ? formatUrl(img2) : imgSrc1;
 
-        // console.log("Image for product:", p.name, "| imgSrc1:", imgSrc1);
+                  // console.log("Image for product:", p.name, "| imgSrc1:", imgSrc1);
 
-        return (
-          <>
-            <img
-              src={imgSrc1}
-              alt={p.name}
-              className="w-full h-48 sm:h-56 md:h-64 object-contain transition-transform duration-700 transform group-hover:scale-95"
-              style={{ position: "absolute", inset: 0, margin: "auto" }}
-              onError={() => console.warn("Failed to load image:", imgSrc1)}
-            />
-            <img
-              src={imgSrc2}
-              alt={`${p.name}-alt`}
-              className="w-full h-48 sm:h-56 md:h-64 object-contain opacity-0 translate-y-2 transition-all duration-700 group-hover:opacity-100 group-hover:translate-y-0"
-              style={{ position: "absolute", inset: 0, margin: "auto" }}
-            />
-          </>
-        );
-      })()}
+                  return (
+                    <>
+                      <img
+                        src={imgSrc1}
+                        alt={p.name}
+                        className="w-full h-48 sm:h-56 md:h-64 object-contain transition-transform duration-700 transform group-hover:scale-95"
+                        style={{ position: "absolute", inset: 0, margin: "auto" }}
+                        onError={() => console.warn("Failed to load image:", imgSrc1)}
+                      />
+                      <img
+                        src={imgSrc2}
+                        alt={`${p.name}-alt`}
+                        className="w-full h-48 sm:h-56 md:h-64 object-contain opacity-0 translate-y-2 transition-all duration-700 group-hover:opacity-100 group-hover:translate-y-0"
+                        style={{ position: "absolute", inset: 0, margin: "auto" }}
+                      />
+                    </>
+                  );
+                })()}
 
                 </div>
 

@@ -5,6 +5,8 @@ import { AuthContext } from "../contexts/AuthContext";
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const [role, setRole] = useState(localStorage.getItem("role"));
+  const [openMenu, setOpenMenu] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -38,6 +40,15 @@ const Navbar = () => {
         >
           <span className="text-gray-600">Your</span><span className="text-green-600">Store</span><span className="text-green-600 text-3xl leading-8">.</span>
         </Link>
+
+        {/* Mobile Hamburger */}
+          <button
+            className="md:hidden text-3xl text-gray-700"
+            onClick={() => setOpenMenu(!openMenu)}
+          >
+            ☰
+          </button>
+
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8 text-[18px] font-medium text-gray-600">
@@ -108,6 +119,95 @@ const Navbar = () => {
             </>
           )}
         </div>
+
+
+{/* Mobile Menu */}
+{openMenu && (
+  <div
+    className="md:hidden absolute right-6 top-20 w-48 bg-white text-gray-800 p-4 rounded-2xl shadow-xl 
+               flex flex-col gap-3 z-50 dropdown-animate backdrop-blur-md border border-gray-200"
+  >
+    {role === "user" && (
+      <>
+        <div className="" />
+        {/* First item near logout */}
+        <NavLink
+          to="/products"
+          onClick={() => setOpenMenu(false)}
+          className="font-semibold hover:text-green-600 transition"
+        >
+          Products
+        </NavLink>
+
+
+        <NavLink
+          to="/cart"
+          onClick={() => setOpenMenu(false)}
+          className="font-semibold hover:text-green-600 transition"
+        >
+          Cart
+        </NavLink>
+
+        <NavLink
+          to="/orders"
+          onClick={() => setOpenMenu(false)}
+          className="font-semibold hover:text-green-600 transition"
+        >
+          My Orders
+        </NavLink>
+
+        <NavLink
+          to="/profile"
+          onClick={() => setOpenMenu(false)}
+          className="font-semibold hover:text-green-600 transition"
+        >
+          Profile
+        </NavLink>
+      </>
+    )}
+
+    {role === "admin" && (
+      <>
+        <NavLink
+          to="/admin/dashboard"
+          onClick={() => setOpenMenu(false)}
+          className="font-semibold text-gray-700 hover:text-green-600 transition"
+        >
+          Dashboard
+        </NavLink>
+
+        <div className="border-b" />
+
+        <NavLink
+          to="/admin/add-product"
+          onClick={() => setOpenMenu(false)}
+          className="hover:text-green-600 transition"
+        >
+          Add Product
+        </NavLink>
+
+        <NavLink
+          to="/admin/orders"
+          onClick={() => setOpenMenu(false)}
+          className="hover:text-green-600 transition"
+        >
+          Manage Orders
+        </NavLink>
+      </>
+    )}
+
+    {user && (
+      <button
+        onClick={handleLogout}
+        className="bg-gray-700 hover:bg-gray-600 transition text-white px-4 py-2 rounded-lg mt-1"
+      >
+        Logout
+      </button>
+    )}
+  </div>
+)}
+
+
 
         {/* Auth Buttons */}
         <div className="flex items-center gap-3">

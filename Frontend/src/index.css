@@ -68,5 +68,27 @@ html {
 }
 
 img {
-  cross-origin: anonymous;
+  /* cross-origin: anonymous; */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+}
+
+
+
+@keyframes slideDownFade {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dropdown-animate {
+  animation: slideDownFade 0.25s ease-out forwards;
 }

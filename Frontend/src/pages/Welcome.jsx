@@ -78,6 +78,7 @@ export default function Welcome() {
         >
           <h1 className="text-5xl sm:text-6xl font-extrabold mb-6">
             Welcome to Your Own Shopping Store
+            Welcome to Your Own Shopping Store
           </h1>
 
           <motion.p
@@ -151,7 +152,7 @@ export default function Welcome() {
     {/* --- ROW 1 --- */}
     <div className="flex flex-col md:flex-row w-full gap-4">
       <div
-        className="relative group overflow-hidden rounded-2xl h-[400px] md:w-1/3 w-full cursor-pointer"
+        className="relative group overflow-hidden rounded-2xl h-[220px] sm:h-[300px] md:h-[400px] md:w-1/3 w-full cursor-pointer"
         onClick={() => handleCategoryClick("fruits")}
       >
         <video
@@ -166,12 +167,12 @@ export default function Welcome() {
         <AnimatedCategoryButton 
           label="Fruits"
           onClick={() => handleCategoryClick("fruits")}
-          className="absolute bottom-20 left-15"
+          className="absolute bottom-20 left-1/4 -translate-x-1/2"
         />
       </div>
 
       <div
-        className="relative group overflow-hidden rounded-2xl h-[400px] md:w-2/3 w-full cursor-pointer"
+        className="relative group overflow-hidden rounded-2xl h-[220px] sm:h-[300px] md:h-[400px] md:w-2/3 w-full cursor-pointer"
         onClick={() => handleCategoryClick("vegetables")}
       >
         <video
@@ -186,7 +187,7 @@ export default function Welcome() {
        <AnimatedCategoryButton 
           label="Vegetables"
           onClick={() => handleCategoryClick("vegetables")}
-          className="absolute bottom-20 left-190"
+          className="absolute bottom-20 left-192"
         />
       </div>
     </div>
@@ -194,7 +195,7 @@ export default function Welcome() {
     {/* --- ROW 2 --- */}
     <div className="flex flex-col md:flex-row w-full gap-4">
       <div
-        className="relative group overflow-hidden rounded-2xl h-[400px] md:w-2/3 w-full cursor-pointer"
+        className="relative group overflow-hidden rounded-2xl h-[220px] sm:h-[300px] md:h-[400px] md:w-2/3 w-full cursor-pointer"
         onClick={() => handleCategoryClick("Electronics")}
       >
         <video
@@ -209,13 +210,13 @@ export default function Welcome() {
         <AnimatedCategoryButton 
             label="Electronics"
             onClick={() => handleCategoryClick("electronics")}
-            className="absolute bottom-20 left-15"
+            className="absolute bottom-20 left-192"
           />
       </div>
 
   
       <div
-        className="relative group overflow-hidden rounded-2xl h-[400px] md:w-1/3 w-full cursor-pointer"
+        className="relative group overflow-hidden rounded-2xl h-[220px] sm:h-[300px] md:h-[400px] md:w-1/3 w-full cursor-pointer"
         onClick={() => handleCategoryClick("watches")}
       >
         <video
@@ -230,7 +231,7 @@ export default function Welcome() {
          <AnimatedCategoryButton 
             label="Watches"
             onClick={() => handleCategoryClick("watches")}
-            className="absolute bottom-20 left-75"
+            className="absolute bottom-20 left-1/4 -translate-x-1/2"
           />
       </div>
     </div>
@@ -238,7 +239,7 @@ export default function Welcome() {
      {/* --- ROW 3 --- */}
      <div className="flex flex-col md:flex-row w-full gap-4">
       <div
-        className="relative group overflow-hidden rounded-2xl h-[400px] md:w-1/3 w-full cursor-pointer"
+        className="relative group overflow-hidden rounded-2xl h-[220px] sm:h-[300px] md:h-[400px] md:w-1/3 w-full cursor-pointer"
         onClick={() => handleCategoryClick("grocery")}
       >
         <video
@@ -253,12 +254,12 @@ export default function Welcome() {
         <AnimatedCategoryButton 
           label="Grocery"
           onClick={() => handleCategoryClick("grocery")}
-          className="absolute bottom-20 left-15"
+          className="absolute bottom-20 left-1/4 -translate-x-1/2"
         />
       </div>
 
       <div
-        className="relative group overflow-hidden rounded-2xl h-[400px] md:w-2/3 w-full cursor-pointer"
+        className="relative group overflow-hidden rounded-2xl h-[220px] sm:h-[300px] md:h-[400px] md:w-2/3 w-full cursor-pointer"
         onClick={() => handleCategoryClick("Personal Care")}
       >
         <video
@@ -273,7 +274,7 @@ export default function Welcome() {
        <AnimatedCategoryButton 
           label="Personal Care"
           onClick={() => handleCategoryClick("Personal Care")}
-          className="absolute bottom-20 left-190"
+          className="absolute bottom-20 left-192"
         />
       </div>
     </div>

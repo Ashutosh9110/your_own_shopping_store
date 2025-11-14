@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 
-export default function Products() {
+export default function ProductList() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -80,7 +80,7 @@ export default function Products() {
       </div>
 
       {/* Product Grid */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-10 px-2">
         {products.map((p, idx) => {
           const imgs = Array.isArray(p.image) ? p.image : p.image ? [p.image] : [];
           const img1 = imgs[0] || "/placeholder.png";
@@ -108,21 +108,21 @@ export default function Products() {
         const imgSrc1 = img1 ? formatUrl(img1) : "/placeholder.png";
         const imgSrc2 = img2 ? formatUrl(img2) : imgSrc1;
 
-        console.log("Image for product:", p.name, "| imgSrc1:", imgSrc1);
+        // console.log("Image for product:", p.name, "| imgSrc1:", imgSrc1);
 
         return (
           <>
             <img
               src={imgSrc1}
               alt={p.name}
-              className="w-full h-full object-contain transition-transform duration-700 transform group-hover:scale-95"
+              className="w-full h-48 sm:h-56 md:h-64 object-contain transition-transform duration-700 transform group-hover:scale-95"
               style={{ position: "absolute", inset: 0, margin: "auto" }}
               onError={() => console.warn("Failed to load image:", imgSrc1)}
             />
             <img
               src={imgSrc2}
               alt={`${p.name}-alt`}
-              className="w-full h-full object-contain opacity-0 translate-y-2 transition-all duration-700 group-hover:opacity-100 group-hover:translate-y-0"
+              className="w-full h-48 sm:h-56 md:h-64 object-contain opacity-0 translate-y-2 transition-all duration-700 group-hover:opacity-100 group-hover:translate-y-0"
               style={{ position: "absolute", inset: 0, margin: "auto" }}
             />
           </>

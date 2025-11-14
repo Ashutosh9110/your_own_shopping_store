@@ -57,14 +57,14 @@ export default function ProductPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-18 px-6">
       <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 p-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 p-4 sm:p-6 md:p-10">
 
           <div>
             <div className="bg-gray-100 rounded-2xl p-6 flex items-center justify-center mb-4">
               <img
                 src={selectedImage}
                 alt={product.name}
-                className="w-full h-auto max-h-[420px] object-contain"
+                className="w-full h-auto max-h-[300px] sm:max-h-[350px] md:max-h-[420px] object-contain"
               />
             </div>
 
@@ -77,7 +77,7 @@ export default function ProductPage() {
                     src={fullUrl}
                     alt={`thumb-${i}`}
                     onClick={() => setSelectedImage(fullUrl)}
-                    className={`w-20 h-20 object-cover rounded-lg cursor-pointer border-2 ${
+                    className={`w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg cursor-pointer border-2 ${
                       selectedImage === fullUrl
                         ? "border-slate-800"
                         : "border-transparent"

@@ -24,6 +24,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import Footer from "./components/Footer";
 import ProductPage from "./pages/Shop/ProductPage";
+import VerifyOTP from "./pages/Auth/VerifyOTP";
 
 function App() {
 
@@ -62,6 +63,7 @@ function App() {
             <Route path="/orders" element={ <ProtectedRoute> <Orders /> </ProtectedRoute> } />
             <Route path="/profile" element={ <ProtectedRoute> <Profile /> </ProtectedRoute> } />
             <Route path="/checkout" element={ <ProtectedRoute> <Checkout /> </ProtectedRoute> } />
+            <Route path="/verify-otp" element={<VerifyOTP />} />
             {/* Admin routes (admin-only) */}
             <Route path="/admin/dashboard" element={ <AdminRoute><Dashboard /></AdminRoute> } />
             <Route path="/admin/add-product" element={ <AdminRoute> <AddProduct /> </AdminRoute> } />

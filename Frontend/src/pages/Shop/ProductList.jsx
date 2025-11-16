@@ -139,7 +139,7 @@ export default function ProductList() {
               </div>
 
               <div className="p-7">
-                <h3 className="text-sm font-semibold text-gray-600 mt-4 line-clamp-2 uppercase">
+                <h3 className="text-sm text-gray-600 mt-4 line-clamp-2 uppercase">
                   {p.name}
                 </h3>
 

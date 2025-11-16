@@ -1,4 +1,3 @@
-// src/pages/Auth/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
@@ -8,17 +7,23 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, verifyOtp } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
-
+  
+    
     try {
-      await login(email, password);
-      navigate("/");
+      const response = await login(email, password);
+  
+      if (response === "OTP_REQUIRED") {
+        navigate("/verify-otp");
+        return;
+      }
+        navigate("/");
     } catch (err) {
       console.error("Login error:", err);
       setMessage(err.response?.data?.message || "Invalid email or password");
@@ -26,11 +31,11 @@ export default function Login() {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="fixed inset-0 w-full h-full overflow-hidden font-[Inter] z-0">
 
-      {/* SAME VIDEO AS SIGNUP */}
       <video
         className="absolute inset-0 w-full h-full object-cover object-center scale-[1.35]"
         autoPlay
@@ -40,9 +45,7 @@ export default function Login() {
         src="https://res.cloudinary.com/djm65usjg/video/upload/v1763285155/login6_prwtwb.mp4"
       />
 
-      {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/40" />
-
       <div className="relative z-10 flex min-h-screen justify-center items-center px-6 md:px-16">
         <form
           onSubmit={handleLogin}
@@ -52,7 +55,6 @@ export default function Login() {
             <h2 className="text-3xl font-semibold mb-2 text-green-600">
               Login
             </h2>
-
             <p className="text-sm text-white mb-6">
               Enter your credentials to continue
             </p>

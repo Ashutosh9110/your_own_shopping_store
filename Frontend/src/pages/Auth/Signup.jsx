@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-// import signupImg from "../../assets/signup2.gif"
-// import "inter-ui/inter.css"; // ensure Inter font is imported globally or here
 
 export default function Signup() {
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState(""); 
   const [password, setPassword] = useState("");
   const [ role ] = useState("user");
   const [loading, setLoading] = useState(false);
@@ -19,7 +18,7 @@ export default function Signup() {
     setMessage("");
 
     try {
-      await signup(email, password, role);
+      await signup(email, phone, password, role);
       setMessage("Signup successful! Redirecting to login...");
       setTimeout(() => navigate(`/login?role=${role}`), 1500);
     } catch (err) {
@@ -58,13 +57,23 @@ export default function Signup() {
   
             <input
               type="email"
-              placeholder="Email or Phone Number"
+              placeholder="Email"
               className="border-b border-gray-300 mb-6 w-full p-2 focus:outline-none focus:border-green-600 text-white"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
   
+            <input
+              type="tel"
+              placeholder="Phone Number"
+              className="border-b border-gray-300 mb-6 w-full p-2
+              focus:outline-none focus:border-green-600 text-white"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+
             <input
               type="password"
               placeholder="Password"

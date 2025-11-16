@@ -1,71 +1,77 @@
-// src/controllers/authController.js
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import User from "../models/User.js";
 import dotenv from "dotenv";
 import { sendMail } from "../utils/sendMail.js"; 
+import { Op } from "sequelize";
 
 dotenv.config();
 
 
+function generateOtp() {
+  return Math.floor(100000 + Math.random() * 900000).toString(); 
+}
+
+
 export const register = async (req, res) => {
   try {
-    const { email, password, role } = req.body;
-    console.log("Register request body:", req.body);
-
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
+    const { email, phone, password, role } = req.body;
+    // console.log("Register request body:", req.body);
+    if (!email || !password || !phone) {
+      return res.status(400).json({ message: "Email, phone & password are required" });
     }
-
-    const existing = await User.findOne({ where: { email } });
+    const existing = await User.findOne({
+      where: {
+        [Op.or]: [{ email }, { phone }]
+      }})
     if (existing) {
-      console.warn(`Registration failed: ${email} already exists`);
-      return res.status(409).json({ message: "Email already exists" }); // 409 (Conflict)
+      return res.status(409).json({ message: "User already exists" });
     }
-
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({
       email,
+      phone,
       password: hashedPassword,
       role: role === "admin" ? "admin" : "user",
     });
-
     res.status(201).json({
       message: `Registered successfully as ${newUser.role}`,
-      user: { email: newUser.email, role: newUser.role },
+      user: { email: newUser.email, phone: newUser.phone, role: newUser.role },
     });
   } catch (err) {
     console.error("Register error:", err);
-    if (err.name === "SequelizeUniqueConstraintError") {
-      return res.status(409).json({ message: "Email already exists" }); 
-    }
     res.status(500).json({ message: "Internal server error" });
   }
 };
 
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { emailOrPhone, password } = req.body;
 
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({
+      where: {
+        [Op.or]: [{ email: emailOrPhone }, { phone: emailOrPhone }],
+      },
+    });
+
     if (!user) return res.status(404).json({ message: "User not found" });
 
     const validPass = await bcrypt.compare(password, user.password);
-    if (!validPass) return res.status(401).json({ message: "Invalid credentials" });
+    if (!validPass) return res.status(401).json({ message: "Wrong password" });
 
-    // Generate JWT token
-    const token = jwt.sign(
-      { id: user.id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
+    const otp = generateOtp();
+    user.otp = otp;
+    user.otpExpiry = new Date(Date.now() + 5 * 60 * 1000); // 5 mins
+    await user.save();
 
-    res.json({
-      message: "Login successful",
-      token,
-      role: user.role, // 
-    });
+    if (emailOrPhone.includes("@")) {
+      await sendMail(user.email, "Your OTP - YOSS", `Your OTP is: ${otp}`);
+    } else {
+      await sendSMS(user.phone, `Your YOSS login OTP is ${otp}`);
+    }
+
+    res.json({ otpRequired: true, message: "OTP sent" });
   } catch (err) {
     console.error("Login error:", err);
     res.status(500).json({ message: "Server error" });
@@ -73,16 +79,71 @@ export const login = async (req, res) => {
 };
 
 
+export const verifyOtp = async (req, res) => {
+  try {
+    const { emailOrPhone, otp } = req.body;
+    const user = await User.findOne({
+      where: {
+        [Op.or]: [{ email: emailOrPhone }, { phone: emailOrPhone }],
+      },
+    });
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+    if (!user.otp || user.otp !== otp)
+      return res.json({ success: false, message: "Invalid OTP" });
+    if (new Date() > new Date(user.otpExpiry))
+      return res.json({ message: "OTP expired", success: false });
 
+    user.otp = null;
+    user.otpExpiry = null;
+    await user.save();
 
-export const logout = async (req, res) => {
-  res.json({ message: "Logged out successfully" });
+    const token = jwt.sign(
+      { id: user.id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+    res.json({ success: true, token, role: user.role });
+  } catch (err) {
+    console.error("Verify OTP error:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
 };
 
 
+export const logout = (req, res) => {
+  res.json({ message: "Logged out successfully" });
+};
 
-console.log(process.env.FRONTEND_URL);
+// console.log(process.env.FRONTEND_URL);
 
+
+export const resendOtp = async (req, res) => {
+  try {
+    const { emailOrPhone } = req.body;
+
+    const user = await User.findOne({
+      where: {
+        [User.sequelize.Op.or]: [{ email: emailOrPhone }, { phone: emailOrPhone }],
+      },
+    });
+    if (!user) return res.status(404).json({ message: "User not found" });
+    const otp = generateOtp();
+    user.otp = otp;
+    user.otpExpiry = new Date(Date.now() + 5 * 60 * 1000);
+    await user.save();
+
+    if (emailOrPhone.includes("@")) {
+      await sendMail(user.email, "Your OTP - YOSS", `Your OTP is ${otp}`);
+    } else {
+      await sendSMS(user.phone, `Your YOSS OTP is ${otp}`);
+    }
+
+    res.json({ message: "OTP resent successfully" });
+  } catch (err) {
+    console.error("Resend OTP error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 export const forgotPassword = async (req, res) => {
   try {

@@ -20,21 +20,22 @@ export function AuthProvider({ children }) {
         setUser(parsedUser);
         setToken(savedToken);
         API.defaults.headers.common["Authorization"] = `Bearer ${savedToken}`;
-      } catch (err) {
-        console.error("Invalid user data in localStorage", err);
+      } catch {
         localStorage.removeItem("user");
       }
-    } else {
-      localStorage.removeItem("user");
-    }
+    } 
     setLoading(false);
   }, []);
 
-  async function login(email, password) {
-    const res = await API.post("/api/auth/login", { email, password });
+  async function login(emailOrPhone, password) {
+    const res = await API.post("/api/auth/login", { emailOrPhone, password });
+    
+    if (res.data.otpRequired) {
+      localStorage.setItem("pendingEmail", emailOrPhone);
+      return "OTP_REQUIRED";
+    }
     const { token, role } = res.data;
-
-    const finalUser = { email, role };
+    const finalUser = { email: emailOrPhone, role };
 
     setUser(finalUser);
     setToken(token);
@@ -45,12 +46,46 @@ export function AuthProvider({ children }) {
 
     API.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-    if (role === "admin") navigate("/admin/dashboard");
-    else navigate("/");
+    // if (role === "admin") navigate("/admin/dashboard");
+    // else navigate("/");
+
+    return "SUCCESS";
   }
 
-  async function signup(email, password, role = "user") {
-    const res = await API.post("/api/auth/register", { email, password, role });
+
+  async function verifyOtp(emailOrPhone, otp) {
+    const res = await API.post("/api/auth/verify-otp", {
+      emailOrPhone,
+      otp
+    });
+  
+    if (!res.data.success) {
+      return { success: false, message: res.data.message };
+    }
+  
+    const { token, role } = res.data;
+    const finalUser = { email: emailOrPhone, role };
+  
+    setUser(finalUser);
+    setToken(token);
+  
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(finalUser));
+    localStorage.setItem("role", role);
+  
+    API.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  
+    return { success: true, role };
+  }
+
+  async function resendOtp(emailOrPhone) {
+    const res = await API.post("/api/auth/resend-otp", { emailOrPhone });
+    return res.data;
+  }
+
+
+  async function signup(email, phone, password, role = "user") {
+    const res = await API.post("/api/auth/register", { email, phone, password, role });
     return res.data;
   }
 
@@ -66,11 +101,15 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, token, login, logout, signup, loading }}
+      value={{ user, token, login, logout, signup, loading, resendOtp, verifyOtp }}
     >
       {!loading && children}
     </AuthContext.Provider>
   );
 }
+
+
+
+
 
 export const useAuth = () => useContext(AuthContext);

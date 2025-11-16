@@ -197,7 +197,7 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("Electronics")}
       >
         <video
-          src=""
+          src="https://res.cloudinary.com/djm65usjg/video/upload/v1762694529/electronics_c6e7ij.webm"
           autoPlay
           muted
           loop

@@ -32,7 +32,7 @@ export const sendMail = async (to, subject, resetLink) => {
             <div style="text-align: center; margin: 30px 0;">
               <a href="${fullLink}" target="_blank" rel="noopener noreferrer"
                 style="display:inline-block; background:#14b8a6; color:white; padding:12px 24px; border-radius:6px; text-decoration:none; font-weight:600; font-size:16px;">
-                🔑 Reset Password
+                Reset Password
               </a>
             </div>
 

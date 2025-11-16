@@ -5,7 +5,7 @@ import { BASE_URL } from "../../api/api";
 import { Link } from "react-router-dom";
 
 export default function ForgotPassword() {
-  const [email, setEmail] = useState("");
+  const [emailOrPhone, setEmailOrPhone] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [resetLink, setResetLink] = useState(null);
@@ -17,10 +17,9 @@ export default function ForgotPassword() {
 
     try {
       setLoading(true);
-      const res = await API.post("/api/auth/forgot-password", { email });
+      const res = await API.post("/api/auth/forgot-password", { emailOrPhone });
       setMessage(res.data.message || "Check your inbox for reset instructions.");
 
-      // if backend returned link (for testing)
       if (res.data.resetURL) {
         setResetLink(res.data.resetURL);
       }
@@ -34,9 +33,8 @@ export default function ForgotPassword() {
 
   return (
     <div className="relative w-full h-screen flex items-center justify-center text-center text-white overflow-hidden">
-      {/* Background video */}
       <video
-        src={`${BASE_URL}/uploads/shopping.webm`}
+        src="https://res.cloudinary.com/djm65usjg/video/upload/v1763285155/login6_prwtwb.mp4"
         autoPlay
         muted
         loop
@@ -65,10 +63,10 @@ export default function ForgotPassword() {
 
         <form onSubmit={handleForgot} className="flex flex-col gap-4">
           <input
-            type="email"
-            placeholder="Enter your registered email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            placeholder="Enter your registered email or phone"
+            value={emailOrPhone}
+            onChange={(e) => setEmailOrPhone(e.target.value)}
             required
             className="px-4 py-3 rounded-lg bg-white/20 text-white placeholder-gray-300 outline-none focus:ring-2 focus:ring-white"
           />

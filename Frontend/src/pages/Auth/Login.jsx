@@ -4,6 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
+  const [emailOrPhone, setEmailOrPhone] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,7 +18,7 @@ export default function Login() {
   
     
     try {
-      const response = await login(email, password);
+      const response = await login(emailOrPhone, password);
   
       if (response === "OTP_REQUIRED") {
         navigate("/verify-otp");
@@ -61,11 +62,11 @@ export default function Login() {
           </div>
 
           <input
-            type="email"
-            placeholder="Email"
+            type="text"
+            placeholder="Email or Phone"
             className="border-b border-gray-300 mb-6 w-full p-2 focus:outline-none focus:border-green-600 text-white"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={emailOrPhone}
+            onChange={(e) => setEmailOrPhone(e.target.value)}
             required
           />
 

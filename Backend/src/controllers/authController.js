@@ -5,6 +5,7 @@ import User from "../models/User.js";
 import dotenv from "dotenv";
 import { sendMail } from "../utils/sendMail.js"; 
 import { Op } from "sequelize";
+import { sendSMS } from "../utils/sendSMS.js";
 
 dotenv.config();
 
@@ -66,9 +67,9 @@ export const login = async (req, res) => {
     await user.save();
 
     if (emailOrPhone.includes("@")) {
-      await sendMail(user.email, "Your OTP - YOSS", `Your OTP is: ${otp}`);
+      await sendMail(user.email, `Your OTP is: ${otp}`);
     } else {
-      await sendSMS(user.phone, `Your YOSS login OTP is ${otp}`);
+      await sendSMS(user.phone, `Your login OTP is ${otp}`);
     }
 
     res.json({ otpRequired: true, message: "OTP sent" });
@@ -116,14 +117,12 @@ export const logout = (req, res) => {
 
 // console.log(process.env.FRONTEND_URL);
 
-
 export const resendOtp = async (req, res) => {
   try {
     const { emailOrPhone } = req.body;
-
     const user = await User.findOne({
       where: {
-        [User.sequelize.Op.or]: [{ email: emailOrPhone }, { phone: emailOrPhone }],
+        [Op.or]: [{ email: emailOrPhone }, { phone: emailOrPhone }],
       },
     });
     if (!user) return res.status(404).json({ message: "User not found" });
@@ -133,9 +132,9 @@ export const resendOtp = async (req, res) => {
     await user.save();
 
     if (emailOrPhone.includes("@")) {
-      await sendMail(user.email, "Your OTP - YOSS", `Your OTP is ${otp}`);
+      await sendMail(user.email, `Your OTP is ${otp}`);
     } else {
-      await sendSMS(user.phone, `Your YOSS OTP is ${otp}`);
+      await sendSMS(user.phone, `Your OTP is ${otp}`);
     }
 
     res.json({ message: "OTP resent successfully" });
@@ -147,28 +146,29 @@ export const resendOtp = async (req, res) => {
 
 export const forgotPassword = async (req, res) => {
   try {
-    const { email } = req.body;
-    const user = await User.findOne({ where: { email } });
+    const { emailOrPhone } = req.body;
+    const user = await User.findOne({
+      where: {
+        [Op.or]: [
+          { email: emailOrPhone },
+          { phone: emailOrPhone }
+        ]
+      }
+    });    
     if (!user) return res.status(404).json({ message: "User not found" });
-
     const resetToken = crypto.randomBytes(32).toString("hex");
-    const resetTokenExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 min
-
     user.resetToken = resetToken;
-    user.resetTokenExpiry = resetTokenExpiry;
+    user.resetTokenExpiry = new Date(Date.now() + 15 * 60 * 1000);
     await user.save();
 
     const resetURL = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-    await sendMail(
-      email,
-      "Reset your password - Your Own Shopping Store",
-      resetURL
-    );
+    if (emailOrPhone.includes("@")) {
+      await sendMail(user.email, "Reset your password", resetURL);
+    } else {
+      await sendSMS(user.phone, `Reset your password: ${resetURL}`);
+    }
     res.json({ message: "Password reset email sent successfully" });
-
-
-
 
   } catch (err) {
     console.error("Forgot password error:", err);

@@ -28,12 +28,10 @@ button, input, select, textarea {
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* Smooth scroll and nice feel */
 html {
   scroll-behavior: smooth;
 }
 
-/* Subtle card shadow for modern feel */
 .card {
   @apply bg-white shadow-md hover:shadow-lg rounded-2xl p-6 transition-all duration-300;
 }
@@ -45,7 +43,6 @@ html {
 }
 
 
-/* Soft hover effect for buttons */
 .btn {
   @apply px-4 py-2 rounded-xl bg-indigo-600 text-white font-semibold transition-all duration-300;
 }
@@ -53,7 +50,6 @@ html {
   @apply bg-indigo-700 shadow-lg transform -translate-y-0.5;
 }
 
-/* Input fields with clean borders */
 .input {
   @apply border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none;
 }
@@ -68,7 +64,6 @@ html {
 }
 
 img {
-  /* cross-origin: anonymous; */
   img {
     max-width: 100%;
     height: auto;

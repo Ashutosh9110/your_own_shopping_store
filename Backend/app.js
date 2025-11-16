@@ -76,8 +76,23 @@ app.use(
     origin: allowedOrigins,
     methods: ["GET"],
   }),
-  express.static(path.join(__dirname, "src/uploads"))
-)
+  express.static(path.join(__dirname, "src/uploads"), {
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith(".jpg") || filePath.endsWith(".jpeg")) {
+        res.setHeader("Content-Type", "image/jpeg");
+      }
+      if (filePath.endsWith(".png")) {
+        res.setHeader("Content-Type", "image/png");
+      }
+      if (filePath.endsWith(".webp")) {
+        res.setHeader("Content-Type", "image/webp");
+      }
+      if (filePath.endsWith(".gif")) {
+        res.setHeader("Content-Type", "image/gif");
+      }
+    }
+  })
+);
 
 
 

@@ -31,79 +31,74 @@ export default function Signup() {
   };
 
   return (
-    <div className="flex min-h-screen font-[Inter]">
-      {/* Left image section */}
-      <div className="hidden md:flex w-1/2 justify-center items-center">
-        <img
-          src="/assets/signup2.gif"
-          alt="Shopping cart and phone"
-          className="w-3/4 max-w-lg object-contain"
-        />
-      </div>
-
-      {/* Right form section */}
-      <div className="flex w-full md:w-1/2 justify-center items-center p-10">
-        <form
-          onSubmit={handleSignup}
-          className="w-full max-w-sm bg-white p-8 rounded-lg shadow-md"
-        >
-          <h2 className="text-3xl font-semibold mb-2 text-green-600">
-            Create Account
-          </h2>
-          <p className="text-sm text-gray-600 mb-6">
-            Enter your details below
-          </p>
-
-          <input
-            type="email"
-            placeholder="Email or Phone Number"
-            className="border-b border-gray-300 mb-6 w-full p-2 focus:outline-none focus:border-red-600"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-
-          <input
-            type="password"
-            placeholder="Password"
-            className="border-b border-gray-300 mb-6 w-full p-2 focus:outline-none focus:border-red-600"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-
-          {/* <select
-            className="border border-gray-300 mb-6 w-full p-2 rounded-md focus:outline-none focus:border-green-600 cursor-pointer bg-transparent"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
+    <div className="fixed inset-0 w-full h-full overflow-hidden font-[Inter] z-0">  
+      <video
+        className="absolute inset-0 w-full h-full object-cover object-center scale-[1.35]"
+        autoPlay
+        loop
+        muted
+        playsInline
+        src="https://res.cloudinary.com/djm65usjg/video/upload/v1763281058/signup2_eaho2j.mp4"
+      />
+  
+      <div className="absolute inset-0 bg-black/40" />
+      <div className="relative z-10 flex min-h-screen justify-center items-center px-6 md:px-16">
+          <form
+            onSubmit={handleSignup}
+            className="w-full max-w-sm backdrop-blur-md p-8 rounded-lg"
           >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select> */}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-800 transition-colors duration-300 cursor-pointer"
-          >
-            {loading ? "Creating..." : "Sign Up"}
-          </button>
-
-          <p className="text-center text-sm text-gray-600 mt-4">
-            Already have an account?{" "}
-            <span
-              onClick={() => navigate("/login")}
-              className="w-full text-gray-600 py-2.5 rounded-md font-semibold transition cursor-pointer"
+            <div className="text-center">
+              <h2 className="text-3xl font-semibold mb-2 text-green-600">
+                Create Account
+              </h2>
+              <p className="text-sm text-white mb-6">
+                Enter your details below
+              </p>
+            </div>
+  
+            <input
+              type="email"
+              placeholder="Email or Phone Number"
+              className="border-b border-gray-300 mb-6 w-full p-2 focus:outline-none focus:border-green-600"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+  
+            <input
+              type="password"
+              placeholder="Password"
+              className="border-b border-gray-300 mb-6 w-full p-2 focus:outline-none focus:border-green-600"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+  
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-800 transition-colors duration-300 cursor-pointer"
             >
-              Log In
-            </span>
-          </p>
-
-          {message && (
-            <p className="text-center mt-4 text-sm text-gray-700">{message}</p>
-          )}
-        </form>
-      </div>
+              {loading ? "Creating..." : "Sign Up"}
+            </button>
+  
+            <p className="text-center text-sm text-gray-400 mt-4">
+              Already have an account?{" "}
+              <span
+                onClick={() => navigate("/login")}
+                className="font-semibold cursor-pointer hover:underline text-white"
+              >
+                Log In
+              </span>
+            </p>
+  
+            {message && (
+              <p className="text-center mt-4 text-sm text-gray-700">{message}</p>
+            )}
+          </form>
+        </div>
+  
     </div>
   );
+  
 }

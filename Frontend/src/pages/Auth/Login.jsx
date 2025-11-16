@@ -15,9 +15,10 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     setMessage("");
+
     try {
       await login(email, password);
-
+      navigate("/");
     } catch (err) {
       console.error("Login error:", err);
       setMessage(err.response?.data?.message || "Invalid email or password");
@@ -27,80 +28,84 @@ export default function Login() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col md:flex-row items-center justify-center bg-gray-50 px-6 md:px-0">
-      <div className="hidden md:flex w-1/2 justify-center items-center">
-        <img
-          src="/assets/login.gif"
-          alt="Login illustration"
-          className="max-w-lg w-full h-auto rounded-lg object-contain"
-        />
-      </div>
+    <div className="fixed inset-0 w-full h-full overflow-hidden font-[Inter] z-0">
 
-      <div className="flex w-full md:w-1/2 justify-center py-10">
+      {/* SAME VIDEO AS SIGNUP */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover object-center scale-[1.35]"
+        autoPlay
+        loop
+        muted
+        playsInline
+        src="https://res.cloudinary.com/djm65usjg/video/upload/v1763285155/login6_prwtwb.mp4"
+      />
+
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/40" />
+
+      <div className="relative z-10 flex min-h-screen justify-center items-center px-6 md:px-16">
         <form
           onSubmit={handleLogin}
-          className="bg-white shadow-lg rounded-xl p-8 md:p-12 w-full max-w-md"
+          className="w-full max-w-sm backdrop-blur-md p-8 rounded-lg"
         >
-          <h2 className="text-3xl font-bold mb-2 text-center text-green-600">
-            Login
-          </h2>
-          <p className="text-gray-500 text-center mb-8">
-            Enter your credentials to continue
-          </p>
+          <div className="text-center">
+            <h2 className="text-3xl font-semibold mb-2 text-green-600">
+              Login
+            </h2>
 
-          <div className="mb-6">
-            <input
-              type="email"
-              placeholder="Email"
-              className="border-b-2 border-gray-300 w-full py-2 px-1 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-green-600 transition"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <p className="text-sm text-white mb-6">
+              Enter your credentials to continue
+            </p>
           </div>
 
-          <div className="mb-6">
-            <input
-              type="password"
-              placeholder="Password"
-              className="border-b-2 border-gray-300 w-full py-2 px-1 text-gray-800 placeholder-gray-400 focus:outline-none focus:border-green-600 transition"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
+          <input
+            type="email"
+            placeholder="Email"
+            className="border-b border-gray-300 mb-6 w-full p-2 focus:outline-none focus:border-green-600"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            className="border-b border-gray-300 mb-6 w-full p-2 focus:outline-none focus:border-green-600"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-green-600 text-white py-2.5 rounded-md font-semibold hover:bg-green-800 transition disabled:opacity-70 cursor-pointer"
+            className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-800 transition-colors duration-300 cursor-pointer"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
 
           <p
-            className="text-sm text-gray-500 hover:underline mt-4 text-center cursor-pointer"
+            className="text-center text-sm text-gray-400 mt-4 cursor-pointer hover:underline"
             onClick={() => navigate("/forgot-password")}
           >
             Forgot Password?
           </p>
 
-          <div className="my-6 border-t border-gray-200"></div>
-
-          <button
-            type="button"
-            disabled={loading}
-            onClick={() => navigate("/register")}
-            className="w-full text-sm text-gray-600 py-2.5 rounded-md font-semibold transition cursor-pointer"
-          >
-            New User? <span className="text-gray-800">Sign Up</span>
-          </button>
+          <p className="text-center text-sm text-gray-400 mt-4">
+            New user?{" "}
+            <span
+              className="font-semibold cursor-pointer hover:underline text-white"
+              onClick={() => navigate("/register")}
+            >
+              Sign Up
+            </span>
+          </p>
 
           {message && (
-            <p className="text-center mt-4 text-sm text-red-600">{message}</p>
+            <p className="text-center mt-4 text-sm text-red-500">{message}</p>
           )}
         </form>
       </div>
-    </main>
+    </div>
   );
 }

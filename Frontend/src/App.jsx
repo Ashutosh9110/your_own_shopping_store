@@ -41,11 +41,13 @@ function App() {
     const timer = setTimeout(() => setLoading(false), 800); // duration for animation
     return () => clearTimeout(timer);
   }, [location.pathname]);
+
+  const hideLayout = ["/login", "/register", "/forgot-password", "/reset-password"].includes(location.pathname);
+
   return (
       <>
         {loading && <Loader message="Almost there, promise . . . 🫰" />}
-
-        <Navbar />
+        {!hideLayout && <Navbar />}
           <Routes>
             {/* Public routes */}
             <Route path="/" element={<Welcome />} />
@@ -65,8 +67,8 @@ function App() {
             <Route path="/admin/add-product" element={ <AdminRoute> <AddProduct /> </AdminRoute> } />
             <Route path="/admin/orders" element={ <AdminRoute> <ManageOrders /> </AdminRoute> } />
           </Routes>
-          <Footer />
-      </>
+          {!hideLayout && <Footer />}
+          </>
   );
 }
 

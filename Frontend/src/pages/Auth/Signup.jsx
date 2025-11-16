@@ -59,7 +59,7 @@ export default function Signup() {
             <input
               type="email"
               placeholder="Email or Phone Number"
-              className="border-b border-gray-300 mb-6 w-full p-2 focus:outline-none focus:border-green-600"
+              className="border-b border-gray-300 mb-6 w-full p-2 focus:outline-none focus:border-green-600 text-white"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -68,7 +68,7 @@ export default function Signup() {
             <input
               type="password"
               placeholder="Password"
-              className="border-b border-gray-300 mb-6 w-full p-2 focus:outline-none focus:border-green-600"
+              className="border-b border-gray-300 mb-6 w-full p-2 focus:outline-none focus:border-green-600 text-white"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required

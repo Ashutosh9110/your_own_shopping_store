@@ -61,7 +61,7 @@ export default function Login() {
           <input
             type="email"
             placeholder="Email"
-            className="border-b border-gray-300 mb-6 w-full p-2 focus:outline-none focus:border-green-600"
+            className="border-b border-gray-300 mb-6 w-full p-2 focus:outline-none focus:border-green-600 text-white"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -70,7 +70,7 @@ export default function Login() {
           <input
             type="password"
             placeholder="Password"
-            className="border-b border-gray-300 mb-6 w-full p-2 focus:outline-none focus:border-green-600"
+            className="border-b border-gray-300 mb-6 w-full p-2 focus:outline-none focus:border-green-600 text-white"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required

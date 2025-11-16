@@ -55,21 +55,6 @@ app.use(express.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// app.use(
-//   "/uploads",
-//   cors(corsOptions),
-//   express.static(path.join(__dirname, "src/uploads"))
-// );
-
-
-// app.use("/uploads", (req, res, next) => {
-//   const allowedOrigin = "https://yourownshoppingstore.netlify.app";
-//   res.header("Access-Control-Allow-Origin", allowedOrigin);
-//   res.header("Access-Control-Allow-Methods", "GET, OPTIONS");
-//   next();
-// }, express.static(path.join(__dirname, "src/uploads")));
-
-
 app.use(
   "/uploads",
   cors({
@@ -89,6 +74,9 @@ app.use(
       }
       if (filePath.endsWith(".gif")) {
         res.setHeader("Content-Type", "image/gif");
+      }
+      if (filePath.endsWith(".avif")) {
+        res.setHeader("Content-Type", "image/avif");
       }
     }
   })
@@ -122,9 +110,14 @@ sequelize
   })
   .catch((err) => console.error("DB error:", err));
 
-  app.use((req, res, next) => {
-    console.warn("404 - Not Found:", req.originalUrl);
-    res.status(404).json({ message: "Route not found" });
+  app.use((req, res) => {
+    if (req.originalUrl.startsWith("/uploads")) {
+      res.status(404)
+        .set("Content-Type", "image/png")
+        .send("");
+    } else {
+      res.status(404).json({ message: "Route not found" });
+    }
   });
 
 

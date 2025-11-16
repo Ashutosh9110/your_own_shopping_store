@@ -27,7 +27,6 @@ const allowedOrigins = [
   "https://your-own-shopping-store.onrender.com"
 ];
 
-// CORS setup
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -51,7 +50,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options("/{*splat}", cors(corsOptions))
 
-// Middleware
 app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);
@@ -72,23 +70,14 @@ const __dirname = path.dirname(__filename);
 // }, express.static(path.join(__dirname, "src/uploads")));
 
 
-app.use("/uploads", (req, res, next) => {
-  const allowedOrigin = "https://yourownshoppingstore.netlify.app";
-  const requestOrigin = req.headers.origin;
-
-  console.log("\n [UPLOAD REQUEST]");
-  console.log("Path:", req.path);
-  console.log("Full URL:", req.protocol + "://" + req.get("host") + req.originalUrl);
-  // console.log("Origin Header:", requestOrigin);
-
-  res.header("Access-Control-Allow-Origin", allowedOrigin);
-  res.header("Access-Control-Allow-Methods", "GET, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
-  // console.log("Response CORS header:", res.getHeader("Access-Control-Allow-Origin"));
-
-  next();
-}, express.static(path.join(__dirname, "src/uploads")));
+app.use(
+  "/uploads",
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET"],
+  }),
+  express.static(path.join(__dirname, "src/uploads"))
+)
 
 
 

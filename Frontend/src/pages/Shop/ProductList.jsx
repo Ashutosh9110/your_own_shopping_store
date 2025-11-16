@@ -52,7 +52,7 @@ export default function ProductList() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-20 px-6 font-[Poppins]">
       <h2 className="text-4xl font-semibold mb-12 text-center text-gray-800 mt-15">
-        Explore Our <span className="text-green-600">Latest Products</span>
+        <span className="text-gray-600">Explore Our </span><span className="text-green-600">Latest Products</span>
       </h2>
 
       {/* Filters */}
@@ -60,7 +60,7 @@ export default function ProductList() {
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="border border-gray-300 bg-white rounded-xl px-5 py-2 text-gray-700 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-600 transition"
+          className="border border-gray-300 bg-white rounded-xl px-5 py-2 text-gray-700 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-gray-600 transition cursor-pointer"
         >
           <option value="">All Categories</option>
           {categories.map((c) => (
@@ -80,7 +80,7 @@ export default function ProductList() {
       </div>
 
       {/* Product Grid */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-10 px-2">
+      <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {products.map((p, idx) => {
           const imgs = Array.isArray(p.image) ? p.image : p.image ? [p.image] : [];
           const img1 = imgs[0] || "/placeholder.png";
@@ -94,10 +94,11 @@ export default function ProductList() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.05, type: "spring", stiffness: 80 }}
               whileHover={{ scale: 1.03 }}
-              className="bg-white rounded-2xl overflow-hidden cursor-pointer border border-gray-100 hover:shadow-2xl transition-all duration-300"
+              className="bg-white border border-gray-200 overflow-hidden cursor-pointer shadow-sm hover:shadow-md transition duration-300"
+
             >
               <div className="relative group">
-                <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-br from-transparent to-transparent transition-all duration-500 pointer-events-none group-hover:from-green-50 group-hover:to-green-100" />
+                <div className="absolute -inset-0.5 duration-500 pointer-events-none group-hover:from-gray-50 group-hover:to-gray-100" />
                 <div className="relative w-full h-56 flex items-center justify-center p-6">
                 {(() => {
                 const formatUrl = (url) => {
@@ -119,23 +120,13 @@ export default function ProductList() {
                         src={imgSrc1}
                         alt={p.name}
                         className="
-                          absolute inset-0 m-auto
-                          w-full h-full object-contain
-                          transition-all duration-500
-                          opacity-100 group-hover:opacity-0
-                          scale-100 group-hover:scale-95
-                        "
+                          absolute inset-0 m-auto w-full h-[400px] bg-[#f7f7f7] object-contain transition-all duration-500 opacity-100 group-hover:opacity-0 scale-100 group-hover:scale-95 mt-1"
                       />
                       <img
                         src={imgSrc2}
                         alt={p.name + '-alt'}
                         className="
-                          absolute inset-0 m-auto
-                          w-full h-full object-contain
-                          transition-all duration-500
-                          opacity-0 group-hover:opacity-100
-                          scale-105 group-hover:scale-100
-                        "
+                          absolute inset-0 m-auto w-full h-full object-contain transition-all duration-500 opacity-0 group-hover:opacity-100 scale-105 group-hover:scale-100"
                       />
                     </>
                   );
@@ -143,16 +134,16 @@ export default function ProductList() {
 
                 </div>
 
-                <div className="absolute inset-0 rounded-2xl pointer-events-none border-2 border-transparent group-hover:border-green-500 transition-colors duration-300" />
+                <div className="absolute inset-0 rounded-2xl pointer-events-none border-2 border-transparent  transition-colors duration-300" />
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/0 to-transparent opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
               </div>
 
-              <div className="p-5">
-                <h3 className="text-lg font-medium text-gray-800 truncate">
+              <div className="p-7">
+                <h3 className="text-sm font-semibold text-gray-600 mt-4 line-clamp-2 uppercase">
                   {p.name}
                 </h3>
 
-                <div className="flex items-center mt-1 mb-2">
+                <div className="flex items-center mt-3 mb-2">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
@@ -166,8 +157,8 @@ export default function ProductList() {
                   ))}
                 </div>
 
-                <div className="flex justify-between items-center">
-                  <p className="text-gray-600 text-lg font-semibold">
+                <div className="flex justify-between items-center mt-4">
+                  <p className="text-gray-600 text-sm">
                     ₹{Number(p.price).toFixed(2)}
                   </p>
                   <button
@@ -175,7 +166,7 @@ export default function ProductList() {
                       e.stopPropagation();
                       navigate(`/products/${p.id}`);
                     }}
-                    className="bg-green-600 text-white px-4 py-1 rounded-full text-sm font-medium hover:bg-green-800 transition cursor-pointer"
+                    className="bg-gray-600 text-white px-4 py-1 rounded-full text-sm font-medium hover:bg-gray-500 transition cursor-pointer"
                   >
                     View
                   </button>

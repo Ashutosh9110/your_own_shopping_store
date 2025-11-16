@@ -154,7 +154,7 @@ export default function Welcome() {
         onClick={() => handleCategoryClick("fruits")}
       >
         <video
-          src="https://res.cloudinary.com/djm65usjg/video/upload/v1762694531/fruits2_hyh36s.webm"
+          src="https://res.cloudinary.com/djm65usjg/video/upload/v1763271190/fruits3_b6ibmc.mp4"
           autoPlay
           muted
           loop

@@ -80,7 +80,7 @@ export default function ProductList() {
       </div>
 
       {/* Product Grid */}
-      <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <div className="max-w-[1250px] mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-2">
         {products.map((p, idx) => {
           const imgs = Array.isArray(p.image) ? p.image : p.image ? [p.image] : [];
           const img1 = imgs[0] || "/placeholder.png";

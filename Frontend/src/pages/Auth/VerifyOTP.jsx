@@ -78,10 +78,8 @@ export default function VerifyOTP() {
   return (
     <div className="fixed inset-0 flex justify-center items-center text-white font-[Poppins]">
 
-      {/* BACKGROUND */}
       <div className="absolute inset-0 bg-[#121212] bg-[radial-gradient(circle_at_25%_25%,rgba(166,86,246,0.1)_2%,transparent_0%),radial-gradient(circle_at_75%_75%,rgba(102,101,241,0.1)_2%,transparent_0%)] bg-[length:60px_60px]" />
 
-      {/* CARD */}
       <div className="relative bg-[rgba(30,30,30,0.8)] backdrop-blur-xl 
         border border-white/10 px-10 py-8 rounded-2xl shadow-2xl w-[380px] text-center">
 

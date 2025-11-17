@@ -6,10 +6,15 @@ const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH);
 
 export const sendSMS = async (phone, message) => {
   try {
+    let formattedPhone = phone;
+
+    if (!phone.startsWith("+")) {
+      formattedPhone = "+91" + phone;
+    }
     await client.messages.create({
       body: message,
       from: process.env.TWILIO_PHONE,
-      to: phone,
+      to: formattedPhone,
     });
     return true;
   } catch (err) {
@@ -17,3 +22,4 @@ export const sendSMS = async (phone, message) => {
     return false;
   }
 };
+

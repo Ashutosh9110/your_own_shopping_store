@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import { sendMail } from "../utils/sendMail.js"; 
 import { Op } from "sequelize";
 import { sendSMS } from "../utils/sendSMS.js";
+import { otpTemplate, resetTemplate } from "../utils/emailTemplates.js";
 
 dotenv.config();
 
@@ -67,8 +68,11 @@ export const login = async (req, res) => {
     await user.save();
 
     if (emailOrPhone.includes("@")) {
-      await sendMail(user.email, `Your OTP is: ${otp}`);
-    } else {
+      await sendMail({
+        to: user.email,
+        subject: "Your Login OTP",
+        htmlContent: otpTemplate(otp)})
+        } else {
       await sendSMS(user.phone, `Your login OTP is ${otp}`);
     }
 
@@ -164,9 +168,12 @@ export const forgotPassword = async (req, res) => {
     const resetURL = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
     if (emailOrPhone.includes("@")) {
-      await sendMail(user.email, "Reset your password", resetURL);
+      await sendMail({
+        to: user.email,
+        subject: "Reset Your Password",
+        htmlContent: resetTemplate(resetURL)});
     } else {
-      await sendSMS(user.phone, `Reset your password: ${resetURL}`);
+        await sendSMS(user.phone, `Reset your password: ${resetURL}`);
     }
     res.json({ message: "Password reset email sent successfully" });
 

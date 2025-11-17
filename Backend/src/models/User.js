@@ -44,6 +44,10 @@ const User = sequelize.define("User", {
     type: DataTypes.DATE,
     allowNull: true,
   },  
+  otpSessionId: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },  
 });
 
 export default User;

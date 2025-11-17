@@ -90,7 +90,6 @@ export default function VerifyOTP() {
           <span className="text-purple-400 font-medium">{pendingEmail}</span>
         </p>
 
-        {/* OTP INPUTS */}
         <div className="flex justify-center mb-6">
           {otp.map((digit, i) => (
             <input
@@ -109,7 +108,6 @@ export default function VerifyOTP() {
           ))}
         </div>
 
-        {/* VERIFY BUTTON */}
         <button
           onClick={verifyOTP}
           className="w-full py-3 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg
@@ -118,7 +116,6 @@ export default function VerifyOTP() {
           Verify
         </button>
 
-        {/* RESEND SECTION */}
         <div className="mt-4 text-gray-400">
           Didn’t receive the code?{" "}
           <span

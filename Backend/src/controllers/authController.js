@@ -6,7 +6,8 @@ import dotenv from "dotenv";
 import { sendMail } from "../utils/sendMail.js"; 
 import { Op } from "sequelize";
 import { sendSMS } from "../utils/sendSMS.js";
-import { otpTemplate, resetTemplate } from "../utils/emailTemplates.js";
+import { verifySMS } from "../utils/verifySMS.js";
+import { otpTemplate } from "../utils/emailTemplates.js";
 
 dotenv.config();
 
@@ -50,38 +51,43 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { emailOrPhone, password } = req.body;
-
     const user = await User.findOne({
-      where: {
-        [Op.or]: [{ email: emailOrPhone }, { phone: emailOrPhone }],
-      },
+      where: { [Op.or]: [{ email: emailOrPhone }, { phone: emailOrPhone }] },
     });
-
     if (!user) return res.status(404).json({ message: "User not found" });
-
     const validPass = await bcrypt.compare(password, user.password);
-    if (!validPass) return res.status(401).json({ message: "Wrong password" });
-
+    if (!validPass)
+      return res.status(401).json({ message: "Wrong password" });
+    if (!emailOrPhone.includes("@")) {
+      const sessionId = await sendSMS(user.phone);
+      if (!sessionId)
+        return res.status(500).json({ message: "Failed to send OTP" });
+      user.otpSessionId = sessionId;
+      user.otp = null;
+      user.otpExpiry = null;
+      await user.save();
+      return res.json({
+        otpRequired: true,
+        message: "OTP sent via SMS",
+      });
+    }
     const otp = generateOtp();
     user.otp = otp;
-    user.otpExpiry = new Date(Date.now() + 5 * 60 * 1000); // 5 mins
+    user.otpExpiry = new Date(Date.now() + 5 * 60 * 1000);
+    user.otpSessionId = null;
     await user.save();
-
-    if (emailOrPhone.includes("@")) {
-      await sendMail({
-        to: user.email,
-        subject: "Your Login OTP",
-        htmlContent: otpTemplate(otp)})
-        } else {
-      await sendSMS(user.phone, `Your login OTP is ${otp}`);
-    }
-
-    res.json({ otpRequired: true, message: "OTP sent" });
+    await sendMail({
+      to: user.email,
+      subject: "Your Login OTP",
+      htmlContent: otpTemplate(otp),
+    });
+    res.json({ otpRequired: true, message: "OTP sent to email" });
   } catch (err) {
     console.error("Login error:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 
 export const verifyOtp = async (req, res) => {
@@ -91,17 +97,23 @@ export const verifyOtp = async (req, res) => {
       where: {
         [Op.or]: [{ email: emailOrPhone }, { phone: emailOrPhone }],
       },
-    });
-    if (!user) return res.status(404).json({ success: false, message: "User not found" });
-    if (!user.otp || user.otp !== otp)
-      return res.json({ success: false, message: "Invalid OTP" });
-    if (new Date() > new Date(user.otpExpiry))
-      return res.json({ message: "OTP expired", success: false });
+    })
+    if (!user)
+      return res.status(404).json({ success: false, message: "User not found" });
+    let valid = false;
+    if (!emailOrPhone.includes("@")) {
+      valid = await verifySMS(user.otpSessionId, otp);
+    }
+    else {
+      valid = user.otp === otp && new Date() < new Date(user.otpExpiry);
+    }
+    if (!valid)
+      return res.status(400).json({ success: false, message: "Invalid or expired OTP" });
 
     user.otp = null;
+    user.otpSessionId = null;
     user.otpExpiry = null;
     await user.save();
-
     const token = jwt.sign(
       { id: user.id, role: user.role },
       process.env.JWT_SECRET,
@@ -110,17 +122,16 @@ export const verifyOtp = async (req, res) => {
     res.json({ success: true, token, role: user.role });
   } catch (err) {
     console.error("Verify OTP error:", err);
-    res.status(500).json({ success: false, message: "Server error" });
+    res.status(500).json({ message: "Server error" });
   }
 };
+
 
 
 export const logout = (req, res) => {
   res.json({ message: "Logged out successfully" });
 };
-
 // console.log(process.env.FRONTEND_URL);
-
 export const resendOtp = async (req, res) => {
   try {
     const { emailOrPhone } = req.body;
@@ -129,24 +140,37 @@ export const resendOtp = async (req, res) => {
         [Op.or]: [{ email: emailOrPhone }, { phone: emailOrPhone }],
       },
     });
+
     if (!user) return res.status(404).json({ message: "User not found" });
+    if (!emailOrPhone.includes("@")) {
+      const sessionId = await sendSMS(user.phone);
+      if (!sessionId)
+        return res.status(500).json({ message: "Failed to resend OTP" });
+      user.otpSessionId = sessionId;
+      user.otp = null;
+      user.otpExpiry = null;
+      await user.save();
+      return res.json({ message: "OTP resent via SMS" });
+    }
     const otp = generateOtp();
     user.otp = otp;
     user.otpExpiry = new Date(Date.now() + 5 * 60 * 1000);
+    user.otpSessionId = null;
     await user.save();
-
-    if (emailOrPhone.includes("@")) {
-      await sendMail(user.email, `Your OTP is ${otp}`);
-    } else {
-      await sendSMS(user.phone, `Your OTP is ${otp}`);
-    }
-
-    res.json({ message: "OTP resent successfully" });
+    await sendMail({
+      to: user.email,
+      subject: "Your OTP Code",
+      htmlContent: otpTemplate(otp),
+    });
+    res.json({ message: "OTP resent to email" });
   } catch (err) {
     console.error("Resend OTP error:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
+
+
+
 
 export const forgotPassword = async (req, res) => {
   try {
@@ -168,12 +192,9 @@ export const forgotPassword = async (req, res) => {
     const resetURL = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
     if (emailOrPhone.includes("@")) {
-      await sendMail({
-        to: user.email,
-        subject: "Reset Your Password",
-        htmlContent: resetTemplate(resetURL)});
+      await sendMail(user.email, "Reset your password", resetURL);
     } else {
-        await sendSMS(user.phone, `Reset your password: ${resetURL}`);
+      await sendSMS(user.phone, `Reset your password: ${resetURL}`);
     }
     res.json({ message: "Password reset email sent successfully" });
 

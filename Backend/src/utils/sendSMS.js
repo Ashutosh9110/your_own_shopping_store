@@ -1,25 +1,18 @@
-import twilio from "twilio";
+import axios from "axios";
 import dotenv from "dotenv";
 dotenv.config();
 
-const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH);
-
-export const sendSMS = async (phone, message) => {
+export const sendSMS = async (phone) => {
   try {
-    let formattedPhone = phone;
+    const response = await axios.get(
+      `https://2factor.in/API/V1/${process.env.TWO_FACTOR_API_KEY}/SMS/${phone}/AUTOGEN`
+    );
 
-    if (!phone.startsWith("+")) {
-      formattedPhone = "+91" + phone;
-    }
-    await client.messages.create({
-      body: message,
-      from: process.env.TWILIO_PHONE,
-      to: formattedPhone,
-    });
-    return true;
+    if (response.data.Status !== "Success") return null;
+
+    return response.data.Details; // sessionId
   } catch (err) {
-    console.error("SMS sending failed:", err);
-    return false;
+    console.error("2Factor Send SMS Error:", err.response?.data || err);
+    return null;
   }
 };
-

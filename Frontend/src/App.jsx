@@ -43,7 +43,7 @@ function App() {
     return () => clearTimeout(timer);
   }, [location.pathname]);
 
-  const hideLayout = ["/login", "/register", "/forgot-password", "/reset-password"].includes(location.pathname);
+  const hideLayout = ["/login", "/register", "/forgot-password", "/reset-password", "/verify-otp"].includes(location.pathname);
 
   return (
       <>

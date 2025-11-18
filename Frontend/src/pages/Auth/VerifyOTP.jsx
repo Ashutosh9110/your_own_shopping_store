@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function VerifyOTP() {
@@ -76,67 +76,87 @@ export default function VerifyOTP() {
   const seconds = timeLeft % 60;
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center text-white font-[Poppins]">
+    <div className="fixed inset-0 w-full h-full overflow-hidden font-[Inter] z-0">
+  
+      <video
+        className="absolute inset-0 w-full h-full object-cover object-center scale-[1.35]"
+        autoPlay
+        loop
+        muted
+        playsInline
+        src="https://res.cloudinary.com/deqp37rqp/video/upload/v1763462465/otp4_zgc31w.mp4"
+      />
 
-      <div className="absolute inset-0 bg-[#121212] bg-[radial-gradient(circle_at_25%_25%,rgba(166,86,246,0.1)_2%,transparent_0%),radial-gradient(circle_at_75%_75%,rgba(102,101,241,0.1)_2%,transparent_0%)] bg-[length:60px_60px]" />
-
-      <div className="relative bg-[rgba(30,30,30,0.8)] backdrop-blur-xl 
-        border border-white/10 px-10 py-8 rounded-2xl shadow-2xl w-[380px] text-center">
-
-        <h1 className="text-3xl font-semibold mb-3">OTP Verification</h1>
-
-        <p className="text-gray-300 mb-6">
-          Enter the OTP sent to{" "}
-          <span className="text-purple-400 font-medium">{pendingEmail}</span>
-        </p>
-
-        <div className="flex justify-center mb-6">
-          {otp.map((digit, i) => (
-            <input
-              key={i}
-              ref={(el) => (inputRefs.current[i] = el)}
-              type="text"
-              maxLength={1}
-              value={digit}
-              onChange={(e) => handleChange(i, e.target.value)}
-              onKeyDown={(e) => handleBackspace(i, e)}
-              className="w-12 h-12 mx-2 text-center text-xl text-white
-                bg-[rgba(42,42,42,0.8)] border-2 border-indigo-500 rounded-xl 
-                focus:border-purple-400 focus:shadow-[0_0_0_3px_rgba(166,86,246,0.3)]
-                outline-none transition-all"
-            />
-          ))}
-        </div>
-
-        <button
-          onClick={verifyOTP}
-          className="w-full py-3 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg
-            hover:from-purple-500 hover:to-indigo-500 transition shadow-lg font-medium"
+        <Link
+            to="/"
+            className="absolute top-6 left-6 text-white text-lg font-semibold hover:underline z-20"
+          >
+            ← Back to Home
+          </Link>
+  
+      <div className="absolute inset-0 bg-black/40" />
+  
+      <div className="relative z-10 flex min-h-screen justify-center items-center px-6">
+        <div
+          className="w-[380px] text-center bg-white/10 backdrop-blur-md 
+          border border-white/20 p-8 rounded-lg shadow-lg"
         >
-          Verify
-        </button>
 
-        <div className="mt-4 text-gray-400">
-          Didn’t receive the code?{" "}
-          <span
-            onClick={resendOTP}
-            className="text-indigo-400 cursor-pointer hover:text-purple-400 underline"
+          <h1 className="text-3xl font-semibold mb-3 text-white">OTP Verification</h1>
+  
+          <p className="text-gray-300 mb-6">
+            Enter the OTP sent to{" "}
+            <span className="text-purple-400 font-medium">{pendingEmail}</span>
+          </p>
+  
+          <div className="flex justify-center mb-6">
+            {otp.map((digit, i) => (
+              <input
+                key={i}
+                ref={(el) => (inputRefs.current[i] = el)}
+                type="text"
+                maxLength={1}
+                value={digit}
+                onChange={(e) => handleChange(i, e.target.value)}
+                onKeyDown={(e) => handleBackspace(i, e)}
+                className="w-12 h-12 mx-2 text-center text-xl text-white
+                  bg-[rgba(42,42,42,0.8)] border-2 border-indigo-500 rounded-xl 
+                  focus:border-purple-400 focus:shadow-[0_0_0_3px_rgba(166,86,246,0.3)]
+                  outline-none transition-all"
+              />
+            ))}
+          </div>
+  
+          <button
+            onClick={verifyOTP}
+            className="w-full py-3 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg
+              hover:from-purple-500 hover:to-indigo-500 transition shadow-lg font-medium cursor-pointer"
           >
-            Resend Code
-          </span>
-
-          <span
-            className={`ml-2 ${
-              timeLeft <= 0 ? "text-red-500 animate-pulse" : "text-purple-400"
-            }`}
-          >
-            ({minutes}:{seconds.toString().padStart(2, "0")})
-          </span>
+            Verify
+          </button>
+  
+          <div className="mt-4 text-gray-400">
+            Didn’t receive the code?{" "}
+            <span
+              onClick={resendOTP}
+              className="text-indigo-400 cursor-pointer hover:text-purple-400 underline"
+            >
+              Resend Code
+            </span>
+  
+            <span
+              className={`ml-2 ${
+                timeLeft <= 0 ? "text-red-500 animate-pulse" : "text-purple-400"
+              }`}
+            >
+              ({minutes}:{seconds.toString().padStart(2, "0")})
+            </span>
+          </div>
+  
+          {message && (
+            <p className="text-center mt-4 text-sm text-red-400">{message}</p>
+          )}
         </div>
-
-        {message && (
-          <p className="text-center mt-4 text-sm text-red-400">{message}</p>
-        )}
       </div>
     </div>
   );

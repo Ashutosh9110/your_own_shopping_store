@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 export default function Login() {
@@ -44,7 +44,12 @@ export default function Login() {
         playsInline
         src="https://res.cloudinary.com/djm65usjg/video/upload/v1763285155/login6_prwtwb.mp4"
       />
-
+        <Link
+            to="/"
+            className="absolute top-6 left-6 text-white text-lg font-semibold hover:underline z-20"
+          >
+            ← Back to Home
+          </Link>
       <div className="absolute inset-0 bg-black/40" />
       <div className="relative z-10 flex min-h-screen justify-center items-center px-6 md:px-16">
         <form

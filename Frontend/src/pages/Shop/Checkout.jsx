@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import API from "../../api/api";
+import { useNavigate } from "react-router-dom";
 
 function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState("COD");
   const [amount, setAmount] = useState(1000);
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate();
+  
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
       if (window.Razorpay) {
@@ -27,11 +29,11 @@ function Checkout() {
     try {
       if (paymentMethod === "COD") {
         alert("Order placed successfully with Cash on Delivery!");
+        navigate("/orders");
         setLoading(false);
         return;
       }
 
-      // 🧾 Online payment flow
       const scriptLoaded = await loadRazorpayScript();
       if (!scriptLoaded) {
         alert("Razorpay SDK failed to load. Are you online?");
@@ -54,9 +56,8 @@ function Checkout() {
         description: "Order Payment",
         order_id: order.id,
         handler: async function (response) {
-          alert("🎉 Payment Successful!");
+          alert("Payment Successful!");
           console.log("Payment response:", response);
-          // Optionally verify payment
           await API.post(
             "/api/payments/verify",
             {
@@ -66,6 +67,7 @@ function Checkout() {
             },
             { headers: { Authorization: `Bearer ${token}` } }
           );
+          navigate("/orders")
         },
         prefill: {
           name: "Ashutosh Singh",

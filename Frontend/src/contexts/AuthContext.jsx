@@ -43,7 +43,7 @@ export function AuthProvider({ children }) {
 
     if (res.data.otpRequired) {
       localStorage.setItem("pendingEmail", emailOrPhone);
-      return "OTP_REQUIRED";
+      return { otpRequired: true };
     }
     const { token, role } = res.data;
     const finalUser = { email: emailOrPhone, role };
@@ -75,25 +75,30 @@ export function AuthProvider({ children }) {
 
     if (isDummy) {
       if (otp === dummyOtp) {
-        const finalUser = { email: emailOrPhone, role: "user" };
-
+        const finalUser = {
+          email: emailOrPhone,
+          role: "user",
+          demo: true
+        };
+    
         setUser(finalUser);
         setToken("DUMMY_TOKEN");
-
+    
         localStorage.setItem("token", "DUMMY_TOKEN");
         localStorage.setItem("user", JSON.stringify(finalUser));
         localStorage.setItem("role", "user");
-
-        // Cleanup
-        localStorage.removeItem("isDummy");
+    
+        API.defaults.headers.common["Authorization"] = `Bearer DUMMY_TOKEN`;
+    
+        localStorage.setItem("isDummy", "true");
         localStorage.removeItem("dummyOtp");
-
+    
         return { success: true, role: "user" };
       } else {
         return { success: false, message: "Invalid dummy OTP" };
       }
     }
-
+    
     const res = await API.post("/api/auth/verify-otp", {
       emailOrPhone,
       otp

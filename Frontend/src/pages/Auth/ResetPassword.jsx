@@ -24,7 +24,6 @@ export default function ResetPassword() {
       setMessage(res.data.message);
       setSuccess(true);
 
-      // Short delay for animation before redirect
       setTimeout(() => navigate("/login"), 2500);
     } catch (err) {
       setMessage(err.response?.data?.message || "Error resetting password");

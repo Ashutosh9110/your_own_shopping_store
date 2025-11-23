@@ -32,7 +32,6 @@ export default function Cart() {
       }));
 
       const res = await API.post("/api/orders", { cartItems, address });
-      alert("Order placed successfully!");
       console.log("Order response:", res.data);
 
       await fetchCart();
@@ -51,7 +50,7 @@ export default function Cart() {
   }
 
   const total = cart.reduce(
-    (sum, item) => sum + item.Product.price * item.quantity,
+    (sum, item) => sum + (item.Product?.price || 0) * item.quantity,
     0
   ); 
   
@@ -70,14 +69,16 @@ export default function Cart() {
           {/* Product Info */}
           <div className="flex items-center gap-4">
           <img
-            src={formatUrl(item.Product.image)}
-            alt={item.Product.name}
+            src={formatUrl(item.Product?.image)}
+            alt={item.Product?.name || "Product"}
             className="w-20 h-20 object-cover rounded-md"
           />
             
             <div>
-              <p className="font-semibold">{item.Product.name}</p>
-              <p className="text-gray-600">₹{item.Product.price.toFixed(2)}</p>
+              <p className="font-semibold">{item.Product?.name || "Unnamed Product"}</p>
+              <p className="text-gray-600">
+                ₹{item.Product?.price ? item.Product.price.toFixed(2) : "0.00"}
+              </p>            
             </div>
           </div>
           

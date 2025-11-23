@@ -15,7 +15,7 @@ export const verifyToken = (req, res, next) => {
 
   if (token === "DUMMY_TOKEN") {
     req.user = {
-      id: "dummy-user-id",
+      id: "11111111-1111-1111-1111-111111111111",
       role: "user",
       isDummy: true,
     };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -7,8 +7,21 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login, verifyOtp } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
+  const [showNotice, setShowNotice] = useState(false);
+
+  const DUMMY_EMAIL = "demo@example.com";
+  const DUMMY_PASSWORD = "123456";
+
+  useEffect(() => {
+    setEmailOrPhone(DUMMY_EMAIL);
+    setPassword(DUMMY_PASSWORD);
+    if (!sessionStorage.getItem("loginNoticeShown")) {
+      setShowNotice(true);
+      sessionStorage.setItem("loginNoticeShown", "true");
+    }
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -18,10 +31,17 @@ export default function Login() {
     
     try {
       const response = await login(emailOrPhone, password);
+
+      if (response.isDummy) {
+        localStorage.setItem("isDummy", "true");
+        localStorage.setItem("dummyOtp", response.dummyOtp);
+        localStorage.setItem("pendingEmail", DUMMY_EMAIL);
+        return navigate("/verify-otp");
+      }
   
-      if (response === "OTP_REQUIRED") {
-        navigate("/verify-otp");
-        return;
+      if (response.otpRequired) {
+        localStorage.setItem("pendingEmail", emailOrPhone);
+        return navigate("/verify-otp");
       }
         navigate("/");
     } catch (err) {
@@ -31,11 +51,10 @@ export default function Login() {
       setLoading(false);
     }
   };
-  
+
 
   return (
-    <div className="fixed inset-0 w-full h-full overflow-hidden font-[Inter] z-0">
-
+    <div className="fixed inset-0 w-full h-full overflow-hidden font-[Inter] z-0">  
       <video
         className="absolute inset-0 w-full h-full object-cover object-center scale-[1.35]"
         autoPlay
@@ -64,7 +83,12 @@ export default function Login() {
               Enter your credentials to continue
             </p>
           </div>
-
+          {showNotice && (
+              <div className="mb-4 p-3 rounded-md bg-yellow-500/20 border border-yellow-300/30 text-yellow-200 text-sm leading-relaxed">
+                <strong>Note:</strong> If you're a recruiter or a fellow developer, please use the demo login credentials provided. 
+                Otherwise, feel free to sign in with your own account.
+              </div>
+            )}
           <input
             type="text"
             placeholder="Email or Phone"

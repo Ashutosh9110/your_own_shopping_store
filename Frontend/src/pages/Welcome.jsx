@@ -92,9 +92,9 @@ export default function Welcome() {
           <motion.button
             onClick={() => navigate("/products")}
             whileHover={{ scale: 1.05 }}
-            className="relative inline-block px-10 py-3 font-semibold text-black rounded-md bg-white/80 backdrop-blur-md border border-white/30 overflow-hidden transition-all duration-300 group"
+            className="relative inline-block px-10 py-3 font-semibold text-black rounded-md bg-white/80 backdrop-blur-md border border-white/30 overflow-hidden transition-all duration-300 group cursor-pointer"
           >
-            <span className="relative z-10 cursor-pointer">Start Shoping</span>
+            <span className="relative z-10">Start Shoping</span>
             <span className="absolute inset-0 border-2 border-transparent group-hover:border-white rounded-md transition-all duration-300"></span>
             <span className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-all duration-300"></span>
           </motion.button>

@@ -51,6 +51,13 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { emailOrPhone, password } = req.body;
+    if (emailOrPhone === "demo@example.com" && password === "123456") {
+      return res.json({
+        otpRequired: true,
+        isDummy: true,
+        dummyOtp: "111111"
+      });
+    }
     const user = await User.findOne({
       where: { [Op.or]: [{ email: emailOrPhone }, { phone: emailOrPhone }] },
     });

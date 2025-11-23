@@ -11,6 +11,15 @@ export default function VerifyOTP() {
   const inputRefs = useRef([]);
   const [timeLeft, setTimeLeft] = useState(120); 
   const [message, setMessage] = useState("");
+  const dummyOtp = localStorage.getItem("dummyOtp");
+  const isDummy = localStorage.getItem("isDummy") === "true";
+
+
+  useEffect(() => {
+    if (isDummy && dummyOtp) {
+      setOtp(dummyOtp.split("")); 
+    }
+  }, []);
 
   useEffect(() => {
     if (timeLeft <= 0) return;
@@ -36,28 +45,28 @@ export default function VerifyOTP() {
 
   const verifyOTP = async () => {
     const fullOtp = otp.join("");
-
+  
     if (fullOtp.length !== 6) {
       return setMessage("Please enter a 6-digit OTP");
     }
-
+  
     if (timeLeft <= 0) {
       return setMessage("OTP has expired. Please resend a new one.");
     }
-
     try {
       const result = await verifyOtp(pendingEmail, fullOtp);
-
       if (result.success) {
         localStorage.removeItem("pendingEmail");
-        navigate("/");
+        return navigate("/");
       } else {
-        setMessage(result.message || "Invalid OTP");
+        return setMessage(result.message || "Invalid OTP");
       }
     } catch (err) {
+      console.error(err);
       setMessage("Failed to verify OTP");
     }
   };
+  
 
   const resendOTP = async () => {
     try {
@@ -135,23 +144,26 @@ export default function VerifyOTP() {
             Verify
           </button>
   
-          <div className="mt-4 text-gray-400">
-            Didn’t receive the code?{" "}
-            <span
-              onClick={resendOTP}
-              className="text-indigo-400 cursor-pointer hover:text-purple-400 underline"
-            >
-              Resend Code
-            </span>
-  
-            <span
-              className={`ml-2 ${
-                timeLeft <= 0 ? "text-red-500 animate-pulse" : "text-purple-400"
-              }`}
-            >
-              ({minutes}:{seconds.toString().padStart(2, "0")})
-            </span>
-          </div>
+          {!isDummy && (
+            <div className="mt-4 text-gray-400">
+              Didn’t receive the code?{" "}
+              <span
+                onClick={resendOTP}
+                className="text-indigo-400 cursor-pointer hover:text-purple-400 underline"
+              >
+                Resend Code
+              </span>
+
+              <span
+                className={`ml-2 ${
+                  timeLeft <= 0 ? "text-red-500 animate-pulse" : "text-purple-400"
+                }`}
+              >
+                ({minutes}:{seconds.toString().padStart(2, "0")})
+              </span>
+            </div>
+          )}
+
   
           {message && (
             <p className="text-center mt-4 text-sm text-red-400">{message}</p>

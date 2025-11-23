@@ -30,6 +30,17 @@ export function AuthProvider({ children }) {
   async function login(emailOrPhone, password) {
     const res = await API.post("/api/auth/login", { emailOrPhone, password });
     
+    if (res.data.isDummy) {
+      localStorage.setItem("isDummy", "true");
+      localStorage.setItem("dummyOtp", res.data.dummyOtp);
+      localStorage.setItem("pendingEmail", emailOrPhone);
+      return {
+        otpRequired: true,
+        isDummy: true,
+        dummyOtp: res.data.dummyOtp,
+      };
+    }
+
     if (res.data.otpRequired) {
       localStorage.setItem("pendingEmail", emailOrPhone);
       return "OTP_REQUIRED";
@@ -49,11 +60,40 @@ export function AuthProvider({ children }) {
     // if (role === "admin") navigate("/admin/dashboard");
     // else navigate("/");
 
-    return "SUCCESS";
+    return {
+      success: true,
+      otpRequired: false,
+      role,
+    };
   }
 
 
   async function verifyOtp(emailOrPhone, otp) {
+
+    const isDummy = localStorage.getItem("isDummy") === "true";
+    const dummyOtp = localStorage.getItem("dummyOtp");
+
+    if (isDummy) {
+      if (otp === dummyOtp) {
+        const finalUser = { email: emailOrPhone, role: "user" };
+
+        setUser(finalUser);
+        setToken("DUMMY_TOKEN");
+
+        localStorage.setItem("token", "DUMMY_TOKEN");
+        localStorage.setItem("user", JSON.stringify(finalUser));
+        localStorage.setItem("role", "user");
+
+        // Cleanup
+        localStorage.removeItem("isDummy");
+        localStorage.removeItem("dummyOtp");
+
+        return { success: true, role: "user" };
+      } else {
+        return { success: false, message: "Invalid dummy OTP" };
+      }
+    }
+
     const res = await API.post("/api/auth/verify-otp", {
       emailOrPhone,
       otp
@@ -95,6 +135,8 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("role");
+    localStorage.removeItem("isDummy");
+    localStorage.removeItem("dummyOtp");
     delete API.defaults.headers.common["Authorization"];
     navigate("/login");
   }

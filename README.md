@@ -14,7 +14,7 @@ Frontend (Netlify): [https://yourownshoppingstore.netlify.app](https://yourownsh
 
 ---
 
-<h2>📚 Table of Contents</h2>
+<h2>Table of Contents</h2>
 
 <ul>
   <li><a href="#features">Features</a></li>

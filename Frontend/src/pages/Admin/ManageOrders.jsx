@@ -107,13 +107,13 @@ export default function ManageOrders() {
                   >
                     <div className="flex items-center gap-3">
                     <img
-                      src={formatUrl(item.Product.image)}
-                      alt={item.Product.name}
+                      src={formatUrl(item.Product?.image)}
+                      alt={item.Product?.name || "Product image"}
                       className="w-16 h-16 object-cover rounded-md shadow"
                     />
 
                       <div>
-                        <p className="font-medium text-gray-800">{item.Product.name}</p>
+                      <p className="font-medium text-gray-800">{item.Product?.name || "Unknown Product"}</p>
                         <p className="text-sm text-gray-500">
                           {item.quantity} × ₹{item.price.toFixed(2)}
                         </p>

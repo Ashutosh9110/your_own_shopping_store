@@ -67,7 +67,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-200 via-teal-100 to-green-100 p-6">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-center mb-8 mt-25 gap-4">
         <h1 className="text-4xl font-extrabold text-teal-800 drop-shadow">
           🌿 Admin Dashboard
@@ -106,7 +105,7 @@ export default function Dashboard() {
               <img
                 src={formatUrl(firstImage)}
                 alt={p.name}
-                className="h-36 w-56 object-cover rounded-xl mb-4 mx-auto"
+                className="h-full w-56 object-cover rounded-xl mb-4 mx-auto mt-5"
               />
               <h3 className="font-bold text-lg text-teal-800">{p.name}</h3>
               <p className="text-gray-600 mb-1">₹{p.price}</p>

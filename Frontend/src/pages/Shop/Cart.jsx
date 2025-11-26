@@ -87,9 +87,13 @@ export default function Cart() {
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
               <button
-                onClick={() =>
-                  updateCartItem(item.id, Math.max(1, item.quantity - 1))
-                }
+                onClick={() => {
+                  if (item.quantity === 1) {
+                    removeFromCart(item.id);
+                  } else {
+                    updateCartItem(item.id, item.quantity - 1);
+                  }
+                }}
                 className="px-2 py-1 bg-gray-300 rounded hover:bg-gray-600 cursor-pointer"
               >
                 -

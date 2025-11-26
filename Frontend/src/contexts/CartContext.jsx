@@ -101,19 +101,24 @@ export function CartProvider({ children }) {
   
     if (isDummy) {
       let cartItems = JSON.parse(localStorage.getItem("dummyCart") || "[]");
+  
+      // Remove item directly
       cartItems = cartItems.filter(item => item.id !== id);
+  
       localStorage.setItem("dummyCart", JSON.stringify(cartItems));
+  
       const enriched = await Promise.all(
         cartItems.map(async (item) => {
           const res = await API.get(`/api/products/${item.productId}`);
           return { ...item, Product: res.data };
         })
-      )
+      );
+  
       setCart(enriched);
-      
       return;
     }
   
+    // Real API mode
     await API.delete(`/api/cart/remove/${id}`);
     await fetchCart();
   }

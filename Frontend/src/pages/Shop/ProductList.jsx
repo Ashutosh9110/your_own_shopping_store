@@ -126,7 +126,7 @@ export default function ProductList() {
                         src={imgSrc2}
                         alt={p.name + '-alt'}
                         className="
-                          absolute inset-0 m-auto w-full h-full object-contain transition-all duration-500 opacity-0 group-hover:opacity-100 scale-105 group-hover:scale-100"
+                          absolute inset-0 m-auto w-full h-full object-contain transition-all duration-500 opacity-0 group-hover:opacity-100 scale-105 group-hover:scale-100 mt-8"
                       />
                     </>
                   );

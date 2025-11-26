@@ -1,4 +1,4 @@
-<h1>🛍️ Your Own Shopping Store</h1>
+<h1>Your Own Shopping Store</h1>
 
 <p>
 <strong>Your Own Shopping Store</strong> is a full-stack e-commerce web application built using the <strong>MERN-style</strong> stack — 
@@ -8,7 +8,7 @@ It provides separate dashboards for both <strong>Users</strong> and <strong>Admi
 
 ---
 
-<h2>🌐 Live Demo</h2>
+<h2>Live Demo</h2>
 
 Frontend (Netlify): [https://yourownshoppingstore.netlify.app](https://yourownshoppingstore.netlify.app)  
 
@@ -17,32 +17,32 @@ Frontend (Netlify): [https://yourownshoppingstore.netlify.app](https://yourownsh
 <h2>📚 Table of Contents</h2>
 
 <ul>
-  <li><a href="#features">✨ Features</a></li>
-  <li><a href="#tech-stack">🧩 Tech Stack</a></li>
-  <li><a href="#installation">⚙️ Installation</a></li>
-  <li><a href="#usage">🚀 Usage</a></li>
-  <li><a href="#folder-structure">📁 Folder Structure</a></li>
-  <li><a href="#deployment">🌍 Deployment</a></li>
-  <li><a href="#contributing">🤝 Contributions</a></li>
+  <li><a href="#features">Features</a></li>
+  <li><a href="#tech-stack">Tech Stack</a></li>
+  <li><a href="#installation">Installation</a></li>
+  <li><a href="#usage">Usage</a></li>
+  <li><a href="#folder-structure">Folder Structure</a></li>
+  <li><a href="#deployment">Deployment</a></li>
+  <li><a href="#contributing">Contributions</a></li>
 </ul>
 
 ---
 
-<h2 id="features">✨ Features</h2>
+<h2 id="features">Features</h2>
 
 <ul>
-  <li><strong>👥 Authentication:</strong> Secure login, signup, and password reset via email (Nodemailer).</li>
-  <li><strong>🧑‍💼 Admin Dashboard:</strong> Add, edit, and manage products and view orders.</li>
-  <li><strong>🛒 User Dashboard:</strong> Browse products, add to cart, and checkout.</li>
-  <li><strong>💳 Razorpay Integration:</strong> Seamless payment gateway for order checkout.</li>
-  <li><strong>📦 Cart Management:</strong> Add/remove products with persistent cart state.</li>
-  <li><strong>📱 Responsive Design:</strong> Fully optimized for mobile and desktop users.</li>
-  <li><strong>⚙️ Role-based Routing:</strong> ProtectedRoute and AdminRoute for access control.</li>
+  <li><strong>Authentication:</strong> Secure login, signup, and password reset via email (Nodemailer).</li>
+  <li><strong>Admin Dashboard:</strong> Add, edit, and manage products and view orders.</li>
+  <li><strong>User Dashboard:</strong> Browse products, add to cart, and checkout.</li>
+  <li><strong>Razorpay Integration:</strong> Seamless payment gateway for order checkout.</li>
+  <li><strong>Cart Management:</strong> Add/remove products with persistent cart state.</li>
+  <li><strong>Responsive Design:</strong> Fully optimized for mobile and desktop users.</li>
+  <li><strong>Role-based Routing:</strong> ProtectedRoute and AdminRoute for access control.</li>
 </ul>
 
 ---
 
-<h2 id="tech-stack">🧩 Tech Stack</h2>
+<h2 id="tech-stack">Tech Stack</h2>
 
 **Frontend:**
 - React 19 (Vite)
@@ -61,7 +61,7 @@ Frontend (Netlify): [https://yourownshoppingstore.netlify.app](https://yourownsh
 
 ---
 
-<h2 id="installation">⚙️ Installation</h2>
+<h2 id="installation">Installation</h2>
 
 ### 1️⃣ Clone the repository
 
@@ -87,7 +87,7 @@ JWT_SECRET=your_jwt_secret
 RAZORPAY_KEY_ID=your_razorpay_key_id
 RAZORPAY_KEY_SECRET=your_razorpay_secret
 
-<h2 id="usage">🚀 Usage</h2>
+<h2 id="usage">Usage</h2>
 
 Run the backend
 cd backend
@@ -98,7 +98,7 @@ cd frontend
 npm run dev
 
 Then open your browser and visit:
-👉 http://localhost:5173
+http://localhost:5173
 
 
 
@@ -126,7 +126,7 @@ your_own_shopping_store/
 
 ```
 
-<h2 id="deployment">🌍 Deployment</h2>
+<h2 id="deployment">Deployment</h2>
 
 Frontend:
 Deployed on Netlify
@@ -145,7 +145,7 @@ Add environment variables in Render dashboard.
 Use PostgreSQL Render instance or external database.
 
 
-<h2 id="contributing">🤝 Contributions</h2>
+<h2 id="contributing">Contributions</h2>
 
 Contributions are welcome!
 
@@ -165,6 +165,6 @@ git push origin feature/new-feature
 # Create a Pull Request
 ```
   
-<h3 align="center">👨‍💻 Developed by <strong>Ashutosh Singh</strong></h3> <p align="center"> 💡 Check out more of my work at
-my <a href="https://work-with-ashutosh.netlify.app/" target="_blank">Portfolio</a>! </p> 
+<h3 align="center">👨Developed by <strong>Ashutosh Singh</strong></h3> <p align="center"> Check out more of my work at
+my <a href="https://work-with-ashutosh.netlify.app/" target="_blank" rel="noopener noreferrer">Portfolio</a>! </p> 
 

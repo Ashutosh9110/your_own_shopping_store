@@ -112,8 +112,6 @@ export default function ProductList() {
                   const imgSrc1 = img1 ? formatUrl(img1) : "/placeholder.png";
                   const imgSrc2 = img2 ? formatUrl(img2) : imgSrc1;
 
-                  // console.log("Image for product:", p.name, "| imgSrc1:", imgSrc1);
-
                   return (
                     <>
                       <img
@@ -158,8 +156,11 @@ export default function ProductList() {
                 </div>
 
                 <div className="flex justify-between items-center mt-4">
-                  <p className="text-gray-600 text-sm">
-                    ₹{Number(p.price).toFixed(2)}
+                  <p className="text-gray-600 text-sm">   
+                  ₹{new Intl.NumberFormat("en-IN", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2
+                    }).format(p.price)}
                   </p>
                   <button
                     onClick={(e) => {

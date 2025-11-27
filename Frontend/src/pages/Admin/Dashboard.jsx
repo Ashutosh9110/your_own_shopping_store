@@ -105,10 +105,15 @@ export default function Dashboard() {
               <img
                 src={formatUrl(firstImage)}
                 alt={p.name}
-                className="h-full w-56 object-cover rounded-xl mb-4 mx-auto mt-5"
+                className="h-full w-44 object-cover rounded-xl mb-4 mx-auto mt-5"
               />
               <h3 className="font-bold text-lg text-teal-800">{p.name}</h3>
-              <p className="text-gray-600 mb-1">₹{p.price}</p>
+              <p className="text-gray-600 mb-1">
+              ₹{new Intl.NumberFormat("en-IN", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2
+                    }).format(p.price)}
+              </p>
               <p className="text-sm text-gray-500 mb-3">Stock: {p.quantity}</p>
 
               <div className="flex justify-center gap-3 mt-auto">

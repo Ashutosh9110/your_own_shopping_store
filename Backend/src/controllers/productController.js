@@ -9,8 +9,8 @@ import { Op } from "sequelize";
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "src/uploads/"),
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + path.extname(file.originalname);
-    cb(null, file.fieldname + "-" + uniqueSuffix);
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname));    
   },
 });
 
@@ -23,15 +23,12 @@ export const createProduct = async (req, res) => {
     const { name, price, quantity, categoryId } = req.body;
 
     const backendUrl =
-    process.env.RENDER_EXTERNAL_URL ||
     process.env.BACKEND_PUBLIC_URL ||
-    (process.env.NODE_ENV === "production"
-      ? "https://your-own-shopping-store.onrender.com"
-      : `${req.protocol}://${req.get("host")}`);
+    process.env.RENDER_EXTERNAL_URL ||
+    `${req.protocol}://${req.get("host")}`;
   
-
-    const baseUrl = backendUrl.replace(/\/$/, "");
-
+  const baseUrl = backendUrl.replace(/\/$/, "");
+  
     let imagesArray = [];
 
     if (req.files?.length > 0) {
@@ -56,7 +53,6 @@ console.log("Saving image URL:", `${backendUrl}/uploads/${req.file?.filename}`);
     res.status(500).json({ message: "Failed to create product" });
   }
 };
-
 
 
 // ==================== Get All Products ====================

@@ -55,37 +55,6 @@ app.use(express.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(
-  "/uploads",
-  cors({
-    origin: allowedOrigins,
-    methods: ["GET"],
-  }),
-  express.static(path.join(__dirname, "src/uploads"), {
-    setHeaders: (res, filePath) => {
-      if (filePath.endsWith(".jpg") || filePath.endsWith(".jpeg")) {
-        res.setHeader("Content-Type", "image/jpeg");
-      }
-      if (filePath.endsWith(".png")) {
-        res.setHeader("Content-Type", "image/png");
-      }
-      if (filePath.endsWith(".webp")) {
-        res.setHeader("Content-Type", "image/webp");
-      }
-      if (filePath.endsWith(".gif")) {
-        res.setHeader("Content-Type", "image/gif");
-      }
-      if (filePath.endsWith(".avif")) {
-        res.setHeader("Content-Type", "image/avif");
-      }
-    }
-  })
-);
-
-
-
-
-
 // API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
@@ -96,6 +65,14 @@ app.use("/api/payments", paymentRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/videos", videoRoutes);
 app.use("/api/admin", adminSetupRoute);
+
+app.use("/uploads", (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Cross-Origin-Resource-Policy", "cross-origin");
+  next();
+});
+
+app.use("/uploads", express.static(path.join(__dirname, "src", "uploads")));
 
 
 // Health check route
@@ -109,17 +86,6 @@ sequelize
     console.log("Database connected & synced");
   })
   .catch((err) => console.error("DB error:", err));
-
-  app.use((req, res) => {
-    if (req.originalUrl.startsWith("/uploads")) {
-      res.status(404)
-        .set("Content-Type", "image/png")
-        .send("");
-    } else {
-      res.status(404).json({ message: "Route not found" });
-    }
-  });
-
 
 app.listen(process.env.PORT || 5000, () => {
   console.log(`Server running on port ${process.env.PORT || 5000}`);

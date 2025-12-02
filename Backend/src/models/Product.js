@@ -21,7 +21,7 @@ const Product = sequelize.define("Product", {
     defaultValue: 0,
   },
   image: {
-    type: DataTypes.JSONB, 
+    type: DataTypes.JSON, 
     allowNull: true,
   },
 });

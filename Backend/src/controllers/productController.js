@@ -1,43 +1,23 @@
 import { sequelize } from "../config/db.js";
 import Product from "../models/Product.js";
 import Category from "../models/Category.js";
-import multer from "multer";
-import path from "path";
 import { Op } from "sequelize";
+import cloudinary from "../config/cloudinary.js";
 
-// ==================== Multer Storage ====================
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "src/uploads/"),
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname));    
-  },
-});
-
-export const upload = multer({ storage });
-export const uploadMultiple = multer({ storage });
 
 // ==================== Create Product ====================
 export const createProduct = async (req, res) => {
   try {
     const { name, price, quantity, categoryId } = req.body;
 
-    const backendUrl =
-    process.env.BACKEND_PUBLIC_URL ||
-    process.env.RENDER_EXTERNAL_URL ||
-    `${req.protocol}://${req.get("host")}`;
-  
-  const baseUrl = backendUrl.replace(/\/$/, "");
-  
     let imagesArray = [];
 
-    if (req.files?.length > 0) {
-      imagesArray = req.files.map((f) => `${baseUrl}/uploads/${f.filename}`);
-    } else if (req.file) {
-      imagesArray = [`${baseUrl}/uploads/${req.file.filename}`];
+    if (req.files && req.files.length > 0) {
+      imagesArray = req.files.map((file) => ({
+        url: file.path,
+        public_id: file.filename
+      }));
     }
-console.log("Computed backend URL:", backendUrl);
-console.log("Saving image URL:", `${backendUrl}/uploads/${req.file?.filename}`);
 
     const newProduct = await Product.create({
       name,
@@ -124,41 +104,59 @@ export const getProduct = async (req, res) => {
 };
 
 // ==================== Update Product ====================
+
+
 export const updateProduct = async (req, res) => {
   try {
-    const { name, price, quantity, categoryId, keepExistingImages } = req.body;
-    const product = await Product.findByPk(req.params.id);
+    const { name, price, quantity, categoryId, keepExistingImages, removeImages } = req.body;
 
+    const product = await Product.findByPk(req.params.id);
     if (!product) return res.status(404).json({ message: "Product not found" });
 
-    const backendUrl =
-      process.env.RENDER_EXTERNAL_URL ||
-      process.env.BACKEND_PUBLIC_URL ||
-      (process.env.NODE_ENV === "production"
-        ? "https://your-own-shopping-store.onrender.com"
-        : `${req.protocol}://${req.get("host")}`);
-  
-    
-    const baseUrl = backendUrl.replace(/\/$/, "");
+    let updatedImages = product.image || [];
 
-    if (req.files && Array.isArray(req.files) && req.files.length > 0) {
-      // Replace with new uploaded images
-      product.image = req.files.map((f) => `${baseUrl}/uploads/${f.filename}`);
-    } else if (req.file) {
-      product.image = [`${baseUrl}/uploads/${req.file.filename}`];
-    } else if (keepExistingImages === "true") {
-      // keep current images as is
-    } else if (req.body.image === "null" || req.body.image === null) {
-      product.image = [];
+    // Remove selected images
+    if (removeImages && Array.isArray(JSON.parse(removeImages))) {
+      const removeList = JSON.parse(removeImages);
+
+      for (const public_id of removeList) {
+        await cloudinary.uploader.destroy(public_id);   // delete from Cloudinary
+        updatedImages = updatedImages.filter(img => img.public_id !== public_id);
+      }
     }
 
-    product.name = name || product.name;
-    product.price = price || product.price;
+    // Add new images
+    if (req.files && req.files.length > 0) {
+      const newImages = req.files.map((file) => ({
+        url: file.path,
+        public_id: file.filename
+      }));
+
+      updatedImages = [...updatedImages, ...newImages];
+    }
+
+    // Optionally remove all images
+    if (keepExistingImages === "false" && !req.files?.length) {
+      // delete all cloudinary images
+      for (const img of updatedImages) {
+        await cloudinary.uploader.destroy(img.public_id);
+      }
+      updatedImages = [];
+    }
+
+    // Save updates
+    product.name = name ?? product.name;
+    product.price = price ?? product.price;
     product.quantity = quantity ?? product.quantity;
-    product.categoryId = categoryId || product.categoryId;
+    product.categoryId = categoryId ?? product.categoryId;
+    product.image = updatedImages;
 
     await product.save();
-    res.json({ message: "Product updated successfully", product });
+
+    res.json({
+      message: "Product updated successfully",
+      product,
+    });
   } catch (err) {
     console.error("Error updating product:", err);
     res.status(500).json({ message: err.message });
@@ -168,8 +166,17 @@ export const updateProduct = async (req, res) => {
 // ==================== Delete Product ====================
 export const deleteProduct = async (req, res) => {
   try {
-    const deleted = await Product.destroy({ where: { id: req.params.id } });
-    if (!deleted) return res.status(404).json({ message: "Product not found" });
+    const product = await Product.findByPk(req.params.id);
+    if (!product) return res.status(404).json({ message: "Product not found" });
+
+    // Delete all Cloudinary images
+    if (product.image && Array.isArray(product.image)) {
+      for (const img of product.image) {
+        await cloudinary.uploader.destroy(img.public_id);
+      }
+    }
+
+    await product.destroy();
 
     res.json({ message: "Product deleted successfully" });
   } catch (err) {
@@ -177,3 +184,4 @@ export const deleteProduct = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
